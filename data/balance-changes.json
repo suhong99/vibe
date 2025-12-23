@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-22T08:19:54.914Z",
+  "updatedAt": "2025-12-23T12:03:48.106Z",
   "characters": {
     "미르카": {
       "name": "미르카",
@@ -4613,18 +4613,35 @@
     "매그너스": {
       "name": "매그너스",
       "stats": {
-        "totalPatches": 32,
-        "buffCount": 22,
+        "totalPatches": 33,
+        "buffCount": 23,
         "nerfCount": 8,
         "mixedCount": 2,
         "currentStreak": {
           "type": "buff",
-          "count": 3
+          "count": 4
         },
         "maxBuffStreak": 7,
         "maxNerfStreak": 2
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 4,
+          "devComment": "매그너스의 R - 폭주 바이크 대상 현재 체력 비례 피해량을 상향하여, 상대 전열을 보다 효과적으로 무너뜨릴 수 있게 합니다.",
+          "changes": [
+            {
+              "target": "폭주 바이크(R)",
+              "stat": "피해량",
+              "before": "100/250/400(+추가 공격력의 150%)(+스킬 증폭의 90%)(+대상 현재 체력의 25%)",
+              "after": "100/250/400(+추가 공격력의 150%)(+스킬 증폭의 90%)(+대상 현재 체력의 30%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -6990,18 +7007,42 @@
     "아드리아나": {
       "name": "아드리아나",
       "stats": {
-        "totalPatches": 35,
+        "totalPatches": 36,
         "buffCount": 24,
-        "nerfCount": 8,
+        "nerfCount": 9,
         "mixedCount": 3,
         "currentStreak": {
-          "type": "buff",
-          "count": 4
+          "type": "nerf",
+          "count": 1
         },
         "maxBuffStreak": 9,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "nerf",
+          "streak": 1,
+          "devComment": "아드리아나는 지난 패치에서 근접 교전 능력이 강화된 이후 매우 높은 성능을 보여주고 있습니다. E - 불길 쇄도의 피해량을 낮춰 원거리 견제 능력을 견제하고, 무기 숙련도 효과를 낮춰 게임 후반부에서의 위력을 하향 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "투척",
+              "before": "무기 숙련도 레벨 당 스킬 증폭 4.0%",
+              "after": "&nbsp;3.9%",
+              "changeType": "nerf"
+            },
+            {
+              "target": "불길 쇄도(E)",
+              "stat": "화염",
+              "before": "지대 피해량 28/36/44/52/60(+스킬 증폭의 15%)",
+              "after": "26/32/38/44/50(+스킬 증폭의 15%)",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -9891,10 +9932,10 @@
     "아야": {
       "name": "아야",
       "stats": {
-        "totalPatches": 47,
+        "totalPatches": 48,
         "buffCount": 27,
         "nerfCount": 13,
-        "mixedCount": 7,
+        "mixedCount": 8,
         "currentStreak": {
           "type": "nerf",
           "count": 1
@@ -9903,6 +9944,30 @@
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "mixed",
+          "streak": 1,
+          "devComment": "부진한 성능을 보이고 있는 돌격 소총 아야의 무기 숙련도 효과를 상향하여 전반적인 성능을 보완합니다. 반면, 스킬 증폭 계열 아야는 하위권 구간에서 과도한 위력을 보이고 있어 W - 고정 사격의 피해량을 낮춰 성능을 하향 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "돌격",
+              "before": "소총 무기 숙련도 레벨 당 기본 공격 증폭 1.3%",
+              "after": "1.4%",
+              "changeType": "buff"
+            },
+            {
+              "target": "고정 사격(W)",
+              "stat": "피해량",
+              "before": "30/40/50/60/70(+공격력의 50%)(+스킬 증폭의 30/35/40/45/50%)",
+              "after": "20/30/40/50/60(+공격력의 50%)(+스킬 증폭의 30/35/40/45/50%)",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -10973,18 +11038,35 @@
     "아이솔": {
       "name": "아이솔",
       "stats": {
-        "totalPatches": 37,
+        "totalPatches": 38,
         "buffCount": 21,
-        "nerfCount": 15,
+        "nerfCount": 16,
         "mixedCount": 1,
         "currentStreak": {
           "type": "nerf",
-          "count": 1
+          "count": 2
         },
         "maxBuffStreak": 4,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "nerf",
+          "streak": 2,
+          "devComment": "평균 이상의 통계를 기록 중인 아이솔의 기본 공격력을 낮춰 위력을 하향 조정합니다",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "기본",
+              "before": "공격력 41",
+              "after": "37",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -14961,18 +15043,35 @@
     "자히르": {
       "name": "자히르",
       "stats": {
-        "totalPatches": 39,
-        "buffCount": 17,
+        "totalPatches": 40,
+        "buffCount": 18,
         "nerfCount": 19,
         "mixedCount": 3,
         "currentStreak": {
           "type": "buff",
-          "count": 3
+          "count": 4
         },
-        "maxBuffStreak": 3,
+        "maxBuffStreak": 4,
         "maxNerfStreak": 7
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 4,
+          "devComment": "상대적으로 낮은 지표를 보이고 있는 투척 자히르의 무기 숙련도 효과를 상향 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "투척",
+              "before": "무기 숙련도 레벨 당 스킬 증폭 4.4%",
+              "after": "4.5%",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -15753,18 +15852,42 @@
     "재키": {
       "name": "재키",
       "stats": {
-        "totalPatches": 40,
-        "buffCount": 22,
+        "totalPatches": 41,
+        "buffCount": 23,
         "nerfCount": 17,
         "mixedCount": 1,
         "currentStreak": {
           "type": "buff",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 8,
         "maxNerfStreak": 5
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 3,
+          "devComment": "Q - 연참의 피해량을 상향하여 전반적인 위력을 강화합니다. 특히 지속적으로 평균 이하의 성과를 보이고 있는 도끼 재키의 경우, 무기 숙련도 효과를 추가로 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "도끼",
+              "before": "무기 숙련도 레벨 당 기본 공격 증폭 1.7%",
+              "after": "1.9%",
+              "changeType": "buff"
+            },
+            {
+              "target": "연참(Q)",
+              "stat": "피해량",
+              "before": "20/40/60/80/100(+공격력의 55%)(+대상 현재 체력의 5%)",
+              "after": "30/50/70/90/110(+공격력의 55%)(+대상 현재 체력의 5%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -18126,18 +18249,35 @@
     "카티야": {
       "name": "카티야",
       "stats": {
-        "totalPatches": 30,
-        "buffCount": 17,
+        "totalPatches": 31,
+        "buffCount": 18,
         "nerfCount": 12,
         "mixedCount": 1,
         "currentStreak": {
           "type": "buff",
-          "count": 1
+          "count": 2
         },
         "maxBuffStreak": 5,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 2,
+          "devComment": "P - 잿빛 사신의 피해량을 상향하여 스킬 사용 이후 이어지는 기본 공격으로 적을 보다 강하게 압박할 수 있게 합니다.",
+          "changes": [
+            {
+              "target": "잿빛 사신(P)",
+              "stat": "추가",
+              "before": "피해량 40/60/80(+공격력의 30/45/60%)",
+              "after": "50/75/100(+공격력의 30/45/60%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -21384,18 +21524,35 @@
     "피올로": {
       "name": "피올로",
       "stats": {
-        "totalPatches": 32,
-        "buffCount": 25,
+        "totalPatches": 33,
+        "buffCount": 26,
         "nerfCount": 6,
         "mixedCount": 1,
         "currentStreak": {
-          "type": "nerf",
+          "type": "buff",
           "count": 1
         },
         "maxBuffStreak": 7,
         "maxNerfStreak": 1
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 1,
+          "devComment": "피올로는 근거리 교전이나 원거리 대치 상황에서 부족한 내구도로 인해 생존 부담이 큰 모습을 보이고 있습니다. 보다 안정적으로 전투에 참여할 수 있도록 기본 체력을 상향 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "기본",
+              "before": "체력 920",
+              "after": "960",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -22099,18 +22256,35 @@
     "하트": {
       "name": "하트",
       "stats": {
-        "totalPatches": 34,
-        "buffCount": 13,
+        "totalPatches": 35,
+        "buffCount": 14,
         "nerfCount": 18,
         "mixedCount": 3,
         "currentStreak": {
           "type": "buff",
-          "count": 1
+          "count": 2
         },
         "maxBuffStreak": 6,
         "maxNerfStreak": 8
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 2,
+          "devComment": "하트의 레벨 당 공격력을 높여 부족한 피해 능력을 보완합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "레벨",
+              "before": "당 공격력 4.1",
+              "after": "4.3",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -23563,18 +23737,42 @@
     "현우": {
       "name": "현우",
       "stats": {
-        "totalPatches": 32,
-        "buffCount": 16,
+        "totalPatches": 33,
+        "buffCount": 17,
         "nerfCount": 13,
         "mixedCount": 3,
         "currentStreak": {
           "type": "buff",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 4,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 3,
+          "devComment": "글러브 현우의 무기 숙련도 효과를 강화하여 지속적인 피해 능력을 보완하고, W - 허세의 방어력 증가량을 강화해 스킬을 적절히 활용했을 때 더 많은 피해를 받아내며 전투를 이어갈 수 있도록 상향 조정합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "글러브",
+              "before": "무기 숙련도 레벨 당 기본 공격 증폭 2.1%",
+              "after": "2.2%",
+              "changeType": "buff"
+            },
+            {
+              "target": "허세(W)",
+              "stat": "방어력",
+              "before": "증가량 12/20/28/36/44(+방어력10 당 1)",
+              "after": "12/21/30/39/48(+방어력10 당 1)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3209,
           "patchVersion": "9.5",
@@ -25717,18 +25915,35 @@
     "나딘": {
       "name": "나딘",
       "stats": {
-        "totalPatches": 39,
+        "totalPatches": 40,
         "buffCount": 21,
-        "nerfCount": 14,
+        "nerfCount": 15,
         "mixedCount": 4,
         "currentStreak": {
           "type": "nerf",
-          "count": 1
+          "count": 2
         },
         "maxBuffStreak": 6,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "nerf",
+          "streak": 2,
+          "devComment": "나딘은 지속적으로 좋은 성능을 유지하고 있습니다. R - 늑대 맹습의 피해량을 하향하여, 순간적으로 높은 피해를 누적시키는 플레이를 견제합니다.",
+          "changes": [
+            {
+              "target": "늑대 맹습(R)",
+              "stat": "피해량",
+              "before": "100/150/200(+추가 공격력의 90%)(+스킬 증폭의 80%)(+야성 중첩 피해)",
+              "after": "100/150/200(+추가 공격력의 75%)(+스킬 증폭의 80%)(+야성 중첩 피해)",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -30519,18 +30734,35 @@
     "마이": {
       "name": "마이",
       "stats": {
-        "totalPatches": 42,
+        "totalPatches": 43,
         "buffCount": 23,
-        "nerfCount": 19,
+        "nerfCount": 20,
         "mixedCount": 0,
         "currentStreak": {
           "type": "nerf",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 8,
         "maxNerfStreak": 4
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "nerf",
+          "streak": 3,
+          "devComment": "마이는 상위 아이템이 갖춰진 게임 후반부에서 지나치게 높은 내구도를 보여주고 있습니다. W - 숄 장막의 효과를 하향하여 후반부 내구도를 견제합니다.",
+          "changes": [
+            {
+              "target": "숄 장막(W)",
+              "stat": "받는",
+              "before": "피해 감소 32/34/36/38/40%",
+              "after": "31/32/33/34/35%",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -35806,18 +36038,35 @@
     "수아": {
       "name": "수아",
       "stats": {
-        "totalPatches": 33,
-        "buffCount": 19,
+        "totalPatches": 34,
+        "buffCount": 20,
         "nerfCount": 11,
         "mixedCount": 3,
         "currentStreak": {
           "type": "buff",
-          "count": 4
+          "count": 5
         },
         "maxBuffStreak": 5,
         "maxNerfStreak": 4
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 5,
+          "devComment": "P - 마음의 양식의 체력 회복량을 높여 수아가 근접 교전에서 더 높은 유지력을 가질 수 있도록 합니다.",
+          "changes": [
+            {
+              "target": "마음의 양식(P)",
+              "stat": "체력",
+              "before": "회복량 입힌 피해량의 55%",
+              "after": "60%",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -36741,18 +36990,42 @@
     "시셀라": {
       "name": "시셀라",
       "stats": {
-        "totalPatches": 28,
-        "buffCount": 19,
+        "totalPatches": 29,
+        "buffCount": 20,
         "nerfCount": 6,
         "mixedCount": 3,
         "currentStreak": {
           "type": "buff",
-          "count": 1
+          "count": 2
         },
         "maxBuffStreak": 12,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 2,
+          "devComment": "시셀라의 P - 삶은 고통이에요.가 더 높은 스킬 증폭을 제공하도록 상향 조정하여, 적극적인 플레이를 했을 때 더 강한 위력을 발휘할 수 있도록 합니다.",
+          "changes": [
+            {
+              "target": "삶은 고통이에요.(P)",
+              "stat": "스킬",
+              "before": "증폭 증가 4/7/10 ~ 20/31/42",
+              "after": "4/7/10 ~ 28/39/50",
+              "changeType": "buff"
+            },
+            {
+              "target": "모두 해방이에요.(R)",
+              "stat": "패시브",
+              "before": "강화 효과 지속 시간 4/6/8초",
+              "after": "6/7/8초",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -38691,18 +38964,35 @@
     "에이든": {
       "name": "에이든",
       "stats": {
-        "totalPatches": 24,
-        "buffCount": 17,
+        "totalPatches": 25,
+        "buffCount": 18,
         "nerfCount": 6,
         "mixedCount": 1,
         "currentStreak": {
           "type": "buff",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 6,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 3,
+          "devComment": "에이든의 Q - 뇌격이 단일 대상이 아닌 다수의 대상에게 적중할 수 있도록 변경되어, 전반적인 활용성과 사용감을 개선합니다.",
+          "changes": [
+            {
+              "target": "뇌격(Q)",
+              "stat": "적중",
+              "before": "대상 1명",
+              "after": "범위 내 대상 모두 적중",
+              "changeType": "mixed"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -39263,18 +39553,35 @@
     "유스티나": {
       "name": "유스티나",
       "stats": {
-        "totalPatches": 11,
-        "buffCount": 6,
+        "totalPatches": 12,
+        "buffCount": 7,
         "nerfCount": 5,
         "mixedCount": 0,
         "currentStreak": {
-          "type": "nerf",
-          "count": 4
+          "type": "buff",
+          "count": 1
         },
         "maxBuffStreak": 4,
         "maxNerfStreak": 4
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 1,
+          "devComment": "유스티나는 연속된 하향 조정 이후 좋지 못한 성과를 보이고 있습니다. 특히, 피해 능력이 부족한 모습을 보이기에 Q1 - 연속 포격의 피해량을 높여 보완합니다.",
+          "changes": [
+            {
+              "target": "연속 포격&amp;섬멸 포격(Q)",
+              "stat": "연속",
+              "before": "포격(Q1) 피해량 50/75/100/125/150(+스킬 증폭의 35%)",
+              "after": "50/75/100/125/150(+스킬 증폭의 40%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3182,
           "patchVersion": "9.4",
@@ -44069,18 +44376,35 @@
     "레녹스": {
       "name": "레녹스",
       "stats": {
-        "totalPatches": 18,
-        "buffCount": 11,
+        "totalPatches": 19,
+        "buffCount": 12,
         "nerfCount": 7,
         "mixedCount": 0,
         "currentStreak": {
           "type": "buff",
-          "count": 5
+          "count": 6
         },
-        "maxBuffStreak": 5,
+        "maxBuffStreak": 6,
         "maxNerfStreak": 5
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 6,
+          "devComment": "레녹스는 평균 피해량이 다소 낮은 편입니다. Q - 회오리 비늘의 가장자리 적중 시 피해량을 강화하여, 숙련된 플레이에서 더 높은 위력을 발휘할 수 있도록 상향 조정합니다.",
+          "changes": [
+            {
+              "target": "회오리 비늘(Q)",
+              "stat": "가장자리",
+              "before": "추가 피해량 최대 체력의 3/5/7/9/11%",
+              "after": "4/6/8/10/12%",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3163,
           "patchVersion": "9.3",
@@ -44455,18 +44779,35 @@
     "로지": {
       "name": "로지",
       "stats": {
-        "totalPatches": 31,
-        "buffCount": 19,
+        "totalPatches": 32,
+        "buffCount": 20,
         "nerfCount": 10,
         "mixedCount": 2,
         "currentStreak": {
           "type": "buff",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 6,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 3,
+          "devComment": "로지의 R - 셈텍스탄 Mk-II의 사거리를 상향하여, 교전 시 궁극기를 선제적으로 활용했을 때의 적중 난이도를 완화하고 교전 주도권을 가져올 수 있게 합니다.",
+          "changes": [
+            {
+              "target": "셈텍스탄 Mk-II(R)",
+              "stat": "사거리",
+              "before": "6m",
+              "after": "6.3m",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3163,
           "patchVersion": "9.3",
@@ -45749,18 +46090,42 @@
     "알렉스": {
       "name": "알렉스",
       "stats": {
-        "totalPatches": 22,
-        "buffCount": 10,
+        "totalPatches": 23,
+        "buffCount": 11,
         "nerfCount": 11,
         "mixedCount": 1,
         "currentStreak": {
-          "type": "nerf",
+          "type": "buff",
           "count": 1
         },
         "maxBuffStreak": 7,
         "maxNerfStreak": 6
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 1,
+          "devComment": "W - 플라즈마 마인&타켓 마커의 피해량을 상향하여, 스킬 연계 시 보다 높은 위력을 발휘할 수 있게 합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "플라즈마",
+              "before": "마인(근거리 W)피해량 40/75/110/145/180(+공격력의 80%)",
+              "after": "40/80/120/160/200(+공격력의 80%)",
+              "changeType": "buff"
+            },
+            {
+              "target": "기본 스탯",
+              "stat": "타겟",
+              "before": "마커(원거리 W)피해량 45/75/105/135/165(+공격력의 75%)",
+              "after": "45/75/105/135/165(+공격력의 80%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3163,
           "patchVersion": "9.3",
@@ -48482,18 +48847,35 @@
     "이안": {
       "name": "이안",
       "stats": {
-        "totalPatches": 27,
-        "buffCount": 17,
+        "totalPatches": 28,
+        "buffCount": 18,
         "nerfCount": 9,
         "mixedCount": 1,
         "currentStreak": {
-          "type": "nerf",
+          "type": "buff",
           "count": 1
         },
         "maxBuffStreak": 7,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 1,
+          "devComment": "W - 피투성이 손톱의 피해량을 상향 조정하여 이안의 빙의 상태 교전 능력을 강화합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "피투성이",
+              "before": "손톱(빙의 W)피해량 10/40/70/100/130(+공격력의 65%)",
+              "after": "20/50/80/110/140(+공격력의 65%)",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3163,
           "patchVersion": "9.3",
@@ -49077,18 +49459,35 @@
     "제니": {
       "name": "제니",
       "stats": {
-        "totalPatches": 37,
-        "buffCount": 20,
+        "totalPatches": 38,
+        "buffCount": 21,
         "nerfCount": 16,
         "mixedCount": 1,
         "currentStreak": {
           "type": "buff",
-          "count": 2
+          "count": 3
         },
         "maxBuffStreak": 3,
         "maxNerfStreak": 3
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "buff",
+          "streak": 3,
+          "devComment": "제니의 기본 공격력을 높여 초반 단계 교전 위력을 소폭 강화합니다.",
+          "changes": [
+            {
+              "target": "기본 스탯",
+              "stat": "기본",
+              "before": "공격력 32",
+              "after": "35",
+              "changeType": "buff"
+            }
+          ]
+        },
         {
           "patchId": 3163,
           "patchVersion": "9.3",
@@ -55300,18 +55699,35 @@
     "이바": {
       "name": "이바",
       "stats": {
-        "totalPatches": 22,
+        "totalPatches": 23,
         "buffCount": 15,
-        "nerfCount": 4,
+        "nerfCount": 5,
         "mixedCount": 3,
         "currentStreak": {
-          "type": "buff",
-          "count": 2
+          "type": "nerf",
+          "count": 1
         },
         "maxBuffStreak": 5,
         "maxNerfStreak": 1
       },
       "patchHistory": [
+        {
+          "patchId": 3242,
+          "patchVersion": "9.6",
+          "patchDate": "2025-12-22",
+          "overallChange": "nerf",
+          "streak": 1,
+          "devComment": "이바는 상위권 실력대 게임에서 뛰어난 성능을 보이고 있습니다. E - 자수정의 물결의 피해량을 하향하여 높은 피해 능력을 견제합니다.",
+          "changes": [
+            {
+              "target": "자수정의 물결(E)",
+              "stat": "VF",
+              "before": "라이트 피해량 30/35/40/45/50(+스킬 증폭의 20%)",
+              "after": "20/25/30/35/40(+스킬 증폭의 20%)",
+              "changeType": "nerf"
+            }
+          ]
+        },
         {
           "patchId": 2885,
           "patchVersion": "8.2",
