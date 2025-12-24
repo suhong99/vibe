@@ -1,271 +1,197 @@
 {
-  "savedAt": "2025-12-23T11:47:53.253Z",
+  "savedAt": "2025-12-24T00:00:00.000Z",
+  "verifiedAt": "2025-12-24T00:00:00.000Z",
   "totalFailed": 20,
-  "byStatus": {
-    "no_content": 13,
-    "error": 0,
-    "redirect": 7
+  "summary": {
+    "no_character_balance": {
+      "count": 13,
+      "description": "캐릭터 밸런스 변경 없음 - 시스템/버그 수정만 포함된 핫픽스"
+    },
+    "page_unavailable": {
+      "count": 7,
+      "description": "페이지 접근 불가 - 이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
+    }
   },
   "failedLinks": [
     {
       "id": 2786,
       "title": "1.49b 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2786",
-      "createdAt": "2025-06-20T05:04:00.000000Z",
-      "updatedAt": "2025-12-20T11:37:52.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2025/06/20/rdHXC65WJp4nIaBeQEW2oMnzYTbw4XU8N4ZYSoUq.png",
-      "viewCount": 57252,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 99",
-      "hasCharacterData": false
+      "patchVersion": "1.49b",
+      "createdAt": "2025-06-20",
+      "status": "no_character_balance",
+      "reason": "매칭 시스템 개선만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2720,
       "title": "1.47b 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2720",
-      "createdAt": "2025-05-19T07:15:00.000000Z",
-      "updatedAt": "2025-12-20T02:15:47.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2025/05/19/dBSPxmes89zzZ6rPJztBwG3dZ3MdjWxLaeP9lNZI.png",
-      "viewCount": 34147,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 78",
-      "hasCharacterData": false
+      "patchVersion": "1.47b",
+      "createdAt": "2025-05-19",
+      "status": "no_character_balance",
+      "reason": "Union 시스템 버그 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2567,
       "title": "1.42a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2567",
-      "createdAt": "2025-03-08T03:50:00.000000Z",
-      "updatedAt": "2025-12-20T10:32:16.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2025/03/08/XFF4VzS7iapuUf5qmdrHQo5vE76p9UmLCnp4WqRh.png",
-      "viewCount": 29746,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 79",
-      "hasCharacterData": false
+      "patchVersion": "1.42a",
+      "createdAt": "2025-03-08",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2252,
       "title": "1.32c 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2252",
-      "createdAt": "2024-10-15T08:08:00.000000Z",
-      "updatedAt": "2025-12-19T14:42:52.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/10/15/UnBlFlEVKze84cLJ44YrUrjhUpCT0sZzYPoycOiV.png",
-      "viewCount": 38679,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 55",
-      "hasCharacterData": false
+      "patchVersion": "1.32c",
+      "createdAt": "2024-10-15",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2195,
       "title": "1.30e 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2195",
-      "createdAt": "2024-09-19T07:46:05.000000Z",
-      "updatedAt": "2025-12-20T10:01:06.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/09/19/GTOxF9vybL1tWc18ugqMXvs181iUfIb2XeQLwCa0.png",
-      "viewCount": 52923,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 80",
-      "hasCharacterData": false
+      "patchVersion": "1.30e",
+      "createdAt": "2024-09-19",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2112,
       "title": "1.28a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2112",
-      "createdAt": "2024-08-14T10:18:00.000000Z",
-      "updatedAt": "2025-12-19T14:53:23.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/08/14/O7WsVvSSvvEak3RLEbUinvOgKI5p2cG2Z00D8t9s.png",
-      "viewCount": 15207,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 64",
-      "hasCharacterData": false
+      "patchVersion": "1.28a",
+      "createdAt": "2024-08-14",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 2029,
       "title": "1.25c 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/2029",
-      "createdAt": "2024-07-10T08:45:00.000000Z",
-      "updatedAt": "2025-12-20T01:52:28.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/07/10/XSoBBVf3nzzBZPvA1EcKmru9Uptfzz3F7gak4szD.png",
-      "viewCount": 8153,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 61",
-      "hasCharacterData": false
+      "patchVersion": "1.25c",
+      "createdAt": "2024-07-10",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1908,
       "title": "1.21a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1908",
-      "createdAt": "2024-05-09T09:33:00.000000Z",
-      "updatedAt": "2025-12-20T03:03:44.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/05/09/rSQvFRDDiHwQZ3x5HLnEvE8qZidVuZ92veWUESoz.png",
-      "viewCount": 16662,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 78",
-      "hasCharacterData": false
+      "patchVersion": "1.21a",
+      "createdAt": "2024-05-09",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1878,
       "title": "1.20a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1878",
-      "createdAt": "2024-04-25T08:01:00.000000Z",
-      "updatedAt": "2025-12-19T19:57:50.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/04/25/twDpllHyBYwza28hkG8ENrUeNQo6kPdeqWXiTaUi.png",
-      "viewCount": 7407,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 81",
-      "hasCharacterData": false
+      "patchVersion": "1.20a",
+      "createdAt": "2024-04-25",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1744,
       "title": "1.15c 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1744",
-      "createdAt": "2024-02-19T05:35:00.000000Z",
-      "updatedAt": "2025-12-20T03:26:02.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2024/02/19/DaYq1xSZKzlyJmx7KeYAFlw1HMuadKQOVnZjjwXV.png",
-      "viewCount": 9757,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 82",
-      "hasCharacterData": false
+      "patchVersion": "1.15c",
+      "createdAt": "2024-02-19",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1605,
       "title": "1.9c 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1605",
-      "createdAt": "2023-12-01T06:09:00.000000Z",
-      "updatedAt": "2025-12-20T10:23:38.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/12/01/mBUxYuqYnykPzkrqnbGWIcuHDgvoQiLoV64tj0U6.png",
-      "viewCount": 13608,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 58",
-      "hasCharacterData": false
+      "patchVersion": "1.9c",
+      "createdAt": "2023-12-01",
+      "status": "no_character_balance",
+      "reason": "시스템 수정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1397,
       "title": "1.3b 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1397",
-      "createdAt": "2023-09-01T02:55:00.000000Z",
-      "updatedAt": "2025-12-20T11:22:24.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/09/01/SNCqwFsD4wjEFQ7R33XESOxF5JLtU8SJmQLCzp15.png",
-      "viewCount": 14317,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 92",
-      "hasCharacterData": false
+      "patchVersion": "1.3b",
+      "createdAt": "2023-09-01",
+      "status": "no_character_balance",
+      "reason": "에어 서플라이 박스 스폰 빈도 조정만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1282,
       "title": "[수정됨] 1.0.0 아이템",
       "link": "https://playeternalreturn.com/posts/news/1282",
-      "createdAt": "2023-07-19T10:10:00.000000Z",
-      "updatedAt": "2025-12-20T10:05:37.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/07/19/iQz8e4Mzfn64SkX9amXkR6wwW6Y8pzOhDeWxfR4Q.png",
-      "viewCount": 17457,
-      "status": "no_content",
-      "httpStatus": 200,
-      "errorMessage": "Content length: 87",
-      "hasCharacterData": false
+      "patchVersion": "1.0.0",
+      "createdAt": "2023-07-19",
+      "status": "no_character_balance",
+      "reason": "아이템 변경만 포함 (캐릭터 변경 없음)"
     },
     {
       "id": 1239,
       "title": "0.87.0b 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1239",
-      "createdAt": "2023-06-23T02:50:00.000000Z",
-      "updatedAt": "2023-11-26T00:39:41.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/06/23/5EQwYDaavgkBOEE0BWCDuOCoeR5Xe77gpOCgUSpM.png",
-      "viewCount": 2475,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.87.0b",
+      "createdAt": "2023-06-23",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1234,
       "title": "2023.06.22 정기 점검 사전 안내 (0.87.0 패치노트)",
       "link": "https://playeternalreturn.com/posts/news/1234",
-      "createdAt": "2023-06-21T08:00:00.000000Z",
-      "updatedAt": "2023-11-26T04:11:05.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/06/21/z2BGmcwzMJfC9lR86y3SJlnMikBLWf1NdsmGNSID.png",
-      "viewCount": 23594,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.87.0",
+      "createdAt": "2023-06-21",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1217,
       "title": "0.86.0a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1217",
-      "createdAt": "2023-06-13T05:58:00.000000Z",
-      "updatedAt": "2023-11-25T08:16:04.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/06/13/Nwwci4EGruqGJk2rtbHszltIkydE8OapJLJ510Rp.png",
-      "viewCount": 9326,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.86.0a",
+      "createdAt": "2023-06-13",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1203,
       "title": "[수정됨] 2023.06.08 정기 점검 사전 안내 (0.86.0 패치노트)",
       "link": "https://playeternalreturn.com/posts/news/1203",
-      "createdAt": "2023-06-07T08:00:00.000000Z",
-      "updatedAt": "2023-11-26T04:13:13.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/06/07/f8YGMv4hn9BoCkaogw6XyiGsncZvKOLiIxyxkaKc.png",
-      "viewCount": 26261,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.86.0",
+      "createdAt": "2023-06-07",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1191,
       "title": "0.85.0a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1191",
-      "createdAt": "2023-05-30T06:11:00.000000Z",
-      "updatedAt": "2023-11-26T02:18:15.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/05/30/Vx3II47yuTHD5sGISqJ6iN8Vq3on8mFYLVdGrROd.png",
-      "viewCount": 10019,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.85.0a",
+      "createdAt": "2023-05-30",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1181,
       "title": "2023.05.25 정기 점검 사전 안내 (0.85.0 패치노트)",
       "link": "https://playeternalreturn.com/posts/news/1181",
-      "createdAt": "2023-05-24T08:00:00.000000Z",
-      "updatedAt": "2023-11-26T02:37:19.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/05/24/zs9dp80V4XpRY7Rw2p8xqi4w9MBgI7OMDm4cYiwY.png",
-      "viewCount": 25462,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.85.0",
+      "createdAt": "2023-05-24",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     },
     {
       "id": 1164,
-      "title": "0.84.0a 핫픽스 ",
+      "title": "0.84.0a 핫픽스",
       "link": "https://playeternalreturn.com/posts/news/1164",
-      "createdAt": "2023-05-16T03:28:00.000000Z",
-      "updatedAt": "2023-11-25T18:38:35.000000Z",
-      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2023/05/16/yGw5QiAAwhpBtVO3NTbpIUaODzPJacweZyhAR1zH.png",
-      "viewCount": 11608,
-      "status": "redirect",
-      "httpStatus": 200,
-      "errorMessage": "Redirected to: https://event.playeternalreturn.com/S9/GGST",
-      "hasCharacterData": false
+      "patchVersion": "0.84.0a",
+      "createdAt": "2023-05-16",
+      "status": "page_unavailable",
+      "reason": "이벤트 페이지로 리다이렉트됨 (원본 데이터 복구 불가)"
     }
   ]
 }

@@ -1,4 +1,5 @@
-import { loadBalanceData, extractCharacters, calculateStatsSummary } from '@/lib/patch-data';
+import { loadBalanceData, extractCharacters, calculateStatsSummary, getLatestPatchInfo, getDataCoverageInfo } from '@/lib/patch-data';
+import { formatDate } from '@/lib/patch-utils';
 import CharacterList from '@/components/CharacterList';
 
 // 순수 함수: 통계 카드 데이터 생성
@@ -34,6 +35,8 @@ export default async function Home(): Promise<React.ReactElement> {
   const characters = extractCharacters(data);
   const summary = calculateStatsSummary(characters);
   const statCards = createStatCards(summary);
+  const latestPatch = await getLatestPatchInfo();
+  const dataCoverage = getDataCoverageInfo(characters);
 
   return (
     <div className="min-h-screen bg-[#0a0b0f]">
@@ -44,17 +47,31 @@ export default async function Home(): Promise<React.ReactElement> {
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* 헤더 */}
         <header className="mb-12 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm text-violet-300">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
-            </span>
-            실시간 패치 데이터
+          <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm text-violet-300">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
+              </span>
+              실시간 패치 데이터
+            </div>
+            {latestPatch && (
+              <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-sm text-cyan-300">
+                <span className="font-bold">v{latestPatch.version}</span>
+                <span className="text-cyan-400/60">|</span>
+                <span className="text-cyan-400/80">{formatDate(latestPatch.crawledAt)} 수정</span>
+              </div>
+            )}
           </div>
-          <h1 className="bg-gradient-to-r from-white via-violet-200 to-cyan-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-5xl lg:text-6xl">
+          <h1 className="bg-linear-to-r from-white via-violet-200 to-cyan-200 bg-clip-text text-4xl font-black tracking-tight text-transparent sm:text-5xl lg:text-6xl">
             ETERNAL RETURN
           </h1>
           <p className="mt-3 text-xl text-zinc-400">실험체별 밸런스 패치 히스토리</p>
+          {dataCoverage && (
+            <p className="mt-2 text-xs text-zinc-600">
+              v{dataCoverage.oldestVersion} ({dataCoverage.oldestDate}) 이후 데이터 수집
+            </p>
+          )}
         </header>
 
         {/* 통계 카드 */}

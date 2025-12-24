@@ -16,9 +16,9 @@ type Props = {
 // 순수 함수: 필터 옵션 정의
 const filterOptions: { value: FilterOption; label: string; color: string }[] = [
   { value: 'all', label: '전체', color: 'violet' },
-  { value: 'buff', label: '상향', color: 'emerald' },
-  { value: 'nerf', label: '하향', color: 'rose' },
-  { value: 'mixed', label: '조정', color: 'amber' },
+  { value: 'buffStreak', label: '연속 상향 중', color: 'emerald' },
+  { value: 'nerfStreak', label: '연속 하향 중', color: 'rose' },
+  { value: 'recent', label: '최근 패치', color: 'cyan' },
 ];
 
 // 순수 함수: 정렬 옵션 정의
@@ -99,9 +99,9 @@ export default function FilterSort({
               rose: isActive
                 ? 'border-rose-500 bg-rose-500/20 text-rose-300'
                 : 'border-[#2a2d35] text-zinc-500 hover:border-rose-500/50 hover:text-rose-400',
-              amber: isActive
-                ? 'border-amber-500 bg-amber-500/20 text-amber-300'
-                : 'border-[#2a2d35] text-zinc-500 hover:border-amber-500/50 hover:text-amber-400',
+              cyan: isActive
+                ? 'border-cyan-500 bg-cyan-500/20 text-cyan-300'
+                : 'border-[#2a2d35] text-zinc-500 hover:border-cyan-500/50 hover:text-cyan-400',
             }[color];
 
             return (

@@ -51,4 +51,29 @@ export type SortOption = 'name' | 'totalPatches' | 'buffCount' | 'nerfCount' | '
 export type SortDirection = 'asc' | 'desc';
 
 // 필터 옵션
-export type FilterOption = 'all' | 'buff' | 'nerf' | 'mixed';
+export type FilterOption = 'all' | 'buffStreak' | 'nerfStreak' | 'recent';
+
+// 패치노트 타입
+export type PatchNote = {
+  id: number;
+  title: string;
+  link: string;
+  createdAt: string;
+  updatedAt: string;
+  thumbnailUrl: string;
+  viewCount: number;
+};
+
+export type PatchNotesData = {
+  crawledAt: string;
+  totalCount: number;
+  patchNotes: PatchNote[];
+};
+
+// 최신 패치 정보 타입
+export type LatestPatchInfo = {
+  version: string;
+  title: string;
+  crawledAt: string;
+  patchDate: string;
+};

@@ -42863,40 +42863,6 @@
         }
       ]
     },
-    "광휘": {
-      "name": "광휘",
-      "stats": {
-        "totalPatches": 1,
-        "buffCount": 0,
-        "nerfCount": 1,
-        "mixedCount": 0,
-        "currentStreak": {
-          "type": "nerf",
-          "count": 1
-        },
-        "maxBuffStreak": 0,
-        "maxNerfStreak": 1
-      },
-      "patchHistory": [
-        {
-          "patchId": 3182,
-          "patchVersion": "9.4",
-          "patchDate": "2025-11-26",
-          "overallChange": "nerf",
-          "streak": 1,
-          "devComment": "이제 전술 스킬의 피해량이 증가하지 않습니다.",
-          "changes": [
-            {
-              "target": "기본 스탯",
-              "stat": "체력이",
-              "before": "60% 이상일 때 모든 피해 증가 12%",
-              "after": "스킬 피해 증가 12%이제 전술 스킬의 피해량이 증가하지 않습니다.",
-              "changeType": "nerf"
-            }
-          ]
-        }
-      ]
-    },
     "나타폰": {
       "name": "나타폰",
       "stats": {

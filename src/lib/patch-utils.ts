@@ -35,16 +35,38 @@ const createSorter =
     return [...characters].sort(compareFn);
   };
 
+// 순수 함수: 최근 N개 패치 ID 추출
+const getRecentPatchIds = (characters: Character[], count: number): Set<number> => {
+  const allPatchIds = new Set<number>();
+  for (const char of characters) {
+    for (const patch of char.patchHistory) {
+      allPatchIds.add(patch.patchId);
+    }
+  }
+  const sortedIds = [...allPatchIds].sort((a, b) => b - a);
+  return new Set(sortedIds.slice(0, count));
+};
+
 // 고차 함수: 필터 함수 생성기
 const createFilter =
-  (filter: FilterOption) =>
+  (filter: FilterOption, allCharacters: Character[]) =>
   (characters: Character[]): Character[] => {
     if (filter === 'all') return characters;
 
-    const hasChangeType = (char: Character, type: ChangeType): boolean =>
-      char.patchHistory.some((patch) => patch.overallChange === type);
-
-    return characters.filter((char) => hasChangeType(char, filter));
+    switch (filter) {
+      case 'buffStreak':
+        return characters.filter((char) => char.stats.currentStreak.type === 'buff');
+      case 'nerfStreak':
+        return characters.filter((char) => char.stats.currentStreak.type === 'nerf');
+      case 'recent': {
+        const recentPatchIds = getRecentPatchIds(allCharacters, 3);
+        return characters.filter((char) =>
+          char.patchHistory.some((patch) => recentPatchIds.has(patch.patchId))
+        );
+      }
+      default:
+        return characters;
+    }
   };
 
 // 고차 함수: 검색 필터 생성기
@@ -70,7 +92,7 @@ export const filterAndSortCharacters = (
 
   return pipe<Character[]>(
     createSearchFilter(search),
-    createFilter(filter),
+    createFilter(filter, characters),
     createSorter(sort, direction)
   )(characters);
 };
