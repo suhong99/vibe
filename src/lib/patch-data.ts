@@ -1,21 +1,49 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import type { BalanceChangesData, Character, PatchNotesData, LatestPatchInfo } from '@/types/patch';
+import { db } from './firebase-admin';
+import type { BalanceChangesData, Character, PatchNotesData, LatestPatchInfo, PatchNote } from '@/types/patch';
 
-// 서버 전용 - 데이터 파일 경로
-const DATA_PATH = path.join(process.cwd(), 'data', 'balance-changes.json');
-const PATCH_NOTES_PATH = path.join(process.cwd(), 'data', 'patch-notes.json');
-
-// 순수 함수: 데이터 로드 (서버 전용)
+// 순수 함수: 데이터 로드 (서버 전용 - Firestore)
 export const loadBalanceData = async (): Promise<BalanceChangesData> => {
-  const fileContent = await fs.readFile(DATA_PATH, 'utf-8');
-  return JSON.parse(fileContent) as BalanceChangesData;
+  // 메타데이터 조회
+  const metadataDoc = await db.collection('metadata').doc('balanceChanges').get();
+  const metadata = metadataDoc.data();
+
+  // 모든 캐릭터 조회
+  const charactersSnapshot = await db.collection('characters').get();
+  const characters: Record<string, Character> = {};
+
+  charactersSnapshot.forEach((doc) => {
+    const data = doc.data() as Character;
+    characters[data.name] = data;
+  });
+
+  return {
+    updatedAt: metadata?.updatedAt ?? new Date().toISOString(),
+    characters,
+  };
 };
 
-// 순수 함수: 패치노트 데이터 로드 (서버 전용)
+// 순수 함수: 패치노트 데이터 로드 (서버 전용 - Firestore)
 export const loadPatchNotesData = async (): Promise<PatchNotesData> => {
-  const fileContent = await fs.readFile(PATCH_NOTES_PATH, 'utf-8');
-  return JSON.parse(fileContent) as PatchNotesData;
+  // 메타데이터 조회
+  const metadataDoc = await db.collection('metadata').doc('patchNotes').get();
+  const metadata = metadataDoc.data();
+
+  // 모든 패치노트 조회 (id 내림차순 정렬)
+  const patchNotesSnapshot = await db
+    .collection('patchNotes')
+    .orderBy('id', 'desc')
+    .get();
+
+  const patchNotes: PatchNote[] = [];
+  patchNotesSnapshot.forEach((doc) => {
+    patchNotes.push(doc.data() as PatchNote);
+  });
+
+  return {
+    crawledAt: metadata?.crawledAt ?? new Date().toISOString(),
+    totalCount: metadata?.totalCount ?? patchNotes.length,
+    patchNotes,
+  };
 };
 
 // 순수 함수: 패치 버전 추출 (제목에서)

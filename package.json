@@ -12,6 +12,8 @@
     "crawl": "tsx scripts/crawl-patch-notes.ts"
   },
   "dependencies": {
+    "firebase": "^12.7.0",
+    "firebase-admin": "^13.6.0",
     "next": "16.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
