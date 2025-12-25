@@ -1,12 +1,12 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
-import * as fs from 'fs';
-import * as path from 'path';
+import { initFirebaseAdmin } from './lib/firebase-admin';
 
 // ============================================
 // 타입 정의
 // ============================================
 
 type ChangeType = 'buff' | 'nerf' | 'mixed';
+type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
 
 type Change = {
   target: string;
@@ -14,6 +14,7 @@ type Change = {
   before: string;
   after: string;
   changeType: ChangeType;
+  changeCategory: ChangeCategory;
 };
 
 type PatchEntry = {
@@ -46,26 +47,14 @@ type CharacterData = {
   patchHistory: PatchEntry[];
 };
 
-type BalanceData = {
-  updatedAt: string;
-  characters: Record<string, CharacterData>;
-};
-
-type ValidationResult = {
+type PatchNote = {
   id: number;
   title: string;
   link: string;
   createdAt: string;
-  updatedAt: string;
-  thumbnailUrl: string;
-  viewCount: number;
-  status: string;
-  httpStatus: number;
-  hasCharacterData: boolean;
-};
-
-type ValidationData = {
-  results: ValidationResult[];
+  status?: string;
+  hasCharacterData?: boolean;
+  isParsed?: boolean;
 };
 
 // ============================================
@@ -73,171 +62,133 @@ type ValidationData = {
 // ============================================
 
 const VALID_CHARACTERS = new Set([
-  // 가나다순
-  '가넷',
-  '나딘',
-  '나타폰',
-  '니아',
-  '니키',
-  '다니엘',
-  '다르코',
-  '데비&마를렌',
-  '띠아',
-  '라우라',
-  '레녹스',
-  '레니',
-  '레온',
-  '로지',
-  '루크',
-  '르노어',
-  '리 다이린',
-  '리오',
-  '마르티나',
-  '마이',
-  '마커스',
-  '매그너스',
-  '미르카',
-  '바냐',
-  '바바라',
-  '버니스',
-  '블레어',
-  '비앙카',
-  '샬럿',
-  '셀린',
-  '쇼우',
-  '쇼이치',
-  '수아',
-  '슈린',
-  '시셀라',
-  '실비아',
-  '아델라',
-  '아드리아나',
-  '아디나',
-  '아르다',
-  '아비게일',
-  '아야',
-  '아이솔',
-  '아이작',
-  '알렉스',
-  '알론소',
-  '얀',
-  '에스텔',
-  '에이든',
-  '에키온',
-  '엘레나',
-  '엠마',
-  '요한',
-  '윌리엄',
-  '유민',
-  '유스티나',
-  '유키',
-  '이렘',
-  '이바',
-  '이슈트반',
-  '이안',
-  '일레븐',
-  '자히르',
-  '재키',
-  '제니',
-  '츠바메',
-  '카밀로',
-  '카티야',
-  '칼라',
-  '캐시',
-  '케네스',
-  '클로에',
-  '키아라',
-  '타지아',
-  '테오도르',
-  '펠릭스',
-  '프리야',
-  '피오라',
-  '피올로',
-  '하트',
-  '헤이즈',
-  '헨리',
-  '현우',
-  '혜진',
-  '히스이',
+  '가넷', '나딘', '나타폰', '니아', '니키', '다니엘', '다르코', '데비&마를렌',
+  '띠아', '라우라', '레녹스', '레니', '레온', '로지', '루크', '르노어',
+  '리 다이린', '리오', '마르티나', '마이', '마커스', '매그너스', '미르카',
+  '바냐', '바바라', '버니스', '블레어', '비앙카', '샬럿', '셀린', '쇼우',
+  '쇼이치', '수아', '슈린', '시셀라', '실비아', '아델라', '아드리아나',
+  '아디나', '아르다', '아비게일', '아야', '아이솔', '아이작', '알렉스',
+  '알론소', '얀', '에스텔', '에이든', '에키온', '엘레나', '엠마', '요한',
+  '윌리엄', '유민', '유스티나', '유키', '이렘', '이바', '이슈트반', '이안',
+  '일레븐', '자히르', '재키', '제니', '츠바메', '카밀로', '카티야', '칼라',
+  '캐시', '케네스', '클로에', '키아라', '타지아', '테오도르', '펠릭스',
+  '프리야', '피오라', '피올로', '하트', '헤이즈', '헨리', '현우', '혜진', '히스이',
 ]);
 
-// 캐릭터 이름 정규화 (HTML 엔티티 및 공백 처리)
 function normalizeCharacterName(name: string): string {
-  return name
-    .replace(/&amp;/g, '&')
+  return name.replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function isValidCharacter(name: string): boolean {
+  return VALID_CHARACTERS.has(normalizeCharacterName(name));
+}
+
+// ============================================
+// stat/before/after 분리 및 changeCategory 결정
+// ============================================
+
+// 괄호를 제외하고 첫 번째 숫자가 나오는 위치 찾기
+function findFirstNumberIndexOutsideParens(str: string): number {
+  let depth = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (char === '(') depth++;
+    else if (char === ')') depth = Math.max(0, depth - 1);
+    else if (depth === 0 && /\d/.test(char)) return i;
+  }
+  return -1;
+}
+
+// 문자열이 숫자로 시작하는지 확인
+function startsWithNumber(str: string): boolean {
+  return /^\d/.test(str.trim());
+}
+
+// HTML 엔티티 정리
+function cleanHtmlEntities(str: string): string {
+  return str
     .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-// 유효한 캐릭터인지 검증
-function isValidCharacter(name: string): boolean {
-  const normalized = normalizeCharacterName(name);
-  return VALID_CHARACTERS.has(normalized);
+// 문자열에서 숫자 앞 텍스트 분리
+function splitAtFirstNumber(str: string): { prefix: string; value: string } {
+  const cleaned = cleanHtmlEntities(str);
+  const numIndex = findFirstNumberIndexOutsideParens(cleaned);
+  if (numIndex <= 0) return { prefix: '', value: cleaned };
+  return {
+    prefix: cleaned.slice(0, numIndex).trim(),
+    value: cleaned.slice(numIndex).trim(),
+  };
+}
+
+// changeCategory 결정
+function determineChangeCategory(before: string, after: string): ChangeCategory {
+  const beforeClean = cleanHtmlEntities(before).toLowerCase();
+  const afterClean = cleanHtmlEntities(after).toLowerCase();
+
+  // 효과 추가
+  if (!beforeClean || beforeClean === '없음' || beforeClean === '-' || beforeClean === 'x') {
+    return 'added';
+  }
+  // 효과 제거
+  if (!afterClean || afterClean === '삭제' || afterClean === '없음' || afterClean === '-') {
+    return 'removed';
+  }
+
+  const beforeStartsNum = startsWithNumber(before);
+  const afterStartsNum = startsWithNumber(after);
+
+  if (beforeStartsNum && afterStartsNum) return 'numeric';
+  if (!beforeStartsNum && !afterStartsNum) return 'mechanic';
+  return 'unknown';
+}
+
+// stat/before/after 정리 및 changeCategory 결정
+function processChange(
+  stat: string,
+  before: string,
+  after: string
+): { stat: string; before: string; after: string; changeCategory: ChangeCategory } {
+  stat = cleanHtmlEntities(stat);
+  before = cleanHtmlEntities(before);
+  after = cleanHtmlEntities(after);
+
+  const beforeSplit = splitAtFirstNumber(before);
+  const afterSplit = splitAtFirstNumber(after);
+
+  let newStat = stat;
+  let newBefore = before;
+  let newAfter = after;
+
+  // before 처리
+  if (beforeSplit.prefix) {
+    newStat = (stat + ' ' + beforeSplit.prefix).trim();
+    newBefore = beforeSplit.value;
+  }
+
+  // after 처리
+  if (afterSplit.prefix && afterSplit.value) {
+    newAfter = afterSplit.value;
+  }
+
+  const changeCategory = determineChangeCategory(newBefore, newAfter);
+
+  return { stat: newStat, before: newBefore, after: newAfter, changeCategory };
 }
 
 // ============================================
 // 버프/너프 판별 로직
 // ============================================
 
-// 감소가 버프인 스탯들 (쿨다운, 마나 소모, 시전 시간, 딜레이 등)
 const DECREASE_IS_BUFF = [
-  '쿨다운',
-  'cooldown',
-  'cd',
-  '마나',
-  'mana',
-  'sp',
-  'mp',
-  '소모',
-  '시전',
-  'cast',
-  'casting',
-  '딜레이',
-  'delay',
-  '대기',
-  'wait',
-  '충전',
-  'charge time',
-  '선딜',
-  '후딜',
-];
-
-// 증가가 버프인 스탯들 (데미지, 회복량, 공격력 등) - 기본값이므로 현재 미사용
-const _INCREASE_IS_BUFF = [
-  '피해',
-  'damage',
-  '데미지',
-  '회복',
-  'heal',
-  'recovery',
-  '공격력',
-  'attack',
-  '체력',
-  'health',
-  'hp',
-  '방어',
-  'defense',
-  'armor',
-  '속도',
-  'speed',
-  '범위',
-  'range',
-  'radius',
-  '지속',
-  'duration',
-  '증폭',
-  'amplification',
-  '흡혈',
-  'lifesteal',
-  'omnivamp',
-  '관통',
-  'penetration',
-  '치명타',
-  'critical',
-  'crit',
-  '보호막',
-  'shield',
+  '쿨다운', 'cooldown', 'cd', '마나', 'mana', 'sp', 'mp', '소모',
+  '시전', 'cast', 'casting', '딜레이', 'delay', '대기', 'wait',
+  '충전', 'charge time', '선딜', '후딜',
 ];
 
 function extractNumbers(value: string): number[] {
@@ -250,30 +201,17 @@ function determineChangeType(stat: string, before: string, after: string): Chang
   const beforeNums = extractNumbers(before);
   const afterNums = extractNumbers(after);
 
-  if (beforeNums.length === 0 || afterNums.length === 0) {
-    return 'mixed';
-  }
+  if (beforeNums.length === 0 || afterNums.length === 0) return 'mixed';
 
-  // 평균값으로 비교
   const beforeAvg = beforeNums.reduce((a, b) => a + b, 0) / beforeNums.length;
   const afterAvg = afterNums.reduce((a, b) => a + b, 0) / afterNums.length;
 
-  if (beforeAvg === afterAvg) {
-    return 'mixed';
-  }
+  if (beforeAvg === afterAvg) return 'mixed';
 
   const isIncrease = afterAvg > beforeAvg;
+  const isDecreaseBuffStat = DECREASE_IS_BUFF.some((k) => statLower.includes(k.toLowerCase()));
 
-  // 감소가 버프인 스탯인지 확인
-  const isDecreaseBuffStat = DECREASE_IS_BUFF.some((keyword) =>
-    statLower.includes(keyword.toLowerCase())
-  );
-
-  if (isDecreaseBuffStat) {
-    return isIncrease ? 'nerf' : 'buff';
-  }
-
-  // 기본: 증가가 버프
+  if (isDecreaseBuffStat) return isIncrease ? 'nerf' : 'buff';
   return isIncrease ? 'buff' : 'nerf';
 }
 
@@ -286,89 +224,30 @@ function determineOverallChange(changes: Change[]): ChangeType {
   return 'mixed';
 }
 
-// 개발자 코멘트에서 너프/버프 의도 추출
 const NERF_KEYWORDS = [
-  // 영어
-  'reducing',
-  'reduce',
-  'decreased',
-  'decrease',
-  'lowering',
-  'lower',
-  'nerfing',
-  'nerf',
-  'weaken',
-  'weakening',
-  'toning down',
-  'tune down',
-  'too strong',
-  'very strong',
-  'overperforming',
-  'high win rate',
-  'high pick rate',
-  'dominant',
-  'oppressive',
-  'keep in check',
-  // 한글
-  '너프',
-  '하향',
-  '감소',
-  '약화',
-  '줄이',
-  '낮추',
-  '너무 강',
-  '강력해서',
-  '승률이 높',
-  '픽률이 높',
-  '지배적',
+  'reducing', 'reduce', 'decreased', 'decrease', 'lowering', 'lower',
+  'nerfing', 'nerf', 'weaken', 'weakening', 'toning down', 'tune down',
+  'too strong', 'very strong', 'overperforming', 'high win rate',
+  'high pick rate', 'dominant', 'oppressive', 'keep in check',
+  '너프', '하향', '감소', '약화', '줄이', '낮추', '너무 강', '강력해서',
+  '승률이 높', '픽률이 높', '지배적',
 ];
 
 const BUFF_KEYWORDS = [
-  // 영어
-  'buffing',
-  'buff',
-  'increasing',
-  'increase',
-  'improving',
-  'improve',
-  'enhancing',
-  'enhance',
-  'strengthening',
-  'strengthen',
-  'boosting',
-  'boost',
-  'underperforming',
-  'low win rate',
-  'low pick rate',
-  'weak',
-  'struggling',
-  'needs help',
-  'giving more',
-  // 한글
-  '버프',
-  '상향',
-  '증가',
-  '강화',
-  '올리',
-  '높이',
-  '약해서',
-  '승률이 낮',
-  '픽률이 낮',
-  '부족',
-  '개선',
+  'buffing', 'buff', 'increasing', 'increase', 'improving', 'improve',
+  'enhancing', 'enhance', 'strengthening', 'strengthen', 'boosting', 'boost',
+  'underperforming', 'low win rate', 'low pick rate', 'weak', 'struggling',
+  'needs help', 'giving more',
+  '버프', '상향', '증가', '강화', '올리', '높이', '약해서',
+  '승률이 낮', '픽률이 낮', '부족', '개선',
 ];
 
 function extractIntentFromComment(comment: string | null): ChangeType | null {
   if (!comment) return null;
-
   const commentLower = comment.toLowerCase();
 
-  const hasNerfIntent = NERF_KEYWORDS.some((keyword) =>
-    commentLower.includes(keyword.toLowerCase())
-  );
-  const hasBuffIntent = BUFF_KEYWORDS.some((keyword) =>
-    commentLower.includes(keyword.toLowerCase())
-  );
+  const hasNerfIntent = NERF_KEYWORDS.some((k) => commentLower.includes(k.toLowerCase()));
+  const hasBuffIntent = BUFF_KEYWORDS.some((k) => commentLower.includes(k.toLowerCase()));
 
   if (hasNerfIntent && !hasBuffIntent) return 'nerf';
   if (hasBuffIntent && !hasNerfIntent) return 'buff';
@@ -376,17 +255,12 @@ function extractIntentFromComment(comment: string | null): ChangeType | null {
 }
 
 function determineOverallChangeWithComment(changes: Change[], comment: string | null): ChangeType {
-  const changeBasedResult = determineOverallChange(changes);
-
-  // mixed인 경우 코멘트에서 의도 추출
-  if (changeBasedResult === 'mixed' && comment) {
-    const commentIntent = extractIntentFromComment(comment);
-    if (commentIntent) {
-      return commentIntent;
-    }
+  const result = determineOverallChange(changes);
+  if (result === 'mixed' && comment) {
+    const intent = extractIntentFromComment(comment);
+    if (intent) return intent;
   }
-
-  return changeBasedResult;
+  return result;
 }
 
 // ============================================
@@ -410,14 +284,10 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
       if (!content) return [];
 
       const html = content.innerHTML;
-
-      // 실험체 섹션 찾기 (h5 태그)
       const charMatch = html.match(/<h5[^>]*>실험체<\/h5>/);
       if (!charMatch || charMatch.index === undefined) return [];
 
       const charStart = charMatch.index;
-
-      // 무기 섹션 또는 코발트/론울프 섹션까지
       const weaponMatch = html.slice(charStart).match(/<h5[^>]*>무기<\/h5>/);
       const cobaltMatch = html.slice(charStart).match(/<h5[^>]*>코발트 프로토콜<\/h5>/);
       const loneWolfMatch = html.slice(charStart).match(/<h5[^>]*>론울프<\/h5>/);
@@ -429,19 +299,12 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
       const endIndex = endIndices.length > 0 ? charStart + Math.min(...endIndices) : html.length;
       const characterSection = html.slice(charStart, endIndex);
 
-      // 캐릭터별로 파싱
-      // 패턴: <p><strong>캐릭터명</strong></p> 다음에 코멘트와 변경사항
       const characterPattern = /<p[^>]*><span[^>]*><strong>([^<]+)<\/strong><\/span><\/p>/g;
       const results: Array<{
         name: string;
         nameEn: string;
         devComment: string | null;
-        changes: Array<{
-          target: string;
-          stat: string;
-          before: string;
-          after: string;
-        }>;
+        changes: Array<{ target: string; stat: string; before: string; after: string }>;
       }> = [];
 
       let match;
@@ -449,32 +312,25 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
 
       while ((match = characterPattern.exec(characterSection)) !== null) {
         const name = match[1].trim();
-        // 섹션 제목 건너뛰기
         if (!name.match(/^(실험체|무기|시스템|특성)$/)) {
           matches.push({ name, index: match.index, fullMatch: match[0] });
         }
       }
 
-      // 각 캐릭터 블록 파싱
       for (let i = 0; i < matches.length; i++) {
         const { name, index: matchStart, fullMatch } = matches[i];
-        const startIdx = matchStart + fullMatch.length; // 캐릭터 이름 태그 끝나는 위치부터
+        const startIdx = matchStart + fullMatch.length;
         const endIdx = i + 1 < matches.length ? matches[i + 1].index : characterSection.length;
         const block = characterSection.slice(startIdx, endIdx);
 
-        // 개발자 코멘트: 캐릭터 이름 바로 다음 <p> 태그들 (변경사항 <ul> 전)
         const commentParts: string[] = [];
-
-        // <ul> 태그 전까지의 <p> 태그들에서 코멘트 찾기
         const ulIndex = block.indexOf('<ul');
         const beforeUl = ulIndex > 0 ? block.slice(0, ulIndex) : block.slice(0, 1000);
 
-        // 모든 의미 있는 <p> 태그에서 코멘트 추출
         const pTagPattern = /<p[^>]*><span[^>]*>([^]*?)<\/span><\/p>/g;
         let pMatch;
         while ((pMatch = pTagPattern.exec(beforeUl)) !== null) {
           const rawText = pMatch[1];
-          // HTML 태그 제거하고 텍스트만 추출
           const cleanText = rawText
             .replace(/<br\s*\/?>/gi, ' ')
             .replace(/<[^>]+>/g, '')
@@ -482,25 +338,15 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
             .replace(/&amp;/g, '&')
             .trim();
 
-          // 공백이 아니고, 변경사항(→)이 아니고, 의미 있는 길이인 경우
           if (cleanText && !cleanText.includes('→') && cleanText.length > 5) {
             commentParts.push(cleanText);
           }
         }
 
-        // 여러 줄 코멘트 합치기
         const devComment = commentParts.length > 0 ? commentParts.join(' ') : null;
-
-        // 변경사항 파싱
-        const changes: Array<{
-          target: string;
-          stat: string;
-          before: string;
-          after: string;
-        }> = [];
+        const changes: Array<{ target: string; stat: string; before: string; after: string }> = [];
         let currentTarget = '기본 스탯';
 
-        // <li> 태그에서 변경사항 추출
         const liPattern = /<li[^>]*>([^]*?)<\/li>/g;
         let liMatch;
 
@@ -508,32 +354,25 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
           const liContent = liMatch[1];
           const cleanText = liContent.replace(/<[^>]+>/g, '').trim();
 
-          // 스킬 이름 감지 (Q, W, E, R, P)
           const skillMatch = cleanText.match(/^([^→]+\([QWERP]\))|^([^→]+\(패시브\))/);
           if (skillMatch && !cleanText.includes('→')) {
             currentTarget = skillMatch[0].trim();
             continue;
           }
 
-          // 변경사항 감지 (→ 기호)
           if (cleanText.includes('→')) {
-            // 스킬명이 같은 줄에 있는 경우
             const fullMatch = cleanText.match(
               /^([^→]+\([QWERP]\)|[^→]+\(패시브\))?(.+?)\s+([^\s→]+(?:[^→]*?))\s*→\s*(.+)$/
             );
             if (fullMatch) {
-              if (fullMatch[1]) {
-                currentTarget = fullMatch[1].trim();
-              }
+              if (fullMatch[1]) currentTarget = fullMatch[1].trim();
               const stat = fullMatch[2]?.trim() || '수치';
               const before = fullMatch[3]?.trim() || '';
               const after = fullMatch[4]?.trim() || '';
-
               if (before && after) {
                 changes.push({ target: currentTarget, stat, before, after });
               }
             } else {
-              // 간단한 형식
               const simpleMatch = cleanText.match(
                 /(.+?)\s+([^\s→]+(?:\([^)]+\))?(?:[^→]*?))\s*→\s*(.+)$/
               );
@@ -550,29 +389,31 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
         }
 
         if (changes.length > 0) {
-          results.push({
-            name,
-            nameEn: name,
-            devComment,
-            changes,
-          });
+          results.push({ name, nameEn: name, devComment, changes });
         }
       }
 
       return results;
     });
 
-    // 유효한 캐릭터만 필터링하고 변경 타입 결정
     return characters
       .filter((char) => isValidCharacter(char.name))
       .map((char) => ({
         ...char,
         name: normalizeCharacterName(char.name),
         nameEn: normalizeCharacterName(char.nameEn),
-        changes: char.changes.map((change) => ({
-          ...change,
-          changeType: determineChangeType(change.stat, change.before, change.after),
-        })),
+        changes: char.changes.map((change) => {
+          // stat/before/after 분리 및 changeCategory 결정
+          const processed = processChange(change.stat, change.before, change.after);
+          return {
+            target: change.target,
+            stat: processed.stat,
+            before: processed.before,
+            after: processed.after,
+            changeType: determineChangeType(processed.stat, processed.before, processed.after),
+            changeCategory: processed.changeCategory,
+          };
+        }),
       }));
   } catch (error) {
     console.error(`파싱 오류 (${url}):`, error);
@@ -581,20 +422,10 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
 }
 
 function extractPatchVersion(title: string): string {
-  // "9.5c 핫픽스", "2025.12.11 - 9.5 패치노트" 등에서 버전 추출
-  // 버전 패턴: 1~2자리.1~2자리 + 선택적 알파벳 (예: 9.5, 9.5c, 1.50)
-  // 날짜 패턴 (2025.12.11)은 제외해야 함
   const versionMatch = title.match(/(?:^|\s|-)(\d{1,2}\.\d{1,2}[a-z]?)(?:\s|$|-|패치)/i);
-  if (versionMatch) {
-    return versionMatch[1];
-  }
-
-  // 대안: 핫픽스 앞의 버전
+  if (versionMatch) return versionMatch[1];
   const hotfixMatch = title.match(/(\d+\.\d+[a-z]?)\s*핫픽스/i);
-  if (hotfixMatch) {
-    return hotfixMatch[1];
-  }
-
+  if (hotfixMatch) return hotfixMatch[1];
   return title;
 }
 
@@ -615,24 +446,19 @@ function calculateStats(patchHistory: PatchEntry[]): CharacterStats {
 
   if (patchHistory.length === 0) return stats;
 
-  // 패치 히스토리는 최신순이므로, 통계 계산을 위해 오래된 순으로 정렬
   const chronological = [...patchHistory].reverse();
-
   let currentStreakType: ChangeType | null = null;
   let currentStreakCount = 0;
 
   for (const patch of chronological) {
-    // 카운트 증가
     if (patch.overallChange === 'buff') stats.buffCount++;
     else if (patch.overallChange === 'nerf') stats.nerfCount++;
     else stats.mixedCount++;
 
-    // 연속 계산 (mixed는 연속을 끊지 않고 무시)
     if (patch.overallChange === 'buff' || patch.overallChange === 'nerf') {
       if (currentStreakType === patch.overallChange) {
         currentStreakCount++;
       } else {
-        // 이전 연속 기록 저장
         if (currentStreakType === 'buff') {
           stats.maxBuffStreak = Math.max(stats.maxBuffStreak, currentStreakCount);
         } else if (currentStreakType === 'nerf') {
@@ -644,14 +470,12 @@ function calculateStats(patchHistory: PatchEntry[]): CharacterStats {
     }
   }
 
-  // 마지막 연속 기록
   if (currentStreakType === 'buff') {
     stats.maxBuffStreak = Math.max(stats.maxBuffStreak, currentStreakCount);
   } else if (currentStreakType === 'nerf') {
     stats.maxNerfStreak = Math.max(stats.maxNerfStreak, currentStreakCount);
   }
 
-  // 현재 연속 상태 (최신 패치부터)
   stats.currentStreak.type = currentStreakType;
   stats.currentStreak.count = currentStreakCount;
 
@@ -659,7 +483,6 @@ function calculateStats(patchHistory: PatchEntry[]): CharacterStats {
 }
 
 function calculateStreaks(patchHistory: PatchEntry[]): PatchEntry[] {
-  // 패치 히스토리는 최신순, 연속 계산을 위해 오래된 순으로 처리
   const chronological = [...patchHistory].reverse();
   const result: PatchEntry[] = [];
 
@@ -676,46 +499,94 @@ function calculateStreaks(patchHistory: PatchEntry[]): PatchEntry[] {
       }
       result.push({ ...patch, streak: currentStreakCount });
     } else {
-      // mixed는 연속 1로 표시
       result.push({ ...patch, streak: 1 });
     }
   }
 
-  // 다시 최신순으로 정렬
   return result.reverse();
 }
 
 // ============================================
-// 데이터 파일 경로
+// Firestore 데이터 로드/저장
 // ============================================
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const VALIDATION_PATH = path.join(DATA_DIR, 'validation-results.json');
-const BALANCE_PATH = path.join(DATA_DIR, 'balance-changes.json');
+// 파싱 대상 패치노트 조회 (hasCharacterData: true, isParsed: false 또는 undefined)
+async function getUnparsedPatchNotes(): Promise<PatchNote[]> {
+  const db = initFirebaseAdmin();
+  const snapshot = await db
+    .collection('patchNotes')
+    .where('hasCharacterData', '==', true)
+    .where('status', '==', 'success')
+    .orderBy('id', 'desc')
+    .get();
 
-// 기존 밸런스 데이터 로드
-function loadExistingBalanceData(): BalanceData | null {
-  try {
-    if (fs.existsSync(BALANCE_PATH)) {
-      const content = fs.readFileSync(BALANCE_PATH, 'utf-8');
-      return JSON.parse(content) as BalanceData;
+  const unparsed: PatchNote[] = [];
+
+  snapshot.forEach((doc) => {
+    const data = doc.data() as PatchNote;
+    if (!data.isParsed) {
+      unparsed.push(data);
     }
-  } catch {
-    console.log('기존 밸런스 데이터 로드 실패, 전체 파싱 진행');
-  }
-  return null;
+  });
+
+  return unparsed;
 }
 
-// 이미 파싱된 패치 ID 추출
-function getParsedPatchIds(data: BalanceData | null): Set<number> {
-  if (!data) return new Set();
-  const ids = new Set<number>();
-  for (const char of Object.values(data.characters)) {
-    for (const patch of char.patchHistory) {
-      ids.add(patch.patchId);
+// 기존 캐릭터 데이터 로드
+async function loadExistingCharacters(): Promise<Record<string, CharacterData>> {
+  const db = initFirebaseAdmin();
+  const snapshot = await db.collection('characters').get();
+  const characters: Record<string, CharacterData> = {};
+
+  snapshot.forEach((doc) => {
+    const data = doc.data() as CharacterData;
+    characters[data.name] = data;
+  });
+
+  return characters;
+}
+
+// 캐릭터 데이터 저장
+async function saveCharacters(characters: Record<string, CharacterData>): Promise<void> {
+  const db = initFirebaseAdmin();
+  const batchSize = 500;
+  const entries = Object.entries(characters);
+
+  console.log(`\nFirestore에 ${entries.length}개 캐릭터 저장 중...`);
+
+  for (let i = 0; i < entries.length; i += batchSize) {
+    const batch = db.batch();
+    const chunk = entries.slice(i, i + batchSize);
+
+    for (const [name, data] of chunk) {
+      const docRef = db.collection('characters').doc(name);
+      batch.set(docRef, data);
     }
+
+    await batch.commit();
+    console.log(`  - ${Math.min(i + batchSize, entries.length)}/${entries.length} 저장 완료`);
   }
-  return ids;
+}
+
+// 패치노트 isParsed 업데이트
+async function markPatchAsParsed(patchId: number): Promise<void> {
+  const db = initFirebaseAdmin();
+  await db.collection('patchNotes').doc(patchId.toString()).update({
+    isParsed: true,
+    parsedAt: new Date().toISOString(),
+  });
+}
+
+// 메타데이터 업데이트
+async function updateMetadata(characterCount: number): Promise<void> {
+  const db = initFirebaseAdmin();
+  await db.collection('metadata').doc('balanceChanges').set(
+    {
+      updatedAt: new Date().toISOString(),
+      characterCount,
+    },
+    { merge: true }
+  );
 }
 
 // ============================================
@@ -725,28 +596,19 @@ function getParsedPatchIds(data: BalanceData | null): Set<number> {
 async function main(): Promise<void> {
   console.log('밸런스 변경사항 파싱 시작...\n');
 
-  // 기존 데이터 로드
-  const existingData = loadExistingBalanceData();
-  const parsedPatchIds = getParsedPatchIds(existingData);
+  // 기존 캐릭터 데이터 로드
+  const characterMap = await loadExistingCharacters();
+  console.log(`기존 캐릭터: ${Object.keys(characterMap).length}명`);
 
-  // validation-results.json 로드
-  const validationData: ValidationData = JSON.parse(fs.readFileSync(VALIDATION_PATH, 'utf-8'));
+  // 파싱 대상 패치노트 조회
+  const unparsedPatches = await getUnparsedPatchNotes();
 
-  // hasCharacterData가 true인 패치만 필터링
-  const allTargetPatches = validationData.results
-    .filter((r) => r.status === 'success' && r.hasCharacterData)
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-  // 신규 패치만 필터링
-  const newPatches = allTargetPatches.filter((p) => !parsedPatchIds.has(p.id));
-
-  if (newPatches.length === 0) {
-    console.log('신규 패치 없음 - 파싱 불필요');
+  if (unparsedPatches.length === 0) {
+    console.log('파싱이 필요한 신규 패치 없음');
     return;
   }
 
-  console.log(`기존 파싱: ${parsedPatchIds.size}개 패치`);
-  console.log(`신규 파싱 대상: ${newPatches.length}개 패치\n`);
+  console.log(`파싱 대상: ${unparsedPatches.length}개 패치\n`);
 
   // 브라우저 시작
   const browser: Browser = await puppeteer.launch({
@@ -760,17 +622,11 @@ async function main(): Promise<void> {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   );
 
-  // 기존 캐릭터 데이터 복사 (신규 데이터와 병합용)
-  const characterMap: Record<string, CharacterData> = existingData
-    ? JSON.parse(JSON.stringify(existingData.characters))
-    : {};
-
-  // 변경된 캐릭터 추적 (통계 재계산용)
   const affectedCharacters = new Set<string>();
 
-  for (let i = 0; i < newPatches.length; i++) {
-    const patch = newPatches[i];
-    const progress = `[${i + 1}/${newPatches.length}]`;
+  for (let i = 0; i < unparsedPatches.length; i++) {
+    const patch = unparsedPatches[i];
+    const progress = `[${i + 1}/${unparsedPatches.length}]`;
     console.log(`${progress} ${patch.title} 파싱 중...`);
 
     const characters = await parsePatchNote(page, patch.link);
@@ -805,7 +661,7 @@ async function main(): Promise<void> {
         patchVersion,
         patchDate,
         overallChange,
-        streak: 0, // 나중에 계산
+        streak: 0,
         devComment: char.devComment,
         changes: char.changes,
       });
@@ -816,7 +672,9 @@ async function main(): Promise<void> {
       );
     }
 
-    // 서버 부하 방지
+    // 패치를 파싱 완료로 표시
+    await markPatchAsParsed(patch.id);
+
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
@@ -826,25 +684,16 @@ async function main(): Promise<void> {
   console.log(`\n${affectedCharacters.size}명의 캐릭터 통계 재계산 중...`);
 
   for (const key of affectedCharacters) {
-    // 패치 히스토리 날짜순 정렬 (최신순)
     characterMap[key].patchHistory.sort(
       (a, b) => new Date(b.patchDate).getTime() - new Date(a.patchDate).getTime()
     );
-
-    // 연속 계산
     characterMap[key].patchHistory = calculateStreaks(characterMap[key].patchHistory);
-
-    // 통계 계산
     characterMap[key].stats = calculateStats(characterMap[key].patchHistory);
   }
 
-  // 결과 저장
-  const outputData: BalanceData = {
-    updatedAt: new Date().toISOString(),
-    characters: characterMap,
-  };
-
-  fs.writeFileSync(BALANCE_PATH, JSON.stringify(outputData, null, 2), 'utf-8');
+  // Firestore에 저장
+  await saveCharacters(characterMap);
+  await updateMetadata(Object.keys(characterMap).length);
 
   // 요약 출력
   const characterCount = Object.keys(characterMap).length;
@@ -856,11 +705,11 @@ async function main(): Promise<void> {
   console.log('\n' + '='.repeat(60));
   console.log('파싱 완료 요약');
   console.log('='.repeat(60));
-  console.log(`신규 파싱: ${newPatches.length}개 패치`);
+  console.log(`신규 파싱: ${unparsedPatches.length}개 패치`);
   console.log(`영향받은 캐릭터: ${affectedCharacters.size}명`);
   console.log(`총 캐릭터: ${characterCount}명`);
   console.log(`총 패치 기록: ${totalChanges}개`);
-  console.log(`저장 위치: ${BALANCE_PATH}`);
+  console.log('Firestore 저장 완료!');
 
   // 연속 기록 Top 5 출력
   const streakRanking = Object.values(characterMap)
