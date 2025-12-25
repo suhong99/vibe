@@ -1,0 +1,233 @@
+[
+  {
+    "character": "다니엘",
+    "patchId": 2132,
+    "target": "걸작(R)",
+    "original": {
+      "target": "걸작(R)",
+      "stat": "영감",
+      "before": "대상에게 사용",
+      "after": "피해를 입힌지 4초 이내의 실험체에게 사용",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "걸작(R)",
+      "stat": "영감",
+      "before": "대상에게 사용",
+      "after": "4초 이내의 실험체에게 사용",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"대상에게 사용...\", after: \"4초 이내의 실험체에게 사용...\""
+  },
+  {
+    "character": "레온",
+    "patchId": 2585,
+    "target": "물길(Q)",
+    "original": {
+      "target": "물길(Q)",
+      "stat": "물",
+      "before": "웅덩이 5개 설치",
+      "after": "물길을 설치하는 투사체 발사",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "물길(Q)",
+      "stat": "물 웅덩이",
+      "before": "5개 설치",
+      "after": "물길을 설치하는 투사체 발사",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"5개 설치...\", after: \"물길을 설치하는 투사체 발사...\""
+  },
+  {
+    "character": "르노어",
+    "patchId": 2828,
+    "target": "고통의 선율(P)",
+    "original": {
+      "target": "고통의 선율(P)",
+      "stat": "쿨다운",
+      "before": "감소 스탯과 비명 중첩이 아첼레란도 수치로 치환",
+      "after": "비명 중첩만 아첼레란도 수치로 치환비명 중첩 1 당 아첼레란도 중첩 1",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "고통의 선율(P)",
+      "stat": "쿨다운",
+      "before": "감소 스탯과 비명 중첩이 아첼레란도 수치로 치환",
+      "after": "1 당 아첼레란도 중첩 1",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"감소 스탯과 비명 중첩이 아첼레란도 수치로 치환...\", after: \"1 당 아첼레란도 중첩 1...\""
+  },
+  {
+    "character": "리오",
+    "patchId": 2828,
+    "target": "카에유미(Q)",
+    "original": {
+      "target": "카에유미(Q)",
+      "stat": "단궁2회",
+      "before": "기본 공격",
+      "after": "1회 공격 및 2개의 추가 발사체",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "카에유미(Q)",
+      "stat": "단궁2회",
+      "before": "기본 공격",
+      "after": "1회 공격 및 2개의 추가 발사체",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"기본 공격...\", after: \"1회 공격 및 2개의 추가 발사체...\""
+  },
+  {
+    "character": "리오",
+    "patchId": 2828,
+    "target": "카에유미(Q)",
+    "original": {
+      "target": "카에유미(Q)",
+      "stat": "2회",
+      "before": "기본 공격 완료 후 이동 가능",
+      "after": "1회 공격 완료 후 이동 가능",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "카에유미(Q)",
+      "stat": "2회",
+      "before": "기본 공격 완료 후 이동 가능",
+      "after": "1회 공격 완료 후 이동 가능",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"기본 공격 완료 후 이동 가능...\", after: \"1회 공격 완료 후 이동 가능...\""
+  },
+  {
+    "character": "일레븐",
+    "patchId": 1515,
+    "target": "힘내자고!(P)",
+    "original": {
+      "target": "힘내자고!(P)",
+      "stat": "햄버거",
+      "before": "생성 조건: 기본 공격 4회 적중 시",
+      "after": "스킬 적중 시",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "힘내자고!(P)",
+      "stat": "햄버거 생성 조건: 기본 공격",
+      "before": "4회 적중 시",
+      "after": "스킬 적중 시",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"4회 적중 시...\", after: \"스킬 적중 시...\""
+  },
+  {
+    "character": "에이든",
+    "patchId": 3242,
+    "target": "뇌격(Q)",
+    "original": {
+      "target": "뇌격(Q)",
+      "stat": "적중",
+      "before": "대상 1명",
+      "after": "범위 내 대상 모두 적중",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "뇌격(Q)",
+      "stat": "적중 대상",
+      "before": "1명",
+      "after": "범위 내 대상 모두 적중",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"1명...\", after: \"범위 내 대상 모두 적중...\""
+  },
+  {
+    "character": "펠릭스",
+    "patchId": 2828,
+    "target": "연계 창술(P)",
+    "original": {
+      "target": "연계 창술(P)",
+      "stat": "최대",
+      "before": "사거리의 적 대상을 두 번 연속 공격",
+      "after": "스킬 사용 후 2초 동안 기본 공격이 두 번 연속 공격",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "연계 창술(P)",
+      "stat": "최대",
+      "before": "사거리의 적 대상을 두 번 연속 공격",
+      "after": "2초 동안 기본 공격이 두 번 연속 공격",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"사거리의 적 대상을 두 번 연속 공격...\", after: \"2초 동안 기본 공격이 두 번 연속 공격...\""
+  },
+  {
+    "character": "피오라",
+    "patchId": 1749,
+    "target": "뚜셰(P)",
+    "original": {
+      "target": "뚜셰(P)",
+      "stat": "표식",
+      "before": "피해량 (레벨*1/2/3)",
+      "after": "10/40/70(+스킬 증폭의 30%)",
+      "changeType": "buff"
+    },
+    "fixed": {
+      "target": "뚜셰(P)",
+      "stat": "표식",
+      "before": "피해량 (레벨*1/2/3)",
+      "after": "10/40/70(+스킬 증폭의 30%)",
+      "changeType": "buff",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"피해량 (레벨*1/2/3)...\", after: \"10/40/70(+스킬 증폭의 30%)...\""
+  },
+  {
+    "character": "로지",
+    "patchId": 2364,
+    "target": "더블 샷(P)",
+    "original": {
+      "target": "더블 샷(P)",
+      "stat": "초콜릿",
+      "before": "섭취 시 체력/스태미나 회복",
+      "after": "10분 동안 공격력 1 증가",
+      "changeType": "mixed"
+    },
+    "fixed": {
+      "target": "더블 샷(P)",
+      "stat": "초콜릿",
+      "before": "섭취 시 체력/스태미나 회복",
+      "after": "10분 동안 공격력 1 증가",
+      "changeType": "mixed",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"섭취 시 체력/스태미나 회복...\", after: \"10분 동안 공격력 1 증가...\""
+  },
+  {
+    "character": "엠마",
+    "patchId": 2450,
+    "target": "CheerUP♥(P)",
+    "original": {
+      "target": "CheerUP♥(P)",
+      "stat": "기본",
+      "before": "공격 추가 피해량 (+스킬 증폭의 30/40/50%)(+최대 스태미나의 8%)",
+      "after": "70/90/110(+스킬 증폭의 30/40/50%)(+최대 스태미나의 1%)",
+      "changeType": "buff"
+    },
+    "fixed": {
+      "target": "CheerUP♥(P)",
+      "stat": "기본",
+      "before": "공격 추가 피해량 (+스킬 증폭의 30/40/50%)(+최대 스태미나의 8%)",
+      "after": "70/90/110(+스킬 증폭의 30/40/50%)(+최대 스태미나의 1%)",
+      "changeType": "buff",
+      "changeCategory": "unknown"
+    },
+    "issue": "양식 불일치 - before: \"공격 추가 피해량 (+스킬 증폭의 30/40/50%)(...\", after: \"70/90/110(+스킬 증폭의 30/40/50%)(+...\""
+  }
+]

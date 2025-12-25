@@ -6,6 +6,7 @@ import { initFirebaseAdmin } from './lib/firebase-admin';
 // ============================================
 
 type ChangeType = 'buff' | 'nerf' | 'mixed';
+type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
 
 type Change = {
   target: string;
@@ -13,6 +14,7 @@ type Change = {
   before: string;
   after: string;
   changeType: ChangeType;
+  changeCategory: ChangeCategory;
 };
 
 type PatchEntry = {
@@ -79,6 +81,104 @@ function normalizeCharacterName(name: string): string {
 
 function isValidCharacter(name: string): boolean {
   return VALID_CHARACTERS.has(normalizeCharacterName(name));
+}
+
+// ============================================
+// stat/before/after 분리 및 changeCategory 결정
+// ============================================
+
+// 괄호를 제외하고 첫 번째 숫자가 나오는 위치 찾기
+function findFirstNumberIndexOutsideParens(str: string): number {
+  let depth = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (char === '(') depth++;
+    else if (char === ')') depth = Math.max(0, depth - 1);
+    else if (depth === 0 && /\d/.test(char)) return i;
+  }
+  return -1;
+}
+
+// 문자열이 숫자로 시작하는지 확인
+function startsWithNumber(str: string): boolean {
+  return /^\d/.test(str.trim());
+}
+
+// HTML 엔티티 정리
+function cleanHtmlEntities(str: string): string {
+  return str
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// 문자열에서 숫자 앞 텍스트 분리
+function splitAtFirstNumber(str: string): { prefix: string; value: string } {
+  const cleaned = cleanHtmlEntities(str);
+  const numIndex = findFirstNumberIndexOutsideParens(cleaned);
+  if (numIndex <= 0) return { prefix: '', value: cleaned };
+  return {
+    prefix: cleaned.slice(0, numIndex).trim(),
+    value: cleaned.slice(numIndex).trim(),
+  };
+}
+
+// changeCategory 결정
+function determineChangeCategory(before: string, after: string): ChangeCategory {
+  const beforeClean = cleanHtmlEntities(before).toLowerCase();
+  const afterClean = cleanHtmlEntities(after).toLowerCase();
+
+  // 효과 추가
+  if (!beforeClean || beforeClean === '없음' || beforeClean === '-' || beforeClean === 'x') {
+    return 'added';
+  }
+  // 효과 제거
+  if (!afterClean || afterClean === '삭제' || afterClean === '없음' || afterClean === '-') {
+    return 'removed';
+  }
+
+  const beforeStartsNum = startsWithNumber(before);
+  const afterStartsNum = startsWithNumber(after);
+
+  if (beforeStartsNum && afterStartsNum) return 'numeric';
+  if (!beforeStartsNum && !afterStartsNum) return 'mechanic';
+  return 'unknown';
+}
+
+// stat/before/after 정리 및 changeCategory 결정
+function processChange(
+  stat: string,
+  before: string,
+  after: string
+): { stat: string; before: string; after: string; changeCategory: ChangeCategory } {
+  stat = cleanHtmlEntities(stat);
+  before = cleanHtmlEntities(before);
+  after = cleanHtmlEntities(after);
+
+  const beforeSplit = splitAtFirstNumber(before);
+  const afterSplit = splitAtFirstNumber(after);
+
+  let newStat = stat;
+  let newBefore = before;
+  let newAfter = after;
+
+  // before 처리
+  if (beforeSplit.prefix) {
+    newStat = (stat + ' ' + beforeSplit.prefix).trim();
+    newBefore = beforeSplit.value;
+  }
+
+  // after 처리
+  if (afterSplit.prefix && afterSplit.value) {
+    newAfter = afterSplit.value;
+  }
+
+  const changeCategory = determineChangeCategory(newBefore, newAfter);
+
+  return { stat: newStat, before: newBefore, after: newAfter, changeCategory };
 }
 
 // ============================================
@@ -302,10 +402,18 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
         ...char,
         name: normalizeCharacterName(char.name),
         nameEn: normalizeCharacterName(char.nameEn),
-        changes: char.changes.map((change) => ({
-          ...change,
-          changeType: determineChangeType(change.stat, change.before, change.after),
-        })),
+        changes: char.changes.map((change) => {
+          // stat/before/after 분리 및 changeCategory 결정
+          const processed = processChange(change.stat, change.before, change.after);
+          return {
+            target: change.target,
+            stat: processed.stat,
+            before: processed.before,
+            after: processed.after,
+            changeType: determineChangeType(processed.stat, processed.before, processed.after),
+            changeCategory: processed.changeCategory,
+          };
+        }),
       }));
   } catch (error) {
     console.error(`파싱 오류 (${url}):`, error);
