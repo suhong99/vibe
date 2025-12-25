@@ -1,6 +1,5 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
-import * as fs from 'fs';
-import * as path from 'path';
+import { initFirebaseAdmin } from './lib/firebase-admin';
 
 type PatchNote = {
   id: number;
@@ -10,12 +9,6 @@ type PatchNote = {
   updatedAt: string;
   thumbnailUrl: string;
   viewCount: number;
-};
-
-type PatchNotesData = {
-  crawledAt: string;
-  totalCount: number;
-  patchNotes: PatchNote[];
 };
 
 type ApiArticle = {
@@ -41,25 +34,18 @@ type ApiResponse = {
   articles: ApiArticle[];
 };
 
-const DATA_PATH = path.join(__dirname, '..', 'data', 'patch-notes.json');
+// Firestore에서 기존 패치 ID 조회
+async function getExistingPatchIds(): Promise<Set<number>> {
+  const db = initFirebaseAdmin();
+  const snapshot = await db.collection('patchNotes').select().get();
+  const ids = new Set<number>();
 
-// 기존 데이터 로드
-function loadExistingData(): PatchNotesData | null {
-  try {
-    if (fs.existsSync(DATA_PATH)) {
-      const content = fs.readFileSync(DATA_PATH, 'utf-8');
-      return JSON.parse(content) as PatchNotesData;
-    }
-  } catch {
-    console.log('기존 데이터 로드 실패, 전체 크롤링 진행');
-  }
-  return null;
-}
+  snapshot.forEach((doc) => {
+    ids.add(parseInt(doc.id, 10));
+  });
 
-// 기존 패치 ID Set 생성
-function getExistingIds(data: PatchNotesData | null): Set<number> {
-  if (!data) return new Set();
-  return new Set(data.patchNotes.map((p) => p.id));
+  console.log(`Firestore에서 기존 패치노트 ${ids.size}개 확인`);
+  return ids;
 }
 
 async function delay(ms: number): Promise<void> {
@@ -162,33 +148,43 @@ async function crawlNewPatchNotes(existingIds: Set<number>): Promise<{
   return { newPatchNotes, isFullCrawl };
 }
 
-// 패치노트 병합 (신규 + 기존, 최신순 정렬)
-function mergePatchNotes(
-  newPatchNotes: PatchNote[],
-  existingData: PatchNotesData | null
-): PatchNote[] {
-  const existing = existingData?.patchNotes ?? [];
-  const merged = [...newPatchNotes, ...existing];
+// Firestore에 패치노트 저장
+async function savePatchNotesToFirestore(patchNotes: PatchNote[]): Promise<void> {
+  const db = initFirebaseAdmin();
+  const batchSize = 500;
 
-  // 중복 제거 (혹시 모를 경우 대비)
-  const uniqueMap = new Map<number, PatchNote>();
-  for (const patch of merged) {
-    if (!uniqueMap.has(patch.id)) {
-      uniqueMap.set(patch.id, patch);
+  console.log(`\nFirestore에 ${patchNotes.length}개 패치노트 저장 중...`);
+
+  for (let i = 0; i < patchNotes.length; i += batchSize) {
+    const batch = db.batch();
+    const chunk = patchNotes.slice(i, i + batchSize);
+
+    for (const patchNote of chunk) {
+      const docRef = db.collection('patchNotes').doc(patchNote.id.toString());
+      batch.set(docRef, patchNote);
     }
-  }
 
-  // 최신순 정렬
-  return Array.from(uniqueMap.values()).sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    await batch.commit();
+    console.log(`  - ${Math.min(i + batchSize, patchNotes.length)}/${patchNotes.length} 저장 완료`);
+  }
+}
+
+// 메타데이터 업데이트
+async function updateMetadata(totalCount: number): Promise<void> {
+  const db = initFirebaseAdmin();
+  await db.collection('metadata').doc('patchNotes').set(
+    {
+      crawledAt: new Date().toISOString(),
+      totalCount,
+    },
+    { merge: true }
   );
 }
 
 async function main(): Promise<void> {
   try {
-    // 기존 데이터 로드
-    const existingData = loadExistingData();
-    const existingIds = getExistingIds(existingData);
+    // Firestore에서 기존 ID 로드
+    const existingIds = await getExistingPatchIds();
 
     // 증분 크롤링
     const { newPatchNotes, isFullCrawl } = await crawlNewPatchNotes(existingIds);
@@ -199,18 +195,12 @@ async function main(): Promise<void> {
       return;
     }
 
-    // 병합
-    const mergedPatchNotes = mergePatchNotes(newPatchNotes, existingData);
+    // Firestore에 저장
+    await savePatchNotesToFirestore(newPatchNotes);
 
-    // 데이터 저장
-    const outputData: PatchNotesData = {
-      crawledAt: new Date().toISOString(),
-      totalCount: mergedPatchNotes.length,
-      patchNotes: mergedPatchNotes,
-    };
-
-    fs.writeFileSync(DATA_PATH, JSON.stringify(outputData, null, 2), 'utf-8');
-    console.log(`\n데이터 저장 완료: ${DATA_PATH}`);
+    // 메타데이터 업데이트
+    const totalCount = existingIds.size + newPatchNotes.length;
+    await updateMetadata(totalCount);
 
     // 결과 출력
     if (newPatchNotes.length > 0) {
@@ -224,7 +214,8 @@ async function main(): Promise<void> {
       });
     }
 
-    console.log(`\n총 패치노트: ${mergedPatchNotes.length}개`);
+    console.log(`\n총 패치노트: ${totalCount}개`);
+    console.log('Firestore 저장 완료!');
   } catch (error) {
     console.error('크롤링 중 오류 발생:', error);
     process.exit(1);

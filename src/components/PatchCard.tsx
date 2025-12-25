@@ -33,6 +33,10 @@ const getBorderColor = (type: PatchEntry['overallChange']): string => {
   return colors[type];
 };
 
+// 순수 함수: 패치노트 원본 링크 생성
+const getPatchNoteUrl = (patchId: number): string =>
+  `https://playeternalreturn.com/posts/news/${patchId}`;
+
 export default function PatchCard({ patch }: Props): React.ReactElement {
   const groupedChanges = groupChangesByTarget(patch.changes);
 
@@ -61,7 +65,25 @@ export default function PatchCard({ patch }: Props): React.ReactElement {
           </span>
           {patch.streak > 1 && <span className="text-xs text-zinc-500">{patch.streak}연속</span>}
         </div>
-        <span className="font-mono text-sm text-zinc-500">{formatDate(patch.patchDate)}</span>
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-sm text-zinc-500">{formatDate(patch.patchDate)}</span>
+          <a
+            href={getPatchNoteUrl(patch.patchId)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 rounded border border-zinc-700 px-2 py-1 text-xs text-zinc-400 transition-colors hover:border-cyan-500 hover:text-cyan-400"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+            원문
+          </a>
+        </div>
       </div>
 
       <div className="p-5">
