@@ -1,7 +1,25 @@
 {
-  "crawledAt": "2025-12-23T11:18:54.354Z",
-  "totalCount": 270,
+  "crawledAt": "2025-12-25T02:08:21.926Z",
+  "totalCount": 272,
   "patchNotes": [
+    {
+      "id": 3257,
+      "title": "",
+      "link": "https://playeternalreturn.com/posts/news/3257",
+      "createdAt": "2025-12-24T09:50:00.000000Z",
+      "updatedAt": "2025-12-25T02:08:21.000000Z",
+      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2025/12/24/e688ajH7GplaM1gN5GxSxFbzzZVXMEcNkR1H18TI.png",
+      "viewCount": 14934
+    },
+    {
+      "id": 3255,
+      "title": "",
+      "link": "https://playeternalreturn.com/posts/news/3255",
+      "createdAt": "2025-12-24T07:25:00.000000Z",
+      "updatedAt": "2025-12-25T02:08:14.000000Z",
+      "thumbnailUrl": "https://cdn.playeternalreturn.com/upload/2025/12/24/pZkgGuqoEnqfGgXHPSDGQrtYZZY416EZKSlZqHNt.png",
+      "viewCount": 8320
+    },
     {
       "id": 3253,
       "title": "9.6a 핫픽스",
