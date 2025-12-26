@@ -1,0 +1,5 @@
+echo "🔍 린트 검사 중..."
+npm run lint
+
+echo "🏗️ 빌드 검사 중..."
+npm run build
