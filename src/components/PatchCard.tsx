@@ -1,4 +1,5 @@
 import type { PatchEntry, Change } from '@/types/patch';
+import { isNumericChange } from '@/types/patch';
 import { getChangeTypeLabel, getChangeTypeColor, formatDate } from '@/lib/patch-utils';
 
 type Props = {
@@ -116,43 +117,51 @@ export default function PatchCard({ patch }: Props): React.ReactElement {
               <div className="space-y-2">
                 {changes.map((change, idx) => (
                   <div
-                    key={`${change.stat}-${idx}`}
+                    key={`${target}-${idx}`}
                     className="flex items-start gap-3 rounded border border-[#2a2d35] bg-[#13151a] p-3"
                   >
                     <span className={`mt-0.5 text-sm ${getChangeTypeColor(change.changeType)}`}>
                       {getChangeIcon(change.changeType)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <span className="text-sm font-medium text-zinc-300">{change.stat}</span>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-2 font-mono text-xs">
-                        <span className="rounded bg-zinc-800 px-2 py-1 text-zinc-500 line-through">
-                          {change.before}
-                        </span>
-                        <svg
-                          className="h-3 w-3 text-zinc-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 7l5 5m0 0l-5 5m5-5H6"
-                          />
-                        </svg>
-                        <span
-                          className={`rounded px-2 py-1 ${
-                            change.changeType === 'buff'
-                              ? 'bg-emerald-500/10 text-emerald-400'
-                              : change.changeType === 'nerf'
-                                ? 'bg-rose-500/10 text-rose-400'
-                                : 'bg-amber-500/10 text-amber-400'
-                          }`}
-                        >
-                          {change.after}
-                        </span>
-                      </div>
+                      {isNumericChange(change) ? (
+                        <>
+                          <span className="text-sm font-medium text-zinc-300">{change.stat}</span>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-2 font-mono text-xs">
+                            <span className="rounded bg-zinc-800 px-2 py-1 text-zinc-500 line-through">
+                              {change.before}
+                            </span>
+                            <svg
+                              className="h-3 w-3 text-zinc-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                              />
+                            </svg>
+                            <span
+                              className={`rounded px-2 py-1 ${
+                                change.changeType === 'buff'
+                                  ? 'bg-emerald-500/10 text-emerald-400'
+                                  : change.changeType === 'nerf'
+                                    ? 'bg-rose-500/10 text-rose-400'
+                                    : 'bg-amber-500/10 text-amber-400'
+                              }`}
+                            >
+                              {change.after}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line">
+                          {change.description}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}

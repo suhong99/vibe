@@ -8,14 +8,25 @@ import { initFirebaseAdmin } from './lib/firebase-admin';
 type ChangeType = 'buff' | 'nerf' | 'mixed';
 type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
 
-type Change = {
+// 수치 변경 (before → after)
+type NumericChange = {
   target: string;
   stat: string;
   before: string;
   after: string;
   changeType: ChangeType;
-  changeCategory: ChangeCategory;
+  changeCategory: 'numeric';
 };
+
+// 설명형 변경 (기능 변경, 추가, 제거 등)
+type DescriptionChange = {
+  target: string;
+  description: string;
+  changeType: ChangeType;
+  changeCategory: 'mechanic' | 'added' | 'removed' | 'unknown';
+};
+
+type Change = NumericChange | DescriptionChange;
 
 type PatchEntry = {
   patchId: number;
@@ -62,21 +73,99 @@ type PatchNote = {
 // ============================================
 
 const VALID_CHARACTERS = new Set([
-  '가넷', '나딘', '나타폰', '니아', '니키', '다니엘', '다르코', '데비&마를렌',
-  '띠아', '라우라', '레녹스', '레니', '레온', '로지', '루크', '르노어',
-  '리 다이린', '리오', '마르티나', '마이', '마커스', '매그너스', '미르카',
-  '바냐', '바바라', '버니스', '블레어', '비앙카', '샬럿', '셀린', '쇼우',
-  '쇼이치', '수아', '슈린', '시셀라', '실비아', '아델라', '아드리아나',
-  '아디나', '아르다', '아비게일', '아야', '아이솔', '아이작', '알렉스',
-  '알론소', '얀', '에스텔', '에이든', '에키온', '엘레나', '엠마', '요한',
-  '윌리엄', '유민', '유스티나', '유키', '이렘', '이바', '이슈트반', '이안',
-  '일레븐', '자히르', '재키', '제니', '츠바메', '카밀로', '카티야', '칼라',
-  '캐시', '케네스', '클로에', '키아라', '타지아', '테오도르', '펠릭스',
-  '프리야', '피오라', '피올로', '하트', '헤이즈', '헨리', '현우', '혜진', '히스이',
+  '가넷',
+  '나딘',
+  '나타폰',
+  '니아',
+  '니키',
+  '다니엘',
+  '다르코',
+  '데비&마를렌',
+  '띠아',
+  '라우라',
+  '레녹스',
+  '레니',
+  '레온',
+  '로지',
+  '루크',
+  '르노어',
+  '리 다이린',
+  '리오',
+  '마르티나',
+  '마이',
+  '마커스',
+  '매그너스',
+  '미르카',
+  '바냐',
+  '바바라',
+  '버니스',
+  '블레어',
+  '비앙카',
+  '샬럿',
+  '셀린',
+  '쇼우',
+  '쇼이치',
+  '수아',
+  '슈린',
+  '시셀라',
+  '실비아',
+  '아델라',
+  '아드리아나',
+  '아디나',
+  '아르다',
+  '아비게일',
+  '아야',
+  '아이솔',
+  '아이작',
+  '알렉스',
+  '알론소',
+  '얀',
+  '에스텔',
+  '에이든',
+  '에키온',
+  '엘레나',
+  '엠마',
+  '요한',
+  '윌리엄',
+  '유민',
+  '유스티나',
+  '유키',
+  '이렘',
+  '이바',
+  '이슈트반',
+  '이안',
+  '일레븐',
+  '자히르',
+  '재키',
+  '제니',
+  '츠바메',
+  '카밀로',
+  '카티야',
+  '칼라',
+  '캐시',
+  '케네스',
+  '클로에',
+  '키아라',
+  '타지아',
+  '테오도르',
+  '펠릭스',
+  '프리야',
+  '피오라',
+  '피올로',
+  '하트',
+  '헤이즈',
+  '헨리',
+  '현우',
+  '혜진',
+  '히스이',
 ]);
 
 function normalizeCharacterName(name: string): string {
-  return name.replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  return name
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function isValidCharacter(name: string): boolean {
@@ -186,9 +275,25 @@ function processChange(
 // ============================================
 
 const DECREASE_IS_BUFF = [
-  '쿨다운', 'cooldown', 'cd', '마나', 'mana', 'sp', 'mp', '소모',
-  '시전', 'cast', 'casting', '딜레이', 'delay', '대기', 'wait',
-  '충전', 'charge time', '선딜', '후딜',
+  '쿨다운',
+  'cooldown',
+  'cd',
+  '마나',
+  'mana',
+  'sp',
+  'mp',
+  '소모',
+  '시전',
+  'cast',
+  'casting',
+  '딜레이',
+  'delay',
+  '대기',
+  'wait',
+  '충전',
+  'charge time',
+  '선딜',
+  '후딜',
 ];
 
 function extractNumbers(value: string): number[] {
@@ -225,21 +330,70 @@ function determineOverallChange(changes: Change[]): ChangeType {
 }
 
 const NERF_KEYWORDS = [
-  'reducing', 'reduce', 'decreased', 'decrease', 'lowering', 'lower',
-  'nerfing', 'nerf', 'weaken', 'weakening', 'toning down', 'tune down',
-  'too strong', 'very strong', 'overperforming', 'high win rate',
-  'high pick rate', 'dominant', 'oppressive', 'keep in check',
-  '너프', '하향', '감소', '약화', '줄이', '낮추', '너무 강', '강력해서',
-  '승률이 높', '픽률이 높', '지배적',
+  'reducing',
+  'reduce',
+  'decreased',
+  'decrease',
+  'lowering',
+  'lower',
+  'nerfing',
+  'nerf',
+  'weaken',
+  'weakening',
+  'toning down',
+  'tune down',
+  'too strong',
+  'very strong',
+  'overperforming',
+  'high win rate',
+  'high pick rate',
+  'dominant',
+  'oppressive',
+  'keep in check',
+  '너프',
+  '하향',
+  '감소',
+  '약화',
+  '줄이',
+  '낮추',
+  '너무 강',
+  '강력해서',
+  '승률이 높',
+  '픽률이 높',
+  '지배적',
 ];
 
 const BUFF_KEYWORDS = [
-  'buffing', 'buff', 'increasing', 'increase', 'improving', 'improve',
-  'enhancing', 'enhance', 'strengthening', 'strengthen', 'boosting', 'boost',
-  'underperforming', 'low win rate', 'low pick rate', 'weak', 'struggling',
-  'needs help', 'giving more',
-  '버프', '상향', '증가', '강화', '올리', '높이', '약해서',
-  '승률이 낮', '픽률이 낮', '부족', '개선',
+  'buffing',
+  'buff',
+  'increasing',
+  'increase',
+  'improving',
+  'improve',
+  'enhancing',
+  'enhance',
+  'strengthening',
+  'strengthen',
+  'boosting',
+  'boost',
+  'underperforming',
+  'low win rate',
+  'low pick rate',
+  'weak',
+  'struggling',
+  'needs help',
+  'giving more',
+  '버프',
+  '상향',
+  '증가',
+  '강화',
+  '올리',
+  '높이',
+  '약해서',
+  '승률이 낮',
+  '픽률이 낮',
+  '부족',
+  '개선',
 ];
 
 function extractIntentFromComment(comment: string | null): ChangeType | null {
@@ -283,114 +437,208 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
       const content = document.querySelector('.er-article-detail__content');
       if (!content) return [];
 
-      const html = content.innerHTML;
-      const charMatch = html.match(/<h5[^>]*>실험체<\/h5>/);
-      if (!charMatch || charMatch.index === undefined) return [];
+      // 실험체 섹션 찾기
+      const h5Elements = content.querySelectorAll('h5');
+      let characterSectionStart: Element | null = null;
+      let characterSectionEnd: Element | null = null;
 
-      const charStart = charMatch.index;
-      const weaponMatch = html.slice(charStart).match(/<h5[^>]*>무기<\/h5>/);
-      const cobaltMatch = html.slice(charStart).match(/<h5[^>]*>코발트 프로토콜<\/h5>/);
-      const loneWolfMatch = html.slice(charStart).match(/<h5[^>]*>론울프<\/h5>/);
+      for (let i = 0; i < h5Elements.length; i++) {
+        const text = h5Elements[i].textContent?.trim();
+        if (text === '실험체') {
+          characterSectionStart = h5Elements[i];
+          // 다음 h5를 끝으로 설정
+          for (let j = i + 1; j < h5Elements.length; j++) {
+            const nextText = h5Elements[j].textContent?.trim();
+            if (
+              nextText &&
+              ['무기', '아이템', '코발트 프로토콜', '론울프', '특성', '시스템'].includes(nextText)
+            ) {
+              characterSectionEnd = h5Elements[j];
+              break;
+            }
+          }
+          break;
+        }
+      }
 
-      const endIndices = [weaponMatch?.index, cobaltMatch?.index, loneWolfMatch?.index].filter(
-        (i): i is number => i !== undefined
-      );
+      if (!characterSectionStart) return [];
 
-      const endIndex = endIndices.length > 0 ? charStart + Math.min(...endIndices) : html.length;
-      const characterSection = html.slice(charStart, endIndex);
-
-      const characterPattern = /<p[^>]*><span[^>]*><strong>([^<]+)<\/strong><\/span><\/p>/g;
+      // 실험체 섹션 내의 모든 요소를 순회하며 캐릭터 블록 추출
       const results: Array<{
         name: string;
         nameEn: string;
         devComment: string | null;
-        changes: Array<{ target: string; stat: string; before: string; after: string }>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        changes: Array<any>;
       }> = [];
 
-      let match;
-      const matches: Array<{ name: string; index: number; fullMatch: string }> = [];
+      // 캐릭터 이름 패턴: <p><span><strong>캐릭터명</strong></span></p>
+      // 중요: 최상위 요소만 선택 (중첩된 ul 제외)
+      const allElements = Array.from(content.children).filter(
+        (el) => el.tagName === 'P' || el.tagName === 'UL' || el.tagName === 'H5'
+      );
+      let inCharacterSection = false;
+      let currentCharName = '';
+      let currentDevComment: string[] = [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let currentChanges: Array<any> = [];
+      let currentTarget = '기본 스탯';
 
-      while ((match = characterPattern.exec(characterSection)) !== null) {
-        const name = match[1].trim();
-        if (!name.match(/^(실험체|무기|시스템|특성)$/)) {
-          matches.push({ name, index: match.index, fullMatch: match[0] });
-        }
-      }
+      // 스택 기반으로 li 요소들을 처리하는 헬퍼 (함수 선언 대신 인라인)
+      // 모든 li 요소를 BFS로 처리
 
-      for (let i = 0; i < matches.length; i++) {
-        const { name, index: matchStart, fullMatch } = matches[i];
-        const startIdx = matchStart + fullMatch.length;
-        const endIdx = i + 1 < matches.length ? matches[i + 1].index : characterSection.length;
-        const block = characterSection.slice(startIdx, endIdx);
+      for (let idx = 0; idx < allElements.length; idx++) {
+        const el = allElements[idx];
 
-        const commentParts: string[] = [];
-        const ulIndex = block.indexOf('<ul');
-        const beforeUl = ulIndex > 0 ? block.slice(0, ulIndex) : block.slice(0, 1000);
-
-        const pTagPattern = /<p[^>]*><span[^>]*>([^]*?)<\/span><\/p>/g;
-        let pMatch;
-        while ((pMatch = pTagPattern.exec(beforeUl)) !== null) {
-          const rawText = pMatch[1];
-          const cleanText = rawText
-            .replace(/<br\s*\/?>/gi, ' ')
-            .replace(/<[^>]+>/g, '')
-            .replace(/&nbsp;/g, ' ')
-            .replace(/&amp;/g, '&')
-            .trim();
-
-          if (cleanText && !cleanText.includes('→') && cleanText.length > 5) {
-            commentParts.push(cleanText);
-          }
+        // 캐릭터 섹션 시작 확인
+        if (
+          el === characterSectionStart ||
+          (characterSectionStart &&
+            el.compareDocumentPosition(characterSectionStart) & Node.DOCUMENT_POSITION_PRECEDING)
+        ) {
+          inCharacterSection = true;
         }
 
-        const devComment = commentParts.length > 0 ? commentParts.join(' ') : null;
-        const changes: Array<{ target: string; stat: string; before: string; after: string }> = [];
-        let currentTarget = '기본 스탯';
+        // 캐릭터 섹션 종료 확인
+        if (
+          characterSectionEnd &&
+          (el === characterSectionEnd ||
+            (el.compareDocumentPosition(characterSectionEnd) & Node.DOCUMENT_POSITION_FOLLOWING) ===
+              0)
+        ) {
+          break;
+        }
 
-        const liPattern = /<li[^>]*>([^]*?)<\/li>/g;
-        let liMatch;
+        if (!inCharacterSection) continue;
 
-        while ((liMatch = liPattern.exec(block)) !== null) {
-          const liContent = liMatch[1];
-          const cleanText = liContent.replace(/<[^>]+>/g, '').trim();
+        // 새 캐릭터 시작 확인 (p > span > strong 구조)
+        if (el.tagName === 'P') {
+          const strong = el.querySelector('span > strong');
+          if (strong) {
+            const name = strong.textContent?.trim() || '';
+            // 섹션 제목 제외
+            if (
+              name &&
+              !['실험체', '무기', '아이템', '시스템', '특성', '코발트 프로토콜', '론울프'].includes(
+                name
+              )
+            ) {
+              // 캐릭터명인지 확인: span 텍스트와 strong 텍스트가 같아야 함
+              const span = el.querySelector('span');
+              const spanText = span?.textContent?.trim() || '';
+              const strongText = strong.textContent?.trim() || '';
 
-          const skillMatch = cleanText.match(/^([^→]+\([QWERP]\))|^([^→]+\(패시브\))/);
-          if (skillMatch && !cleanText.includes('→')) {
-            currentTarget = skillMatch[0].trim();
-            continue;
+              if (spanText === strongText && /^[가-힣&\s]+$/.test(strongText)) {
+                // 이전 캐릭터 저장
+                if (currentCharName && currentChanges.length > 0) {
+                  results.push({
+                    name: currentCharName,
+                    nameEn: currentCharName,
+                    devComment: currentDevComment.length > 0 ? currentDevComment.join(' ') : null,
+                    changes: currentChanges,
+                  });
+                }
+                // 새 캐릭터 시작
+                currentCharName = name;
+                currentDevComment = [];
+                currentChanges = [];
+                currentTarget = '기본 스탯';
+                continue;
+              }
+            }
           }
 
-          if (cleanText.includes('→')) {
-            const fullMatch = cleanText.match(
-              /^([^→]+\([QWERP]\)|[^→]+\(패시브\))?(.+?)\s+([^\s→]+(?:[^→]*?))\s*→\s*(.+)$/
-            );
-            if (fullMatch) {
-              if (fullMatch[1]) currentTarget = fullMatch[1].trim();
-              const stat = fullMatch[2]?.trim() || '수치';
-              const before = fullMatch[3]?.trim() || '';
-              const after = fullMatch[4]?.trim() || '';
-              if (before && after) {
-                changes.push({ target: currentTarget, stat, before, after });
-              }
-            } else {
-              const simpleMatch = cleanText.match(
-                /(.+?)\s+([^\s→]+(?:\([^)]+\))?(?:[^→]*?))\s*→\s*(.+)$/
-              );
-              if (simpleMatch) {
-                changes.push({
-                  target: currentTarget,
-                  stat: simpleMatch[1].trim(),
-                  before: simpleMatch[2].trim(),
-                  after: simpleMatch[3].trim(),
-                });
-              }
+          // 개발자 코멘트 수집 (캐릭터명 바로 다음 p 태그들)
+          if (currentCharName) {
+            const text = el.textContent?.trim() || '';
+            if (text && !text.includes('→') && text.length > 5) {
+              currentDevComment.push(text);
             }
           }
         }
 
-        if (changes.length > 0) {
-          results.push({ name, nameEn: name, devComment, changes });
+        // ul 요소 처리 - 최상위 ul만 처리 (content.children으로 필터링됨)
+        if (el.tagName === 'UL' && currentCharName) {
+          const topLevelLis = el.querySelectorAll(':scope > li');
+
+          for (let i = 0; i < topLevelLis.length; i++) {
+            const topLi = topLevelLis[i];
+
+            // topLi의 첫 p > span 텍스트
+            const firstP = topLi.querySelector(':scope > p');
+            let headerText = '';
+            if (firstP) {
+              const span = firstP.querySelector('span');
+              if (span) {
+                headerText = span.textContent?.replace(/\s+/g, ' ').trim() || '';
+              }
+            }
+
+            // 스킬 헤더 확인 (예: "제압부(Q)")
+            const skillMatch = headerText.match(/^([^→]+\([QWERP]\))|^([^→]+\(패시브\))/);
+            if (skillMatch && !headerText.includes('→')) {
+              currentTarget = skillMatch[0].trim();
+            }
+
+            // topLi 내의 모든 자손 li에서 변경사항 추출
+            const allDescendantLis = topLi.querySelectorAll('li');
+            for (let j = 0; j < allDescendantLis.length; j++) {
+              const descLi = allDescendantLis[j];
+              const descP = descLi.querySelector(':scope > p');
+              if (descP) {
+                const descSpan = descP.querySelector('span');
+                if (descSpan) {
+                  const descText = descSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+
+                  if (descText.includes('→')) {
+                    // 화살표가 있는 경우: before → after 형식 파싱 (수치 변경)
+                    const match = descText.match(
+                      /^(.+?)\s+([^\s→]+(?:\([^)]*\))?(?:[^→]*?))\s*→\s*(.+)$/
+                    );
+                    if (match) {
+                      const stat = match[1].trim();
+                      const before = match[2].trim();
+                      const after = match[3].trim();
+                      if (before && after && stat) {
+                        currentChanges.push({
+                          _type: 'numeric',
+                          target: currentTarget,
+                          stat,
+                          before,
+                          after,
+                        });
+                      }
+                    }
+                  } else if (
+                    descText.length > 10 &&
+                    !descText.match(/^[^(]+\([QWERP]\)$/) &&
+                    !descText.match(/^[^(]+\(패시브\)$/)
+                  ) {
+                    // 화살표가 없는 설명형 변경사항 (스킬 헤더 제외)
+                    // "(신규)" 포함 시 added, 그 외는 mechanic
+                    const isNew = descText.includes('(신규)') || descText.includes('신규');
+                    currentChanges.push({
+                      _type: 'description',
+                      target: currentTarget,
+                      description: descText,
+                      isNew,
+                    });
+                  }
+                }
+              }
+            }
+          }
         }
+      }
+
+      // 마지막 캐릭터 저장
+      if (currentCharName && currentChanges.length > 0) {
+        results.push({
+          name: currentCharName,
+          nameEn: currentCharName,
+          devComment: currentDevComment.length > 0 ? currentDevComment.join(' ') : null,
+          changes: currentChanges,
+        });
       }
 
       return results;
@@ -402,17 +650,31 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
         ...char,
         name: normalizeCharacterName(char.name),
         nameEn: normalizeCharacterName(char.nameEn),
-        changes: char.changes.map((change) => {
-          // stat/before/after 분리 및 changeCategory 결정
-          const processed = processChange(change.stat, change.before, change.after);
-          return {
-            target: change.target,
-            stat: processed.stat,
-            before: processed.before,
-            after: processed.after,
-            changeType: determineChangeType(processed.stat, processed.before, processed.after),
-            changeCategory: processed.changeCategory,
-          };
+        changes: char.changes.map((change): Change => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const rawChange = change as any;
+
+          if (rawChange._type === 'description') {
+            // 설명형 변경사항
+            const category = rawChange.isNew ? 'added' : 'mechanic';
+            return {
+              target: rawChange.target,
+              description: rawChange.description,
+              changeType: 'mixed', // 설명형은 기본적으로 mixed
+              changeCategory: category,
+            } as DescriptionChange;
+          } else {
+            // 수치 변경사항
+            const processed = processChange(rawChange.stat, rawChange.before, rawChange.after);
+            return {
+              target: rawChange.target,
+              stat: processed.stat,
+              before: processed.before,
+              after: processed.after,
+              changeType: determineChangeType(processed.stat, processed.before, processed.after),
+              changeCategory: 'numeric',
+            } as NumericChange;
+          }
         }),
       }));
   } catch (error) {

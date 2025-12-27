@@ -12,6 +12,15 @@ import type {
 let balanceDataCache: BalanceChangesData | null = null;
 let patchNotesDataCache: PatchNotesData | null = null;
 
+// 캐시 초기화 함수 (관리자 수정 후 호출)
+export const clearBalanceDataCache = (): void => {
+  balanceDataCache = null;
+};
+
+export const clearPatchNotesDataCache = (): void => {
+  patchNotesDataCache = null;
+};
+
 // 내부 함수: 밸런스 데이터 fetch (모듈 레벨 캐싱)
 const fetchBalanceData = async (): Promise<BalanceChangesData> => {
   // 이미 캐시된 데이터가 있으면 반환

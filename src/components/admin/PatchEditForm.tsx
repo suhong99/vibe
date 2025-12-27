@@ -1,24 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import type { PatchEntry, Change, ChangeType } from '@/types/patch';
+import type { PatchEntry, Change, ChangeType, NumericChange } from '@/types/patch';
 import { ChangeEditRow } from './ChangeEditRow';
 import { useAuth } from '@/contexts/AuthContext';
 
-type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
-
-type ExtendedChange = Change & {
-  changeCategory?: ChangeCategory;
-};
-
-type ExtendedPatchEntry = Omit<PatchEntry, 'changes'> & {
-  changes: ExtendedChange[];
-};
-
 type PatchEditFormProps = {
   characterName: string;
-  patch: ExtendedPatchEntry;
-  onSave: (updatedPatch: ExtendedPatchEntry) => void;
+  patch: PatchEntry;
+  onSave: (updatedPatch: PatchEntry) => void;
   onCancel: () => void;
 };
 
@@ -34,12 +24,12 @@ export function PatchEditForm({
   onSave,
   onCancel,
 }: PatchEditFormProps): React.JSX.Element {
-  const [editedPatch, setEditedPatch] = useState<ExtendedPatchEntry>(patch);
+  const [editedPatch, setEditedPatch] = useState<PatchEntry>(patch);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const { getIdToken } = useAuth();
 
-  const handleChangeUpdate = (index: number, updated: ExtendedChange): void => {
+  const handleChangeUpdate = (index: number, updated: Change): void => {
     const newChanges = [...editedPatch.changes];
     newChanges[index] = updated;
     setEditedPatch({ ...editedPatch, changes: newChanges });
@@ -51,13 +41,13 @@ export function PatchEditForm({
   };
 
   const handleAddChange = (): void => {
-    const newChange: ExtendedChange = {
+    const newChange: NumericChange = {
       target: '기본 스탯',
       stat: '',
       before: '',
       after: '',
       changeType: 'mixed',
-      changeCategory: 'unknown',
+      changeCategory: 'numeric',
     };
     setEditedPatch({ ...editedPatch, changes: [...editedPatch.changes, newChange] });
   };

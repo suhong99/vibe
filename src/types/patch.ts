@@ -1,12 +1,35 @@
 // 패치 변경 사항 타입
 export type ChangeType = 'buff' | 'nerf' | 'mixed';
+export type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
 
-export type Change = {
+// 수치 변경 (before → after)
+export type NumericChange = {
   target: string;
   stat: string;
   before: string;
   after: string;
   changeType: ChangeType;
+  changeCategory: 'numeric';
+};
+
+// 설명형 변경 (기능 변경, 추가, 제거 등)
+export type DescriptionChange = {
+  target: string;
+  description: string;
+  changeType: ChangeType;
+  changeCategory: 'mechanic' | 'added' | 'removed' | 'unknown';
+};
+
+// 통합 타입
+export type Change = NumericChange | DescriptionChange;
+
+// 타입 가드
+export const isNumericChange = (change: Change): change is NumericChange => {
+  return change.changeCategory === 'numeric';
+};
+
+export const isDescriptionChange = (change: Change): change is DescriptionChange => {
+  return change.changeCategory !== 'numeric';
 };
 
 export type PatchEntry = {

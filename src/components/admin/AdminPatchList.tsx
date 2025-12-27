@@ -1,19 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import type { PatchEntry, Change } from '@/types/patch';
+import type { PatchEntry } from '@/types/patch';
+import { isNumericChange } from '@/types/patch';
 import { PatchEditForm } from './PatchEditForm';
 import { getChangeTypeLabel, getChangeTypeBgColor, formatDate } from '@/lib/patch-utils';
 
-type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
-
-type ExtendedChange = Change & {
-  changeCategory?: ChangeCategory;
-};
-
-type ExtendedPatchEntry = Omit<PatchEntry, 'changes'> & {
-  changes: ExtendedChange[];
-};
+type ExtendedPatchEntry = PatchEntry;
 
 type AdminPatchListProps = {
   characterName: string;
@@ -81,10 +74,16 @@ export function AdminPatchList({
             {patch.changes.map((change, index) => (
               <div key={index} className="text-sm p-2 bg-[#1a1c23] rounded flex items-start gap-2">
                 <span className="text-gray-500 shrink-0">{change.target}</span>
-                <span className="text-gray-400">{change.stat}:</span>
-                <span className="text-rose-400 line-through">{change.before}</span>
-                <span className="text-gray-500">→</span>
-                <span className="text-emerald-400">{change.after}</span>
+                {isNumericChange(change) ? (
+                  <>
+                    <span className="text-gray-400">{change.stat}:</span>
+                    <span className="text-rose-400 line-through">{change.before}</span>
+                    <span className="text-gray-500">→</span>
+                    <span className="text-emerald-400">{change.after}</span>
+                  </>
+                ) : (
+                  <span className="text-gray-300 whitespace-pre-line">{change.description}</span>
+                )}
                 {change.changeCategory && (
                   <span className="ml-auto text-xs text-gray-500">[{change.changeCategory}]</span>
                 )}
