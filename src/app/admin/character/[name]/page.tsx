@@ -1,17 +1,27 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { loadBalanceData, findCharacterByName, extractCharacters } from '@/lib/patch-data';
+import {
+  loadBalanceData,
+  loadPatchNotesData,
+  findCharacterByName,
+  extractCharacters,
+} from '@/lib/patch-data';
 import { AdminPatchList } from '@/components/admin/AdminPatchList';
 
 type PageProps = {
   params: Promise<{ name: string }>;
 };
 
-export default async function AdminCharacterPage({ params }: PageProps): Promise<React.JSX.Element> {
+export default async function AdminCharacterPage({
+  params,
+}: PageProps): Promise<React.JSX.Element> {
   const { name } = await params;
   const decodedName = decodeURIComponent(name);
 
-  const balanceData = await loadBalanceData();
+  const [balanceData, patchNotesData] = await Promise.all([
+    loadBalanceData(),
+    loadPatchNotesData(),
+  ]);
   const characters = extractCharacters(balanceData);
   const character = findCharacterByName(characters, decodedName);
 
@@ -19,13 +29,16 @@ export default async function AdminCharacterPage({ params }: PageProps): Promise
     notFound();
   }
 
+  // patchId → 원문 링크 맵 생성
+  const patchLinks: Record<number, string> = {};
+  for (const note of patchNotesData.patchNotes) {
+    patchLinks[note.id] = note.link;
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
-        <Link
-          href="/admin"
-          className="text-sm text-gray-400 hover:text-white transition-colors"
-        >
+        <Link href="/admin" className="text-sm text-gray-400 hover:text-white transition-colors">
           ← 캐릭터 목록으로
         </Link>
       </div>
@@ -43,6 +56,7 @@ export default async function AdminCharacterPage({ params }: PageProps): Promise
       <AdminPatchList
         characterName={character.name}
         patches={character.patchHistory}
+        patchLinks={patchLinks}
       />
     </div>
   );

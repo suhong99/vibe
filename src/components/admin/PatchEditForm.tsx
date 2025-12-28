@@ -1,24 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import type { PatchEntry, Change, ChangeType } from '@/types/patch';
+import type { PatchEntry, Change, ChangeType, NumericChange } from '@/types/patch';
 import { ChangeEditRow } from './ChangeEditRow';
 import { useAuth } from '@/contexts/AuthContext';
 
-type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
-
-type ExtendedChange = Change & {
-  changeCategory?: ChangeCategory;
-};
-
-type ExtendedPatchEntry = Omit<PatchEntry, 'changes'> & {
-  changes: ExtendedChange[];
-};
-
 type PatchEditFormProps = {
   characterName: string;
-  patch: ExtendedPatchEntry;
-  onSave: (updatedPatch: ExtendedPatchEntry) => void;
+  patch: PatchEntry;
+  onSave: (updatedPatch: PatchEntry) => void;
   onCancel: () => void;
 };
 
@@ -34,12 +24,12 @@ export function PatchEditForm({
   onSave,
   onCancel,
 }: PatchEditFormProps): React.JSX.Element {
-  const [editedPatch, setEditedPatch] = useState<ExtendedPatchEntry>(patch);
+  const [editedPatch, setEditedPatch] = useState<PatchEntry>(patch);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const { getIdToken } = useAuth();
 
-  const handleChangeUpdate = (index: number, updated: ExtendedChange): void => {
+  const handleChangeUpdate = (index: number, updated: Change): void => {
     const newChanges = [...editedPatch.changes];
     newChanges[index] = updated;
     setEditedPatch({ ...editedPatch, changes: newChanges });
@@ -51,13 +41,13 @@ export function PatchEditForm({
   };
 
   const handleAddChange = (): void => {
-    const newChange: ExtendedChange = {
+    const newChange: NumericChange = {
       target: '기본 스탯',
       stat: '',
       before: '',
       after: '',
       changeType: 'mixed',
-      changeCategory: 'unknown',
+      changeCategory: 'numeric',
     };
     setEditedPatch({ ...editedPatch, changes: [...editedPatch.changes, newChange] });
   };
@@ -109,35 +99,21 @@ export function PatchEditForm({
         </div>
 
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">전체 변경 타입</label>
-              <select
-                value={editedPatch.overallChange}
-                onChange={(e) =>
-                  setEditedPatch({ ...editedPatch, overallChange: e.target.value as ChangeType })
-                }
-                className="w-full px-3 py-2 bg-[#1a1c23] border border-[var(--er-border)] rounded text-white"
-              >
-                {CHANGE_TYPES.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm text-gray-400 mb-1">연속 횟수</label>
-              <input
-                type="number"
-                value={editedPatch.streak}
-                onChange={(e) =>
-                  setEditedPatch({ ...editedPatch, streak: parseInt(e.target.value) || 1 })
-                }
-                min={1}
-                className="w-full px-3 py-2 bg-[#1a1c23] border border-[var(--er-border)] rounded text-white"
-              />
-            </div>
+          <div>
+            <label className="block text-sm text-gray-400 mb-1">전체 변경 타입</label>
+            <select
+              value={editedPatch.overallChange}
+              onChange={(e) =>
+                setEditedPatch({ ...editedPatch, overallChange: e.target.value as ChangeType })
+              }
+              className="w-full px-3 py-2 bg-[#1a1c23] border border-[var(--er-border)] rounded text-white"
+            >
+              {CHANGE_TYPES.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

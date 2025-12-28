@@ -1,8 +1,33 @@
+import { unstable_cache } from 'next/cache';
 import { db } from './firebase-admin';
-import type { BalanceChangesData, Character, PatchNotesData, LatestPatchInfo, PatchNote } from '@/types/patch';
+import type {
+  BalanceChangesData,
+  Character,
+  PatchNotesData,
+  LatestPatchInfo,
+  PatchNote,
+} from '@/types/patch';
 
-// 순수 함수: 데이터 로드 (서버 전용 - Firestore)
-export const loadBalanceData = async (): Promise<BalanceChangesData> => {
+// 빌드 시 모듈 레벨 캐시 (같은 프로세스 내에서 재사용)
+let balanceDataCache: BalanceChangesData | null = null;
+let patchNotesDataCache: PatchNotesData | null = null;
+
+// 캐시 초기화 함수 (관리자 수정 후 호출)
+export const clearBalanceDataCache = (): void => {
+  balanceDataCache = null;
+};
+
+export const clearPatchNotesDataCache = (): void => {
+  patchNotesDataCache = null;
+};
+
+// 내부 함수: 밸런스 데이터 fetch (모듈 레벨 캐싱)
+const fetchBalanceData = async (): Promise<BalanceChangesData> => {
+  // 이미 캐시된 데이터가 있으면 반환
+  if (balanceDataCache) {
+    return balanceDataCache;
+  }
+
   // 메타데이터 조회
   const metadataDoc = await db.collection('metadata').doc('balanceChanges').get();
   const metadata = metadataDoc.data();
@@ -16,35 +41,50 @@ export const loadBalanceData = async (): Promise<BalanceChangesData> => {
     characters[data.name] = data;
   });
 
-  return {
+  balanceDataCache = {
     updatedAt: metadata?.updatedAt ?? new Date().toISOString(),
     characters,
   };
+
+  return balanceDataCache;
 };
 
-// 순수 함수: 패치노트 데이터 로드 (서버 전용 - Firestore)
-export const loadPatchNotesData = async (): Promise<PatchNotesData> => {
+// 내부 함수: 패치노트 데이터 fetch (모듈 레벨 캐싱)
+const fetchPatchNotesData = async (): Promise<PatchNotesData> => {
+  // 이미 캐시된 데이터가 있으면 반환
+  if (patchNotesDataCache) {
+    return patchNotesDataCache;
+  }
+
   // 메타데이터 조회
   const metadataDoc = await db.collection('metadata').doc('patchNotes').get();
   const metadata = metadataDoc.data();
 
   // 모든 패치노트 조회 (id 내림차순 정렬)
-  const patchNotesSnapshot = await db
-    .collection('patchNotes')
-    .orderBy('id', 'desc')
-    .get();
+  const patchNotesSnapshot = await db.collection('patchNotes').orderBy('id', 'desc').get();
 
   const patchNotes: PatchNote[] = [];
   patchNotesSnapshot.forEach((doc) => {
     patchNotes.push(doc.data() as PatchNote);
   });
 
-  return {
+  patchNotesDataCache = {
     crawledAt: metadata?.crawledAt ?? new Date().toISOString(),
     totalCount: metadata?.totalCount ?? patchNotes.length,
     patchNotes,
   };
+
+  return patchNotesDataCache;
 };
+
+// 캐싱된 데이터 로드 함수 (unstable_cache + 모듈 레벨 캐시)
+export const loadBalanceData = unstable_cache(fetchBalanceData, ['balance-data'], {
+  revalidate: 3600,
+});
+
+export const loadPatchNotesData = unstable_cache(fetchPatchNotesData, ['patch-notes-data'], {
+  revalidate: 3600,
+});
 
 // 순수 함수: 패치 버전 추출 (제목에서)
 const extractPatchVersion = (title: string): string => {

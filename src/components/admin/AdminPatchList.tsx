@@ -1,26 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import type { PatchEntry, Change } from '@/types/patch';
+import type { PatchEntry } from '@/types/patch';
+import { isNumericChange } from '@/types/patch';
 import { PatchEditForm } from './PatchEditForm';
 import { getChangeTypeLabel, getChangeTypeBgColor, formatDate } from '@/lib/patch-utils';
 
-type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
-
-type ExtendedChange = Change & {
-  changeCategory?: ChangeCategory;
-};
-
-type ExtendedPatchEntry = Omit<PatchEntry, 'changes'> & {
-  changes: ExtendedChange[];
-};
+type ExtendedPatchEntry = PatchEntry;
 
 type AdminPatchListProps = {
   characterName: string;
   patches: ExtendedPatchEntry[];
+  patchLinks: Record<number, string>;
 };
 
-export function AdminPatchList({ characterName, patches }: AdminPatchListProps): React.JSX.Element {
+export function AdminPatchList({
+  characterName,
+  patches,
+  patchLinks,
+}: AdminPatchListProps): React.JSX.Element {
   const [patchList, setPatchList] = useState<ExtendedPatchEntry[]>(patches);
   const [editingPatch, setEditingPatch] = useState<ExtendedPatchEntry | null>(null);
 
@@ -48,12 +46,24 @@ export function AdminPatchList({ characterName, patches }: AdminPatchListProps):
               <span className="text-white font-medium">{patch.patchVersion}</span>
               <span className="text-gray-400 text-sm">{formatDate(patch.patchDate)}</span>
             </div>
-            <button
-              onClick={() => setEditingPatch(patch)}
-              className="px-3 py-1.5 bg-violet-600/20 border border-violet-500/30 rounded text-sm text-violet-400 hover:bg-violet-600/30 transition-colors"
-            >
-              수정
-            </button>
+            <div className="flex items-center gap-2">
+              {patchLinks[patch.patchId] && (
+                <a
+                  href={patchLinks[patch.patchId]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 bg-gray-600/20 border border-gray-500/30 rounded text-sm text-gray-400 hover:bg-gray-600/30 transition-colors"
+                >
+                  원문
+                </a>
+              )}
+              <button
+                onClick={() => setEditingPatch(patch)}
+                className="px-3 py-1.5 bg-violet-600/20 border border-violet-500/30 rounded text-sm text-violet-400 hover:bg-violet-600/30 transition-colors"
+              >
+                수정
+              </button>
+            </div>
           </div>
 
           {patch.devComment && (
@@ -62,19 +72,20 @@ export function AdminPatchList({ characterName, patches }: AdminPatchListProps):
 
           <div className="space-y-2">
             {patch.changes.map((change, index) => (
-              <div
-                key={index}
-                className="text-sm p-2 bg-[#1a1c23] rounded flex items-start gap-2"
-              >
+              <div key={index} className="text-sm p-2 bg-[#1a1c23] rounded flex items-start gap-2">
                 <span className="text-gray-500 shrink-0">{change.target}</span>
-                <span className="text-gray-400">{change.stat}:</span>
-                <span className="text-rose-400 line-through">{change.before}</span>
-                <span className="text-gray-500">→</span>
-                <span className="text-emerald-400">{change.after}</span>
+                {isNumericChange(change) ? (
+                  <>
+                    <span className="text-gray-400">{change.stat}:</span>
+                    <span className="text-rose-400 line-through">{change.before}</span>
+                    <span className="text-gray-500">→</span>
+                    <span className="text-emerald-400">{change.after}</span>
+                  </>
+                ) : (
+                  <span className="text-gray-300 whitespace-pre-line">{change.description}</span>
+                )}
                 {change.changeCategory && (
-                  <span className="ml-auto text-xs text-gray-500">
-                    [{change.changeCategory}]
-                  </span>
+                  <span className="ml-auto text-xs text-gray-500">[{change.changeCategory}]</span>
                 )}
               </div>
             ))}
