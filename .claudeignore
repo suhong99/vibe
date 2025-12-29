@@ -1,0 +1,6 @@
+# 민감한 파일 - Claude가 읽지 않음
+.env*
+firebase-service-account.json
+*.pem
+*credentials*
+*secret*
