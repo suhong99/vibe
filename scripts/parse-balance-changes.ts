@@ -551,7 +551,19 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
           // 개발자 코멘트 수집 (캐릭터명 바로 다음 p 태그들)
           if (currentCharName) {
             const text = el.textContent?.trim() || '';
-            if (text && !text.includes('→') && text.length > 5) {
+            // 코멘트 조건:
+            // - 화살표가 없어야 함 (수치 변경이 아님)
+            // - 길이가 10자 이상이어야 함
+            // - 스킬 헤더 형식이 아니어야 함
+            // - 숫자로만 시작하지 않아야 함 (수치 정보가 아님)
+            if (
+              text &&
+              !text.includes('→') &&
+              text.length > 10 &&
+              !/^[^(]+\([QWERP]\)/.test(text) &&
+              !/^[^(]+\(패시브\)/.test(text) &&
+              !/^\d/.test(text)
+            ) {
               currentDevComment.push(text);
             }
           }
@@ -560,6 +572,9 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
         // ul 요소 처리 - 최상위 ul만 처리 (content.children으로 필터링됨)
         if (el.tagName === 'UL' && currentCharName) {
           const topLevelLis = el.querySelectorAll(':scope > li');
+
+          // 수치 변경 패턴: stat before → after
+          const numericPattern = /^(.+?)\s+([^\s→]+(?:\([^)]*\))?(?:[^→]*?))\s*→\s*(.+)$/;
 
           for (let i = 0; i < topLevelLis.length; i++) {
             const topLi = topLevelLis[i];
@@ -574,10 +589,45 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
               }
             }
 
-            // 스킬 헤더 확인 (예: "제압부(Q)")
-            const skillMatch = headerText.match(/^([^→]+\([QWERP]\))|^([^→]+\(패시브\))/);
+            // 스킬 헤더 확인 (예: "제압부(Q)", "절단 베기(쌍검 E)", "모노호시자오(R) - 츠바메가에시(R2)")
+            // 무기 스킬 패턴 포함: "스킬명(무기명 Q)" 형태
+            const skillMatch = headerText.match(
+              /^([^→]+\((?:[가-힣A-Za-z\s-]*)?[QWERP패시브]\d?\)(?:\s*-\s*[^→]+\([QWERP]\d?\))?)/
+            );
             if (skillMatch && !headerText.includes('→')) {
               currentTarget = skillMatch[0].trim();
+            } else if (headerText && headerText.length >= 5) {
+              // 스킬 헤더만 있는 경우 제외 (무기 스킬 패턴 포함)
+              const isSkillHeader =
+                /^[^(→]+\([QWERP]\)$/.test(headerText) ||
+                /^[^(→]+\([가-힣A-Za-z\s-]+[QWERP]\d?\)$/.test(headerText) ||
+                /^[^(→]+\(패시브\)$/.test(headerText) ||
+                /^[^(→]+\([QWERP]\)\s*-\s*[^(→]+\([QWERP]\d?\)$/.test(headerText);
+
+              if (!isSkillHeader) {
+                if (headerText.includes('→')) {
+                  // 화살표가 있는 경우: 수치 변경
+                  const numMatch = headerText.match(numericPattern);
+                  if (numMatch) {
+                    currentChanges.push({
+                      _type: 'numeric',
+                      target: currentTarget,
+                      stat: numMatch[1].trim(),
+                      before: numMatch[2].trim(),
+                      after: numMatch[3].trim(),
+                    });
+                  }
+                } else if (headerText.length > 10) {
+                  // 설명형 변경사항
+                  currentChanges.push({
+                    _type: 'description',
+                    target: currentTarget,
+                    description: headerText,
+                    isNew: headerText.includes('(신규)') || /신규[^가-힣]/.test(headerText),
+                    isRemoved: headerText.includes('(삭제)') || headerText.includes('삭제됩니다'),
+                  });
+                }
+              }
             }
 
             // topLi 내의 모든 자손 li에서 변경사항 추출
@@ -589,40 +639,98 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
                 const descSpan = descP.querySelector('span');
                 if (descSpan) {
                   const descText = descSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+                  if (!descText || descText.length < 5) continue;
 
-                  if (descText.includes('→')) {
-                    // 화살표가 있는 경우: before → after 형식 파싱 (수치 변경)
-                    const match = descText.match(
-                      /^(.+?)\s+([^\s→]+(?:\([^)]*\))?(?:[^→]*?))\s*→\s*(.+)$/
-                    );
-                    if (match) {
-                      const stat = match[1].trim();
-                      const before = match[2].trim();
-                      const after = match[3].trim();
-                      if (before && after && stat) {
+                  // 스킬 헤더 확인 (서브 li에서도 스킬 헤더가 나올 수 있음, 무기 스킬 포함)
+                  const subSkillMatch = descText.match(
+                    /^([^→]+\((?:[가-힣A-Za-z\s-]*)?[QWERP패시브]\d?\)(?:\s*-\s*[^→]+\([QWERP]\d?\))?)/
+                  );
+                  if (
+                    subSkillMatch &&
+                    !descText.includes('→') &&
+                    descText === subSkillMatch[0].trim()
+                  ) {
+                    currentTarget = subSkillMatch[0].trim();
+                    continue;
+                  }
+
+                  // 스킬 헤더만 있는 경우 제외 (무기 스킬 패턴 포함)
+                  const isDescSkillHeader =
+                    /^[^(→]+\([QWERP]\)$/.test(descText) ||
+                    /^[^(→]+\([가-힣A-Za-z\s-]+[QWERP]\d?\)$/.test(descText) ||
+                    /^[^(→]+\(패시브\)$/.test(descText) ||
+                    /^[^(→]+\([QWERP]\)\s*-\s*[^(→]+\([QWERP]\d?\)$/.test(descText);
+
+                  if (!isDescSkillHeader) {
+                    if (descText.includes('→')) {
+                      const descNumMatch = descText.match(numericPattern);
+                      if (descNumMatch) {
                         currentChanges.push({
                           _type: 'numeric',
                           target: currentTarget,
-                          stat,
-                          before,
-                          after,
+                          stat: descNumMatch[1].trim(),
+                          before: descNumMatch[2].trim(),
+                          after: descNumMatch[3].trim(),
                         });
                       }
+                    } else if (descText.length > 10) {
+                      currentChanges.push({
+                        _type: 'description',
+                        target: currentTarget,
+                        description: descText,
+                        isNew: descText.includes('(신규)') || /신규[^가-힣]/.test(descText),
+                        isRemoved: descText.includes('(삭제)') || descText.includes('삭제됩니다'),
+                      });
                     }
-                  } else if (
-                    descText.length > 10 &&
-                    !descText.match(/^[^(]+\([QWERP]\)$/) &&
-                    !descText.match(/^[^(]+\(패시브\)$/)
-                  ) {
-                    // 화살표가 없는 설명형 변경사항 (스킬 헤더 제외)
-                    // "(신규)" 포함 시 added, 그 외는 mechanic
-                    const isNew = descText.includes('(신규)') || descText.includes('신규');
-                    currentChanges.push({
-                      _type: 'description',
-                      target: currentTarget,
-                      description: descText,
-                      isNew,
-                    });
+                  }
+                }
+              }
+            }
+
+            // topLi에 자손 li가 없는 경우, topLi의 ul 내부 텍스트도 확인
+            if (allDescendantLis.length === 0) {
+              const nestedUl = topLi.querySelector(':scope > ul');
+              if (nestedUl) {
+                const nestedLis = nestedUl.querySelectorAll(':scope > li');
+                for (let k = 0; k < nestedLis.length; k++) {
+                  const nestedLi = nestedLis[k];
+                  const nestedP = nestedLi.querySelector(':scope > p');
+                  if (nestedP) {
+                    const nestedSpan = nestedP.querySelector('span');
+                    if (nestedSpan) {
+                      const nestedText = nestedSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+                      if (!nestedText || nestedText.length < 5) continue;
+
+                      const isNestedSkillHeader =
+                        /^[^(→]+\([QWERP]\)$/.test(nestedText) ||
+                        /^[^(→]+\([가-힣A-Za-z\s-]+[QWERP]\d?\)$/.test(nestedText) ||
+                        /^[^(→]+\(패시브\)$/.test(nestedText) ||
+                        /^[^(→]+\([QWERP]\)\s*-\s*[^(→]+\([QWERP]\d?\)$/.test(nestedText);
+
+                      if (!isNestedSkillHeader) {
+                        if (nestedText.includes('→')) {
+                          const nestedNumMatch = nestedText.match(numericPattern);
+                          if (nestedNumMatch) {
+                            currentChanges.push({
+                              _type: 'numeric',
+                              target: currentTarget,
+                              stat: nestedNumMatch[1].trim(),
+                              before: nestedNumMatch[2].trim(),
+                              after: nestedNumMatch[3].trim(),
+                            });
+                          }
+                        } else if (nestedText.length > 10) {
+                          currentChanges.push({
+                            _type: 'description',
+                            target: currentTarget,
+                            description: nestedText,
+                            isNew: nestedText.includes('(신규)') || /신규[^가-힣]/.test(nestedText),
+                            isRemoved:
+                              nestedText.includes('(삭제)') || nestedText.includes('삭제됩니다'),
+                          });
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -656,7 +764,12 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
 
           if (rawChange._type === 'description') {
             // 설명형 변경사항
-            const category = rawChange.isNew ? 'added' : 'mechanic';
+            let category: ChangeCategory = 'mechanic';
+            if (rawChange.isNew) {
+              category = 'added';
+            } else if (rawChange.isRemoved) {
+              category = 'removed';
+            }
             return {
               target: rawChange.target,
               description: rawChange.description,
@@ -856,6 +969,70 @@ async function updateMetadata(characterCount: number): Promise<void> {
 // ============================================
 
 async function main(): Promise<void> {
+  const args = process.argv.slice(2);
+  const testMode = args.includes('--test');
+  const testPatchId = args.find((a) => a.startsWith('--patch='))?.split('=')[1];
+  const testCharacter = args.find((a) => a.startsWith('--character='))?.split('=')[1];
+
+  // 테스트 모드: 특정 패치만 파싱하고 결과 출력 (저장 안함)
+  if (testMode && testPatchId) {
+    console.log('=== 테스트 모드 ===\n');
+
+    const browser: Browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+
+    const page: Page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+
+    const url = `https://playeternalreturn.com/posts/news/${testPatchId}`;
+    console.log(`패치 ID: ${testPatchId}`);
+    console.log(`URL: ${url}\n`);
+
+    const characters = await parsePatchNote(page, url);
+    await browser.close();
+
+    if (characters.length === 0) {
+      console.log('파싱된 캐릭터가 없습니다.');
+      return;
+    }
+
+    const targets = testCharacter ? characters.filter((c) => c.name === testCharacter) : characters;
+
+    if (targets.length === 0 && testCharacter) {
+      console.log(`캐릭터 "${testCharacter}"를 찾을 수 없습니다.`);
+      console.log(`파싱된 캐릭터: ${characters.map((c) => c.name).join(', ')}`);
+      return;
+    }
+
+    for (const char of targets) {
+      console.log(`\n${'='.repeat(50)}`);
+      console.log(`캐릭터: ${char.name}`);
+      console.log(`${'='.repeat(50)}`);
+
+      console.log(`\n[코멘트] (${char.devComment?.length || 0}자)`);
+      console.log(char.devComment || '(없음)');
+
+      console.log(`\n[변경사항] (${char.changes.length}개)`);
+      char.changes.forEach((change, i) => {
+        if ('stat' in change && change.stat) {
+          console.log(
+            `  ${i + 1}. [${change.target}] ${change.stat}: ${change.before} → ${change.after} (${change.changeType})`
+          );
+        } else if ('description' in change) {
+          console.log(
+            `  ${i + 1}. [${change.target}] ${change.description} (${change.changeCategory})`
+          );
+        }
+      });
+    }
+
+    console.log(`\n\n총 ${characters.length}명 캐릭터 파싱됨`);
+    return;
+  }
+
   console.log('밸런스 변경사항 파싱 시작...\n');
 
   // 기존 캐릭터 데이터 로드

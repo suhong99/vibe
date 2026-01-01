@@ -80,10 +80,12 @@ const fetchPatchNotesData = async (): Promise<PatchNotesData> => {
 // 캐싱된 데이터 로드 함수 (unstable_cache + 모듈 레벨 캐시)
 export const loadBalanceData = unstable_cache(fetchBalanceData, ['balance-data'], {
   revalidate: 3600,
+  tags: ['balance-data'],
 });
 
 export const loadPatchNotesData = unstable_cache(fetchPatchNotesData, ['patch-notes-data'], {
   revalidate: 3600,
+  tags: ['patch-notes-data'],
 });
 
 // 순수 함수: 패치 버전 추출 (제목에서)
