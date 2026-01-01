@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { adminAuth, db } from '@/lib/firebase-admin';
 import { clearBalanceDataCache } from '@/lib/patch-data';
 import type { PatchEntry, Change, ChangeType } from '@/types/patch';
@@ -244,6 +244,7 @@ export async function PATCH(
 
     // 캐시 무효화
     clearBalanceDataCache();
+    revalidateTag('balance-data', 'max');
     revalidatePath(`/admin/character/${encodeURIComponent(characterName)}`);
     revalidatePath(`/character/${encodeURIComponent(characterName)}`);
     revalidatePath('/admin');
