@@ -23,15 +23,17 @@ export default function CharacterImage({
 }: Props): React.ReactElement {
   const [imageError, setImageError] = useState(false);
   const imagePath = getCharacterImagePathByKorean(name);
-  const hasImage = imagePath && !imageError;
   const initial = name.charAt(0);
   const { container, text } = sizeMap[size];
+
+  // 서버/클라이언트 초기 렌더링 일치를 위해 항상 이미지 시도
+  const showImage = imagePath && !imageError;
 
   return (
     <div
       className={`relative shrink-0 overflow-hidden rounded-xl border border-[#2a2d35] bg-[#1a1d24] ${container} ${className}`}
     >
-      {hasImage ? (
+      {showImage ? (
         <Image
           src={imagePath}
           alt={name}
@@ -39,6 +41,7 @@ export default function CharacterImage({
           sizes={size === 'lg' ? '112px' : size === 'md' ? '80px' : '48px'}
           className="object-cover"
           onError={() => setImageError(true)}
+          priority={size === 'lg'}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-violet-500/20 to-cyan-500/20">

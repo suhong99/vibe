@@ -127,12 +127,11 @@ export const getChangeTypeBgColor = (type: ChangeType): string => {
   return colors[type];
 };
 
-// 순수 함수: 날짜 포맷팅
+// 순수 함수: 날짜 포맷팅 (서버/클라이언트 일관성을 위해 수동 포맷)
 export const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${year}년 ${month}월 ${day}일`;
 };
