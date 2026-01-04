@@ -46,14 +46,11 @@ async function updatePatchNoteValidation(
   hasCharacterData: boolean
 ): Promise<void> {
   const db = initFirebaseAdmin();
-  await db
-    .collection('patchNotes')
-    .doc(id.toString())
-    .update({
-      status,
-      hasCharacterData,
-      validatedAt: new Date().toISOString(),
-    });
+  await db.collection('patchNotes').doc(id.toString()).update({
+    status,
+    hasCharacterData,
+    validatedAt: new Date().toISOString(),
+  });
 }
 
 async function validateLinks(): Promise<void> {
@@ -78,6 +75,13 @@ async function validateLinks(): Promise<void> {
   await page.setUserAgent(
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   );
+
+  // 한국어 페이지 렌더링을 위한 쿠키 설정
+  await page.setCookie({
+    name: 'locale',
+    value: 'ko_KR',
+    domain: 'playeternalreturn.com',
+  });
 
   let successCount = 0;
   let failedCount = 0;

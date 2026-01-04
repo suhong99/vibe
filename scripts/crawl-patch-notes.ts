@@ -84,6 +84,13 @@ async function crawlNewPatchNotes(existingIds: Set<number>): Promise<{
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   );
 
+  // 한국어 페이지 렌더링을 위한 쿠키 설정
+  await page.setCookie({
+    name: 'locale',
+    value: 'ko_KR',
+    domain: 'playeternalreturn.com',
+  });
+
   // 첫 페이지 로드 (쿠키/세션 설정용)
   console.log('패치노트 목록 페이지 접속...');
   await page.goto('https://playeternalreturn.com/posts/news?categoryPath=patchnote', {

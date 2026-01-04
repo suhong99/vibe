@@ -570,7 +570,7 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
         }
 
         // ul 요소 처리 - 최상위 ul만 처리 (content.children으로 필터링됨)
-        if (el.tagName === 'UL' && currentCharName) {
+        if (el.tagName === 'UL') {
           const topLevelLis = el.querySelectorAll(':scope > li');
 
           // 수치 변경 패턴: stat before → after
@@ -579,7 +579,7 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
           for (let i = 0; i < topLevelLis.length; i++) {
             const topLi = topLevelLis[i];
 
-            // topLi의 첫 p > span 텍스트
+            // topLi의 첫 p > span 텍스트 (P가 없으면 직접 span 찾기)
             const firstP = topLi.querySelector(':scope > p');
             let headerText = '';
             if (firstP) {
@@ -587,7 +587,92 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
               if (span) {
                 headerText = span.textContent?.replace(/\s+/g, ' ').trim() || '';
               }
+            } else {
+              // P 태그 없이 span이 직접 있는 경우 (일부 핫픽스 구조)
+              const directSpan = topLi.querySelector(':scope > span');
+              if (directSpan) {
+                headerText = directSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+              }
             }
+
+            // 핫픽스 구조: UL > LI > P 안에 캐릭터명이 있을 수 있음
+            // 캐릭터명 확인 (p > span > strong 구조이고, 한글 이름인 경우)
+            if (firstP) {
+              const strong = firstP.querySelector('span > strong');
+              if (strong) {
+                const strongText = strong.textContent?.trim() || '';
+                const span = firstP.querySelector('span');
+                const spanText = span?.textContent?.trim() || '';
+
+                // 캐릭터명 조건: span과 strong 텍스트가 같고, 한글이고, 섹션 제목이 아님
+                if (
+                  spanText === strongText &&
+                  /^[가-힣&\s]+$/.test(strongText) &&
+                  ![
+                    '실험체',
+                    '무기',
+                    '아이템',
+                    '시스템',
+                    '특성',
+                    '코발트 프로토콜',
+                    '론울프',
+                    '옷',
+                    '팔/장식',
+                    '머리',
+                    '다리',
+                    '악세서리',
+                  ].includes(strongText)
+                ) {
+                  // 이전 캐릭터 저장
+                  if (currentCharName && currentChanges.length > 0) {
+                    results.push({
+                      name: currentCharName,
+                      nameEn: currentCharName,
+                      devComment: currentDevComment.length > 0 ? currentDevComment.join(' ') : null,
+                      changes: currentChanges,
+                    });
+                  }
+                  // 새 캐릭터 시작
+                  currentCharName = strongText;
+                  currentDevComment = [];
+                  currentChanges = [];
+                  currentTarget = '기본 스탯';
+
+                  // 이 LI의 하위 UL에서 변경사항 파싱
+                  const nestedUl = topLi.querySelector(':scope > ul');
+                  if (nestedUl) {
+                    const nestedLis = nestedUl.querySelectorAll(':scope > li');
+                    for (let k = 0; k < nestedLis.length; k++) {
+                      const nestedLi = nestedLis[k];
+                      const nestedP = nestedLi.querySelector(':scope > p');
+                      if (nestedP) {
+                        const nestedSpan = nestedP.querySelector('span');
+                        if (nestedSpan) {
+                          const nestedText =
+                            nestedSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+                          if (nestedText && nestedText.includes('→')) {
+                            const numMatch = nestedText.match(numericPattern);
+                            if (numMatch) {
+                              currentChanges.push({
+                                _type: 'numeric',
+                                target: currentTarget,
+                                stat: numMatch[1].trim(),
+                                before: numMatch[2].trim(),
+                                after: numMatch[3].trim(),
+                              });
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  continue; // 다음 LI로
+                }
+              }
+            }
+
+            // 기존 로직: currentCharName이 있을 때만 변경사항 처리
+            if (!currentCharName) continue;
 
             // 스킬 헤더 확인 (예: "제압부(Q)", "절단 베기(쌍검 E)", "모노호시자오(R) - 츠바메가에시(R2)")
             // 무기 스킬 패턴 포함: "스킬명(무기명 Q)" 형태
@@ -635,53 +720,59 @@ async function parsePatchNote(page: Page, url: string): Promise<ParsedCharacter[
             for (let j = 0; j < allDescendantLis.length; j++) {
               const descLi = allDescendantLis[j];
               const descP = descLi.querySelector(':scope > p');
+              let descSpan: Element | null = null;
+
               if (descP) {
-                const descSpan = descP.querySelector('span');
-                if (descSpan) {
-                  const descText = descSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
-                  if (!descText || descText.length < 5) continue;
+                descSpan = descP.querySelector('span');
+              } else {
+                // P 태그 없이 span이 직접 있는 경우
+                descSpan = descLi.querySelector(':scope > span');
+              }
 
-                  // 스킬 헤더 확인 (서브 li에서도 스킬 헤더가 나올 수 있음, 무기 스킬 포함)
-                  const subSkillMatch = descText.match(
-                    /^([^→]+\((?:[가-힣A-Za-z\s-]*)?[QWERP패시브]\d?\)(?:\s*-\s*[^→]+\([QWERP]\d?\))?)/
-                  );
-                  if (
-                    subSkillMatch &&
-                    !descText.includes('→') &&
-                    descText === subSkillMatch[0].trim()
-                  ) {
-                    currentTarget = subSkillMatch[0].trim();
-                    continue;
-                  }
+              if (descSpan) {
+                const descText = descSpan.textContent?.replace(/\s+/g, ' ').trim() || '';
+                if (!descText || descText.length < 5) continue;
 
-                  // 스킬 헤더만 있는 경우 제외 (무기 스킬 패턴 포함)
-                  const isDescSkillHeader =
-                    /^[^(→]+\([QWERP]\)$/.test(descText) ||
-                    /^[^(→]+\([가-힣A-Za-z\s-]+[QWERP]\d?\)$/.test(descText) ||
-                    /^[^(→]+\(패시브\)$/.test(descText) ||
-                    /^[^(→]+\([QWERP]\)\s*-\s*[^(→]+\([QWERP]\d?\)$/.test(descText);
+                // 스킬 헤더 확인 (서브 li에서도 스킬 헤더가 나올 수 있음, 무기 스킬 포함)
+                const subSkillMatch = descText.match(
+                  /^([^→]+\((?:[가-힣A-Za-z\s-]*)?[QWERP패시브]\d?\)(?:\s*-\s*[^→]+\([QWERP]\d?\))?)/
+                );
+                if (
+                  subSkillMatch &&
+                  !descText.includes('→') &&
+                  descText === subSkillMatch[0].trim()
+                ) {
+                  currentTarget = subSkillMatch[0].trim();
+                  continue;
+                }
 
-                  if (!isDescSkillHeader) {
-                    if (descText.includes('→')) {
-                      const descNumMatch = descText.match(numericPattern);
-                      if (descNumMatch) {
-                        currentChanges.push({
-                          _type: 'numeric',
-                          target: currentTarget,
-                          stat: descNumMatch[1].trim(),
-                          before: descNumMatch[2].trim(),
-                          after: descNumMatch[3].trim(),
-                        });
-                      }
-                    } else if (descText.length > 10) {
+                // 스킬 헤더만 있는 경우 제외 (무기 스킬 패턴 포함)
+                const isDescSkillHeader =
+                  /^[^(→]+\([QWERP]\)$/.test(descText) ||
+                  /^[^(→]+\([가-힣A-Za-z\s-]+[QWERP]\d?\)$/.test(descText) ||
+                  /^[^(→]+\(패시브\)$/.test(descText) ||
+                  /^[^(→]+\([QWERP]\)\s*-\s*[^(→]+\([QWERP]\d?\)$/.test(descText);
+
+                if (!isDescSkillHeader) {
+                  if (descText.includes('→')) {
+                    const descNumMatch = descText.match(numericPattern);
+                    if (descNumMatch) {
                       currentChanges.push({
-                        _type: 'description',
+                        _type: 'numeric',
                         target: currentTarget,
-                        description: descText,
-                        isNew: descText.includes('(신규)') || /신규[^가-힣]/.test(descText),
-                        isRemoved: descText.includes('(삭제)') || descText.includes('삭제됩니다'),
+                        stat: descNumMatch[1].trim(),
+                        before: descNumMatch[2].trim(),
+                        after: descNumMatch[3].trim(),
                       });
                     }
+                  } else if (descText.length > 10) {
+                    currentChanges.push({
+                      _type: 'description',
+                      target: currentTarget,
+                      description: descText,
+                      isNew: descText.includes('(신규)') || /신규[^가-힣]/.test(descText),
+                      isRemoved: descText.includes('(삭제)') || descText.includes('삭제됩니다'),
+                    });
                   }
                 }
               }
@@ -986,6 +1077,12 @@ async function main(): Promise<void> {
     const page: Page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 1080 });
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+    // 한국어 페이지 렌더링을 위한 쿠키 설정
+    await page.setCookie({
+      name: 'locale',
+      value: 'ko_KR',
+      domain: 'playeternalreturn.com',
+    });
 
     const url = `https://playeternalreturn.com/posts/news/${testPatchId}`;
     console.log(`패치 ID: ${testPatchId}`);
@@ -1060,6 +1157,12 @@ async function main(): Promise<void> {
   await page.setUserAgent(
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
   );
+  // 한국어 페이지 렌더링을 위한 쿠키 설정
+  await page.setCookie({
+    name: 'locale',
+    value: 'ko_KR',
+    domain: 'playeternalreturn.com',
+  });
 
   const affectedCharacters = new Set<string>();
 
