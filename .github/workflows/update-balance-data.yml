@@ -41,6 +41,8 @@ jobs:
       - name: Crawl patch notes
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
         run: npx tsx scripts/crawl-patch-notes.ts
 
       - name: Validate links
@@ -51,4 +53,6 @@ jobs:
       - name: Parse balance changes
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
         run: npx tsx scripts/parse-balance-changes.ts

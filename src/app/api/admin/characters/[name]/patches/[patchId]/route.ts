@@ -245,6 +245,7 @@ export async function PATCH(
     // 캐시 무효화
     clearBalanceDataCache();
     revalidateTag('balance-data', 'max');
+    revalidateTag('patch-notes-data', 'max');
     revalidatePath(`/admin/character/${encodeURIComponent(characterName)}`);
     revalidatePath(`/character/${encodeURIComponent(characterName)}`);
     revalidatePath('/admin');
