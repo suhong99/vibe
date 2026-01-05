@@ -81,7 +81,7 @@ export const SEASONS: Season[] = [
   {
     number: 9,
     name: 'Season 9',
-    nameKo: '시즌 9',
+    nameKo: '마츠리',
     startPatch: '9.0',
     startDate: '2025-10-16',
     endPatch: null,
