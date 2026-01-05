@@ -1,5 +1,6 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { initFirebaseAdmin } from './lib/firebase-admin';
+import { triggerRevalidation } from './lib/revalidate';
 
 type PatchNote = {
   id: number;
@@ -223,6 +224,11 @@ async function main(): Promise<void> {
 
     console.log(`\n총 패치노트: ${totalCount}개`);
     console.log('Firestore 저장 완료!');
+
+    // 신규 패치가 있으면 배포된 사이트 캐시 무효화
+    if (newPatchNotes.length > 0) {
+      await triggerRevalidation();
+    }
   } catch (error) {
     console.error('크롤링 중 오류 발생:', error);
     process.exit(1);

@@ -1,5 +1,6 @@
 import puppeteer, { Browser, Page } from 'puppeteer';
 import { initFirebaseAdmin } from './lib/firebase-admin';
+import { triggerRevalidation } from './lib/revalidate';
 
 // ============================================
 // 타입 정의
@@ -1267,6 +1268,9 @@ async function main(): Promise<void> {
       console.log(`${i + 1}. ${char.name}: ${emoji} ${streak.count}연속 ${streak.type}`);
     });
   }
+
+  // 배포된 사이트 캐시 무효화
+  await triggerRevalidation();
 }
 
 main().catch(console.error);
