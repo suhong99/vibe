@@ -15,6 +15,14 @@ export type Season = {
 
 export const SEASONS: Season[] = [
   {
+    number: 0,
+    name: 'Early Access',
+    nameKo: 'EA',
+    startPatch: '0.1',
+    startDate: '2020-01-01',
+    endPatch: '0.89',
+  },
+  {
     number: 1,
     name: 'Vacation',
     nameKo: '휴가',
@@ -187,6 +195,9 @@ export function getAllSeasonNumbers(): number[] {
  * 시즌 표시 문자열 생성
  */
 export function formatSeasonLabel(season: Season): string {
+  if (season.number === 0) {
+    return season.nameKo; // EA
+  }
   return `S${season.number} ${season.nameKo}`;
 }
 
