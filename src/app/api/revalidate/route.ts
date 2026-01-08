@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
-import { clearBalanceDataCache, clearPatchNotesDataCache } from '@/lib/patch-data';
 
 type RevalidateRequest = {
   secret: string;
@@ -17,11 +16,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
     }
 
-    // 모듈 레벨 캐시 초기화
-    clearBalanceDataCache();
-    clearPatchNotesDataCache();
-
-    // 태그 기반 캐시 무효화
+    // 태그 기반 캐시 무효화 (unstable_cache 캐시 무효화)
     const tags = body.tags ?? ['balance-data', 'patch-notes-data'];
     for (const tag of tags) {
       revalidateTag(tag, 'max');

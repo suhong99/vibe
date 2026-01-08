@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { adminAuth, db } from '@/lib/firebase-admin';
-import { clearBalanceDataCache } from '@/lib/patch-data';
 import type { PatchEntry, Change, ChangeType } from '@/types/patch';
 
 type ChangeCategory = 'numeric' | 'mechanic' | 'added' | 'removed' | 'unknown';
@@ -242,14 +241,15 @@ export async function PATCH(
       stats: charData.stats,
     });
 
-    // 캐시 무효화
-    clearBalanceDataCache();
+    // 태그 기반 캐시 무효화 (unstable_cache 캐시 무효화)
     revalidateTag('balance-data', 'max');
     revalidateTag('patch-notes-data', 'max');
-    revalidatePath(`/admin/character/${encodeURIComponent(characterName)}`);
-    revalidatePath(`/character/${encodeURIComponent(characterName)}`);
-    revalidatePath('/admin');
+
+    // 경로 기반 캐시 무효화 (전체 페이지)
     revalidatePath('/');
+    revalidatePath('/admin');
+    revalidatePath('/character/[name]', 'page');
+    revalidatePath('/admin/character/[name]', 'page');
 
     return NextResponse.json({
       success: true,

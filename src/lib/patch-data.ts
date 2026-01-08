@@ -8,26 +8,8 @@ import type {
   PatchNote,
 } from '@/types/patch';
 
-// 빌드 시 모듈 레벨 캐시 (같은 프로세스 내에서 재사용)
-let balanceDataCache: BalanceChangesData | null = null;
-let patchNotesDataCache: PatchNotesData | null = null;
-
-// 캐시 초기화 함수 (관리자 수정 후 호출)
-export const clearBalanceDataCache = (): void => {
-  balanceDataCache = null;
-};
-
-export const clearPatchNotesDataCache = (): void => {
-  patchNotesDataCache = null;
-};
-
-// 내부 함수: 밸런스 데이터 fetch (모듈 레벨 캐싱)
+// 내부 함수: 밸런스 데이터 fetch (Firebase에서 직접 조회)
 const fetchBalanceData = async (): Promise<BalanceChangesData> => {
-  // 이미 캐시된 데이터가 있으면 반환
-  if (balanceDataCache) {
-    return balanceDataCache;
-  }
-
   // 메타데이터 조회
   const metadataDoc = await db.collection('metadata').doc('balanceChanges').get();
   const metadata = metadataDoc.data();
@@ -41,21 +23,14 @@ const fetchBalanceData = async (): Promise<BalanceChangesData> => {
     characters[data.name] = data;
   });
 
-  balanceDataCache = {
+  return {
     updatedAt: metadata?.updatedAt ?? new Date().toISOString(),
     characters,
   };
-
-  return balanceDataCache;
 };
 
-// 내부 함수: 패치노트 데이터 fetch (모듈 레벨 캐싱)
+// 내부 함수: 패치노트 데이터 fetch (Firebase에서 직접 조회)
 const fetchPatchNotesData = async (): Promise<PatchNotesData> => {
-  // 이미 캐시된 데이터가 있으면 반환
-  if (patchNotesDataCache) {
-    return patchNotesDataCache;
-  }
-
   // 메타데이터 조회
   const metadataDoc = await db.collection('metadata').doc('patchNotes').get();
   const metadata = metadataDoc.data();
@@ -68,16 +43,14 @@ const fetchPatchNotesData = async (): Promise<PatchNotesData> => {
     patchNotes.push(doc.data() as PatchNote);
   });
 
-  patchNotesDataCache = {
+  return {
     crawledAt: metadata?.crawledAt ?? new Date().toISOString(),
     totalCount: metadata?.totalCount ?? patchNotes.length,
     patchNotes,
   };
-
-  return patchNotesDataCache;
 };
 
-// 캐싱된 데이터 로드 함수 (unstable_cache + 모듈 레벨 캐시)
+// 캐싱된 데이터 로드 함수 (unstable_cache로 캐싱, revalidateTag로 무효화)
 export const loadBalanceData = unstable_cache(fetchBalanceData, ['balance-data'], {
   revalidate: 3600,
   tags: ['balance-data'],
