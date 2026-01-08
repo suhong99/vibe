@@ -8,7 +8,6 @@ import FilterSort from './FilterSort';
 
 type Props = {
   characters: Character[];
-  updatedAt: string;
 };
 
 // 순수 함수: 상태 초기값 생성
@@ -19,7 +18,7 @@ const createInitialState = () => ({
   search: '',
 });
 
-export default function CharacterList({ characters, updatedAt }: Props): React.ReactElement {
+export default function CharacterList({ characters }: Props): React.ReactElement {
   const [state, setState] = useState(createInitialState);
 
   // 함수형 상태 업데이트
@@ -63,14 +62,6 @@ export default function CharacterList({ characters, updatedAt }: Props): React.R
     [updateState]
   );
 
-  const formattedDate = new Date(updatedAt).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
   return (
     <div>
       {/* 헤더 정보 */}
@@ -100,17 +91,6 @@ export default function CharacterList({ characters, updatedAt }: Props): React.R
             </p>
             <p className="text-xs text-zinc-500">실험체 데이터</p>
           </div>
-        </div>
-        <div className="flex items-center gap-2 text-xs text-zinc-500">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          {formattedDate}
         </div>
       </div>
 

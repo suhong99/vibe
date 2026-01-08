@@ -119,7 +119,7 @@ export default async function Home(): Promise<React.ReactElement> {
           <h2 id="character-list-heading" className="sr-only">
             실험체 목록
           </h2>
-          <CharacterList characters={characters} updatedAt={data.updatedAt} />
+          <CharacterList characters={characters} />
         </section>
       </main>
     </div>

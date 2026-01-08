@@ -219,8 +219,9 @@ export default async function CharacterPage({ params }: Props): Promise<React.Re
                         {formatSeasonLabel(season)}
                       </h3>
                       <p className="text-xs text-zinc-500">
-                        {patches.length}개 패치 · {season.startDate} ~{' '}
-                        {getSeasonEndDate(season) ?? '현재'}
+                        {patches.length}개 패치
+                        {season.number !== 0 &&
+                          ` · ${season.startDate} ~ ${getSeasonEndDate(season) ?? '현재'}`}
                       </p>
                     </div>
                   </div>
