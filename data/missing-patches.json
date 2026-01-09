@@ -1,0 +1,2187 @@
+{
+  "checkedAt": "2026-01-09T18:35:36.873Z",
+  "totalPatchesChecked": 126,
+  "totalMissing": 84,
+  "missingByPatch": {
+    "1328": {
+      "patchTitle": "2023.08.03 - 1.1 패치노트",
+      "patchDate": "2023-08-02",
+      "missingCharacters": [
+        "시셀라"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "니키",
+        "데비&마를렌",
+        "띠아",
+        "레녹스",
+        "레온",
+        "루크",
+        "리 다이린",
+        "마르티나",
+        "마이",
+        "마커스",
+        "바냐",
+        "바바라",
+        "버니스",
+        "비앙카",
+        "셀린",
+        "쇼우",
+        "쇼이치",
+        "수아",
+        "아드리아나",
+        "아디나",
+        "아야",
+        "아이작",
+        "알렉스",
+        "얀",
+        "에스텔",
+        "에이든",
+        "에키온",
+        "엠마",
+        "요한",
+        "이렘",
+        "이바",
+        "이안",
+        "자히르",
+        "재키",
+        "제니",
+        "카밀로",
+        "칼라",
+        "클로에",
+        "키아라",
+        "테오도르",
+        "펠릭스",
+        "피오라",
+        "피올로",
+        "하트",
+        "헤이즈",
+        "현우",
+        "혜진"
+      ]
+    },
+    "1447": {
+      "patchTitle": "[추가됨] 2023.09.26 - 1.5 패치노트",
+      "patchDate": "2023-09-25",
+      "missingCharacters": [
+        "얀"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "다니엘",
+        "데비&마를렌",
+        "띠아",
+        "라우라",
+        "리 다이린",
+        "마이",
+        "마커스",
+        "매그너스",
+        "쇼우",
+        "수아",
+        "아델라",
+        "아드리아나",
+        "아르다",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "아이작",
+        "알렉스",
+        "에스텔",
+        "에키온",
+        "엘레나",
+        "엠마",
+        "요한",
+        "이렘",
+        "일레븐",
+        "자히르",
+        "재키",
+        "칼라",
+        "캐시",
+        "키아라",
+        "테오도르",
+        "프리야",
+        "피오라",
+        "헤이즈",
+        "현우",
+        "혜진"
+      ]
+    },
+    "1515": {
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "missingCharacters": [
+        "나타폰",
+        "데비&마를렌",
+        "버니스",
+        "이안",
+        "혜진"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "로지",
+        "리오",
+        "비앙카",
+        "셀린",
+        "쇼우",
+        "쇼이치",
+        "수아",
+        "시셀라",
+        "아드리아나",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "아이작",
+        "알론소",
+        "에스텔",
+        "에이든",
+        "윌리엄",
+        "유키",
+        "이렘",
+        "이바",
+        "일레븐",
+        "자히르",
+        "재키",
+        "카밀로",
+        "클로에",
+        "키아라",
+        "타지아",
+        "펠릭스",
+        "프리야",
+        "피올로",
+        "하트",
+        "현우"
+      ]
+    },
+    "1545": {
+      "patchTitle": "2023.11.09 - 1.8 패치노트",
+      "patchDate": "2023-11-08",
+      "missingCharacters": [
+        "이안"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "띠아",
+        "라우라",
+        "루크",
+        "리 다이린",
+        "마르티나",
+        "마이",
+        "마커스",
+        "바바라",
+        "아르다",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "에스텔",
+        "유키",
+        "일레븐",
+        "칼라",
+        "타지아",
+        "프리야",
+        "피오라",
+        "헤이즈",
+        "혜진"
+      ]
+    },
+    "1612": {
+      "patchTitle": "2023.12.07 - 1.10 패치노트",
+      "patchDate": "2023-12-06",
+      "missingCharacters": [
+        "실비아"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "니키",
+        "데비&마를렌",
+        "리 다이린",
+        "리오",
+        "마르티나",
+        "마커스",
+        "매그너스",
+        "바냐",
+        "버니스",
+        "쇼우",
+        "시셀라",
+        "아드리아나",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "알렉스",
+        "알론소",
+        "얀",
+        "에이든",
+        "에키온",
+        "엠마",
+        "요한",
+        "유키",
+        "재키",
+        "제니",
+        "칼라",
+        "캐시",
+        "클로에",
+        "키아라",
+        "테오도르",
+        "피오라",
+        "헤이즈",
+        "현우",
+        "혜진"
+      ]
+    },
+    "1633": {
+      "patchTitle": "2023.12.21 - 1.11 패치노트",
+      "patchDate": "2023-12-20",
+      "missingCharacters": [
+        "현우"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니키",
+        "라우라",
+        "레니",
+        "레온",
+        "리 다이린",
+        "리오",
+        "마르티나",
+        "마이",
+        "마커스",
+        "바냐",
+        "버니스",
+        "비앙카",
+        "셀린",
+        "쇼우",
+        "시셀라",
+        "아르다",
+        "아이솔",
+        "아이작",
+        "요한",
+        "유키",
+        "자히르",
+        "재키",
+        "츠바메",
+        "카밀로",
+        "하트"
+      ]
+    },
+    "1673": {
+      "patchTitle": "[수정됨] 2024.01.18 - 1.13 패치노트",
+      "patchDate": "2024-01-17",
+      "missingCharacters": [
+        "얀"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "다니엘",
+        "데비&마를렌",
+        "띠아",
+        "라우라",
+        "레온",
+        "마르티나",
+        "마이",
+        "마커스",
+        "매그너스",
+        "바냐",
+        "쇼우",
+        "수아",
+        "실비아",
+        "아델라",
+        "아드리아나",
+        "아디나",
+        "아르다",
+        "아비게일",
+        "알렉스",
+        "알론소",
+        "엘레나",
+        "요한",
+        "윌리엄",
+        "이안",
+        "츠바메",
+        "칼라",
+        "타지아",
+        "테오도르",
+        "피오라",
+        "혜진"
+      ]
+    },
+    "1698": {
+      "patchTitle": "2024.02.01 - 1.14 패치노트",
+      "patchDate": "2024-01-31",
+      "missingCharacters": [
+        "타지아"
+      ],
+      "foundCharacters": [
+        "다니엘",
+        "데비&마를렌",
+        "띠아",
+        "레녹스",
+        "레온",
+        "루크",
+        "리 다이린",
+        "마르티나",
+        "마커스",
+        "매그너스",
+        "버니스",
+        "아드리아나",
+        "아야",
+        "아이솔",
+        "알론소",
+        "에키온",
+        "이렘",
+        "이바",
+        "이안",
+        "츠바메",
+        "케네스",
+        "펠릭스",
+        "피오라",
+        "피올로",
+        "헤이즈",
+        "현우"
+      ]
+    },
+    "1727": {
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "missingCharacters": [
+        "로지",
+        "리오",
+        "바바라",
+        "아르다",
+        "아이솔",
+        "칼라",
+        "클로에"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "니키",
+        "레온",
+        "버니스",
+        "쇼이치",
+        "아야",
+        "유키",
+        "이바",
+        "캐시",
+        "프리야",
+        "피오라"
+      ]
+    },
+    "1741": {
+      "patchTitle": "1.15b 핫픽스",
+      "patchDate": "2024-02-16",
+      "missingCharacters": [
+        "리오"
+      ],
+      "foundCharacters": [
+        "제니"
+      ]
+    },
+    "1812": {
+      "patchTitle": "2024.03.28 - 1.18 패치노트",
+      "patchDate": "2024-03-27",
+      "missingCharacters": [
+        "엠마"
+      ],
+      "foundCharacters": [
+        "니키",
+        "레녹스",
+        "레니",
+        "로지",
+        "마르티나",
+        "쇼우",
+        "쇼이치",
+        "아드리아나",
+        "아야",
+        "아이솔",
+        "아이작",
+        "알렉스",
+        "알론소",
+        "에스텔",
+        "에이든",
+        "에키온",
+        "엘레나",
+        "유키",
+        "이렘",
+        "이바",
+        "이안",
+        "일레븐",
+        "카밀로",
+        "카티야",
+        "칼라",
+        "캐시",
+        "케네스",
+        "클로에",
+        "피오라"
+      ]
+    },
+    "1868": {
+      "patchTitle": "2024.04.25 - 1.20 패치노트",
+      "patchDate": "2024-04-24",
+      "missingCharacters": [
+        "마르티나"
+      ],
+      "foundCharacters": [
+        "니키",
+        "데비&마를렌",
+        "라우라",
+        "레온",
+        "로지",
+        "루크",
+        "리오",
+        "마이",
+        "버니스",
+        "샬럿",
+        "셀린",
+        "쇼우",
+        "쇼이치",
+        "수아",
+        "시셀라",
+        "실비아",
+        "아델라",
+        "아드리아나",
+        "아디나",
+        "아르다",
+        "아비게일",
+        "아이솔",
+        "아이작",
+        "알론소",
+        "얀",
+        "에키온",
+        "엘레나",
+        "엠마",
+        "윌리엄",
+        "이렘",
+        "이안",
+        "칼라",
+        "캐시",
+        "케네스",
+        "클로에",
+        "키아라",
+        "타지아",
+        "테오도르",
+        "펠릭스",
+        "피오라",
+        "피올로",
+        "하트",
+        "현우"
+      ]
+    },
+    "1920": {
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "missingCharacters": [
+        "매그너스",
+        "얀",
+        "에이든",
+        "요한",
+        "윌리엄",
+        "일레븐",
+        "재키",
+        "카밀로",
+        "카티야",
+        "케네스",
+        "테오도르",
+        "프리야"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니키",
+        "다니엘",
+        "데비&마를렌",
+        "라우라",
+        "레녹스",
+        "로지",
+        "루크",
+        "리 다이린",
+        "리오",
+        "마르티나",
+        "마커스",
+        "바냐",
+        "바바라",
+        "버니스",
+        "비앙카",
+        "쇼이치",
+        "아드리아나",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "아이작",
+        "알렉스",
+        "에스텔",
+        "엘레나",
+        "자히르",
+        "츠바메",
+        "칼라",
+        "캐시",
+        "클로에",
+        "키아라",
+        "타지아",
+        "하트",
+        "현우",
+        "혜진"
+      ]
+    },
+    "1942": {
+      "patchTitle": "2024.05.30 - 1.22.1 패치노트",
+      "patchDate": "2024-05-29",
+      "missingCharacters": [
+        "엠마"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "띠아",
+        "매그너스",
+        "바바라",
+        "버니스",
+        "셀린",
+        "쇼우",
+        "쇼이치",
+        "아델라",
+        "아드리아나",
+        "아이작",
+        "알론소",
+        "얀",
+        "유키",
+        "이안",
+        "일레븐",
+        "제니",
+        "츠바메",
+        "카티야",
+        "캐시",
+        "케네스",
+        "키아라",
+        "타지아",
+        "프리야",
+        "피오라",
+        "혜진"
+      ]
+    },
+    "1954": {
+      "patchTitle": "2024.06.05 - 1.23 패치노트",
+      "patchDate": "2024-06-04",
+      "missingCharacters": [],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니키",
+        "레온",
+        "리 다이린",
+        "리오",
+        "마이",
+        "마커스",
+        "버니스",
+        "비앙카",
+        "샬럿",
+        "셀린",
+        "실비아",
+        "아야",
+        "아이작",
+        "알론소",
+        "얀",
+        "에이든",
+        "엘레나",
+        "유키",
+        "이바",
+        "자히르",
+        "재키",
+        "제니",
+        "츠바메",
+        "카밀로",
+        "카티야",
+        "칼라",
+        "캐시",
+        "클로에",
+        "타지아",
+        "피오라",
+        "하트",
+        "현우"
+      ]
+    },
+    "1967": {
+      "patchTitle": "1.23a 핫픽스",
+      "patchDate": "2024-06-06",
+      "missingCharacters": [
+        "다르코",
+        "아드리아나",
+        "아이솔"
+      ],
+      "foundCharacters": [
+        "헤이즈"
+      ]
+    },
+    "1983": {
+      "patchTitle": "2024.06.20 - 1.24 패치노트",
+      "patchDate": "2024-06-19",
+      "missingCharacters": [
+        "다르코"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니키",
+        "띠아",
+        "레녹스",
+        "레온",
+        "로지",
+        "루크",
+        "리오",
+        "마르티나",
+        "매그너스",
+        "버니스",
+        "쇼우",
+        "아야",
+        "아이작",
+        "알론소",
+        "얀",
+        "에스텔",
+        "윌리엄",
+        "유키",
+        "이렘",
+        "이바",
+        "일레븐",
+        "재키",
+        "츠바메",
+        "카밀로",
+        "카티야",
+        "클로에",
+        "키아라",
+        "타지아",
+        "테오도르",
+        "펠릭스",
+        "프리야",
+        "피올로",
+        "하트",
+        "현우"
+      ]
+    },
+    "2025": {
+      "patchTitle": "1.25b 핫픽스",
+      "patchDate": "2024-07-09",
+      "missingCharacters": [
+        "쇼이치"
+      ],
+      "foundCharacters": [
+        "버니스"
+      ]
+    },
+    "2132": {
+      "patchTitle": "2024.08.29 - 1.29 패치노트",
+      "patchDate": "2024-08-28",
+      "missingCharacters": [
+        "버니스",
+        "이안",
+        "하트"
+      ],
+      "foundCharacters": [
+        "다니엘",
+        "데비&마를렌",
+        "띠아",
+        "라우라",
+        "레니",
+        "로지",
+        "루크",
+        "르노어",
+        "리오",
+        "마르티나",
+        "매그너스",
+        "바냐",
+        "바바라",
+        "샬럿",
+        "쇼이치",
+        "수아",
+        "실비아",
+        "아디나",
+        "아르다",
+        "아야",
+        "알렉스",
+        "알론소",
+        "에이든",
+        "에키온",
+        "엠마",
+        "요한",
+        "윌리엄",
+        "이바",
+        "자히르",
+        "제니",
+        "칼라",
+        "클로에",
+        "키아라",
+        "테오도르",
+        "프리야",
+        "피올로",
+        "헤이즈",
+        "혜진"
+      ]
+    },
+    "2237": {
+      "patchTitle": "2024.10.10 - 1.32 패치노트",
+      "patchDate": "2024-10-09",
+      "missingCharacters": [
+        "마커스"
+      ],
+      "foundCharacters": [
+        "가넷",
+        "니키",
+        "다니엘",
+        "띠아",
+        "마이",
+        "바냐",
+        "비앙카",
+        "쇼우",
+        "쇼이치",
+        "아델라",
+        "아비게일",
+        "아야",
+        "에키온",
+        "유키",
+        "일레븐",
+        "재키",
+        "카밀로",
+        "타지아",
+        "프리야",
+        "피오라",
+        "헤이즈",
+        "현우",
+        "혜진"
+      ]
+    },
+    "2364": {
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "missingCharacters": [
+        "니키",
+        "리 다이린",
+        "바냐",
+        "셀린",
+        "아델라",
+        "얀",
+        "엘레나",
+        "윌리엄",
+        "펠릭스"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "데비&마를렌",
+        "띠아",
+        "레니",
+        "레온",
+        "로지",
+        "루크",
+        "마르티나",
+        "마이",
+        "바바라",
+        "버니스",
+        "실비아",
+        "아르다",
+        "아비게일",
+        "아이작",
+        "요한",
+        "유키",
+        "이바",
+        "이안",
+        "자히르",
+        "재키",
+        "츠바메",
+        "카밀로",
+        "카티야",
+        "칼라",
+        "클로에",
+        "테오도르",
+        "프리야",
+        "피오라",
+        "피올로",
+        "헤이즈"
+      ]
+    },
+    "2450": {
+      "patchTitle": "2025.01.16 - 1.39 패치노트",
+      "patchDate": "2025-01-15",
+      "missingCharacters": [
+        "아이작",
+        "히스이"
+      ],
+      "foundCharacters": [
+        "가넷",
+        "나딘",
+        "나타폰",
+        "다니엘",
+        "띠아",
+        "로지",
+        "루크",
+        "리 다이린",
+        "마르티나",
+        "마이",
+        "마커스",
+        "바냐",
+        "바바라",
+        "셀린",
+        "실비아",
+        "아델라",
+        "아디나",
+        "아르다",
+        "아이솔",
+        "알론소",
+        "얀",
+        "에스텔",
+        "에키온",
+        "엘레나",
+        "엠마",
+        "유키",
+        "제니",
+        "카밀로",
+        "카티야",
+        "캐시",
+        "케네스",
+        "클로에",
+        "키아라",
+        "프리야",
+        "하트",
+        "현우"
+      ]
+    },
+    "2585": {
+      "patchTitle": "1.43 패치노트 Part.2 - 실험체 및 아이템 (2025.03.20)",
+      "patchDate": "2025-03-19",
+      "missingCharacters": [
+        "리 다이린",
+        "알렉스",
+        "헤이즈"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니키",
+        "다니엘",
+        "띠아",
+        "라우라",
+        "레녹스",
+        "레니",
+        "레온",
+        "로지",
+        "루크",
+        "르노어",
+        "리오",
+        "마커스",
+        "매그너스",
+        "바냐",
+        "바바라",
+        "버니스",
+        "셀린",
+        "쇼이치",
+        "수아",
+        "시셀라",
+        "실비아",
+        "아델라",
+        "아디나",
+        "아르다",
+        "아야",
+        "아이작",
+        "얀",
+        "에이든",
+        "엘레나",
+        "엠마",
+        "윌리엄",
+        "유민",
+        "유키",
+        "이렘",
+        "이바",
+        "자히르",
+        "재키",
+        "제니",
+        "카밀로",
+        "칼라",
+        "캐시",
+        "클로에",
+        "키아라",
+        "타지아",
+        "테오도르",
+        "피오라",
+        "피올로",
+        "현우",
+        "혜진"
+      ]
+    },
+    "2598": {
+      "patchTitle": "2025.03.27 - 1.43.1 패치노트",
+      "patchDate": "2025-03-26",
+      "missingCharacters": [
+        "아이작"
+      ],
+      "foundCharacters": [
+        "레온",
+        "루크",
+        "르노어",
+        "마르티나",
+        "쇼우",
+        "알론소",
+        "얀",
+        "에키온",
+        "유키",
+        "이렘",
+        "자히르",
+        "하트",
+        "헤이즈"
+      ]
+    },
+    "2673": {
+      "patchTitle": "2025.04.30 - 1.46 패치노트",
+      "patchDate": "2025-04-29",
+      "missingCharacters": [
+        "쇼우",
+        "일레븐",
+        "츠바메",
+        "칼라"
+      ],
+      "foundCharacters": [
+        "가넷",
+        "나딘",
+        "나타폰",
+        "니키",
+        "다니엘",
+        "다르코",
+        "데비&마를렌",
+        "로지",
+        "루크",
+        "르노어",
+        "리 다이린",
+        "마르티나",
+        "마이",
+        "매그너스",
+        "바냐",
+        "바바라",
+        "샬럿",
+        "셀린",
+        "시셀라",
+        "아드리아나",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "알렉스",
+        "알론소",
+        "에키온",
+        "엘레나",
+        "엠마",
+        "유키",
+        "이렘",
+        "이바",
+        "이슈트반",
+        "자히르",
+        "재키",
+        "제니",
+        "캐시",
+        "케네스",
+        "키아라",
+        "프리야",
+        "피올로",
+        "하트",
+        "헤이즈",
+        "현우",
+        "혜진",
+        "히스이"
+      ]
+    },
+    "2828": {
+      "patchTitle": "8.0 패치노트 Part.2 - 실험체 및 아이템 (2025.07.10)",
+      "patchDate": "2025-07-09",
+      "missingCharacters": [
+        "나타폰",
+        "리 다이린",
+        "버니스",
+        "이바"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "띠아",
+        "레니",
+        "로지",
+        "르노어",
+        "리오",
+        "매그너스",
+        "셀린",
+        "쇼우",
+        "아이솔",
+        "알론소",
+        "얀",
+        "에스텔",
+        "에키온",
+        "요한",
+        "윌리엄",
+        "자히르",
+        "재키",
+        "제니",
+        "카티야",
+        "키아라",
+        "테오도르",
+        "펠릭스"
+      ]
+    },
+    "2885": {
+      "patchTitle": "[수정] 2025.07.24 - 8.2 패치노트",
+      "patchDate": "2025-07-23",
+      "missingCharacters": [
+        "실비아",
+        "펠릭스"
+      ],
+      "foundCharacters": [
+        "나타폰",
+        "니키",
+        "다니엘",
+        "다르코",
+        "데비&마를렌",
+        "레온",
+        "루크",
+        "르노어",
+        "리오",
+        "마르티나",
+        "마이",
+        "마커스",
+        "샬럿",
+        "쇼이치",
+        "시셀라",
+        "아디나",
+        "에스텔",
+        "에키온",
+        "윌리엄",
+        "유스티나",
+        "유키",
+        "이렘",
+        "이바",
+        "이슈트반",
+        "일레븐",
+        "자히르",
+        "재키",
+        "카밀로",
+        "카티야",
+        "캐시",
+        "테오도르",
+        "프리야",
+        "피오라",
+        "히스이"
+      ]
+    },
+    "2916": {
+      "patchTitle": "2025.08.07 - 8.3 패치노트",
+      "patchDate": "2025-08-06",
+      "missingCharacters": [
+        "펠릭스"
+      ],
+      "foundCharacters": [
+        "니아",
+        "니키",
+        "다르코",
+        "데비&마를렌",
+        "라우라",
+        "레온",
+        "로지",
+        "마이",
+        "마커스",
+        "매그너스",
+        "버니스",
+        "비앙카",
+        "샬럿",
+        "쇼이치",
+        "수아",
+        "슈린",
+        "시셀라",
+        "아델라",
+        "아드리아나",
+        "아르다",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "얀",
+        "에스텔",
+        "에이든",
+        "에키온",
+        "엠마",
+        "요한",
+        "유민",
+        "유스티나",
+        "유키",
+        "이렘",
+        "이슈트반",
+        "일레븐",
+        "자히르",
+        "재키",
+        "카티야",
+        "칼라",
+        "케네스",
+        "클로에",
+        "키아라",
+        "프리야",
+        "피오라",
+        "혜진"
+      ]
+    },
+    "3000": {
+      "patchTitle": "2025.09.04 - 8.5 패치노트",
+      "patchDate": "2025-09-03",
+      "missingCharacters": [
+        "윌리엄"
+      ],
+      "foundCharacters": [
+        "나딘",
+        "나타폰",
+        "니아",
+        "다르코",
+        "띠아",
+        "레녹스",
+        "리 다이린",
+        "마커스",
+        "매그너스",
+        "바냐",
+        "바바라",
+        "샬럿",
+        "수아",
+        "슈린",
+        "시셀라",
+        "실비아",
+        "아드리아나",
+        "아비게일",
+        "아야",
+        "아이솔",
+        "얀",
+        "요한",
+        "유민",
+        "이렘",
+        "일레븐",
+        "제니",
+        "카티야",
+        "키아라",
+        "프리야",
+        "피오라",
+        "헤이즈",
+        "현우"
+      ]
+    },
+    "3014": {
+      "patchTitle": "8.5a 핫픽스",
+      "patchDate": "2025-09-04",
+      "missingCharacters": [
+        "샬럿"
+      ],
+      "foundCharacters": [
+        "제니"
+      ]
+    },
+    "3030": {
+      "patchTitle": "2025.09.18 - 8.6 패치노트",
+      "patchDate": "2025-09-17",
+      "missingCharacters": [
+        "피올로"
+      ],
+      "foundCharacters": [
+        "가넷",
+        "니아",
+        "데비&마를렌",
+        "라우라",
+        "레녹스",
+        "루크",
+        "르노어",
+        "리 다이린",
+        "리오",
+        "마이",
+        "마커스",
+        "매그너스",
+        "바냐",
+        "쇼우",
+        "쇼이치",
+        "수아",
+        "슈린",
+        "실비아",
+        "아델라",
+        "아드리아나",
+        "아디나",
+        "아야",
+        "아이솔",
+        "알론소",
+        "에이든",
+        "엘레나",
+        "요한",
+        "유스티나",
+        "유키",
+        "이안",
+        "자히르",
+        "제니",
+        "케네스",
+        "펠릭스",
+        "프리야",
+        "하트",
+        "헨리"
+      ]
+    },
+    "3085": {
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "missingCharacters": [
+        "나딘",
+        "에이든",
+        "요한",
+        "이바",
+        "이안",
+        "제니",
+        "케네스",
+        "프리야",
+        "헤이즈"
+      ],
+      "foundCharacters": [
+        "가넷",
+        "리 다이린",
+        "바냐",
+        "바바라",
+        "아디나",
+        "엠마",
+        "이슈트반",
+        "재키",
+        "츠바메",
+        "클로에",
+        "피오라",
+        "피올로",
+        "하트",
+        "현우",
+        "혜진"
+      ]
+    },
+    "3111": {
+      "patchTitle": "2025.10.23 - 9.1 패치노트",
+      "patchDate": "2025-10-22",
+      "missingCharacters": [
+        "유키"
+      ],
+      "foundCharacters": [
+        "레녹스",
+        "리오",
+        "마커스",
+        "셀린",
+        "쇼우",
+        "수아",
+        "슈린",
+        "아델라",
+        "아드리아나",
+        "알론소",
+        "얀",
+        "에스텔",
+        "엠마",
+        "유민",
+        "유스티나",
+        "재키",
+        "제니",
+        "츠바메",
+        "타지아",
+        "피오라",
+        "헨리",
+        "혜진",
+        "히스이"
+      ]
+    },
+    "3127": {
+      "patchTitle": "2025.10.30 - 9.2 패치노트",
+      "patchDate": "2025-10-29",
+      "missingCharacters": [
+        "알렉스"
+      ],
+      "foundCharacters": [
+        "나타폰",
+        "니키",
+        "데비&마를렌",
+        "레온",
+        "로지",
+        "루크",
+        "르노어",
+        "리 다이린",
+        "셀린",
+        "쇼이치",
+        "수아",
+        "시셀라",
+        "아디나",
+        "아비게일",
+        "알론소",
+        "에키온",
+        "요한",
+        "유민",
+        "유스티나",
+        "이슈트반",
+        "자히르",
+        "재키",
+        "츠바메",
+        "카티야",
+        "케네스",
+        "프리야",
+        "피올로",
+        "헤이즈",
+        "헨리",
+        "현우",
+        "혜진"
+      ]
+    }
+  },
+  "missingByCharacter": {
+    "알렉스": [
+      3127,
+      2585
+    ],
+    "유키": [
+      3111
+    ],
+    "나딘": [
+      3085
+    ],
+    "에이든": [
+      3085,
+      1920
+    ],
+    "요한": [
+      3085,
+      1920
+    ],
+    "이바": [
+      3085,
+      2828
+    ],
+    "이안": [
+      3085,
+      2132,
+      1545,
+      1515
+    ],
+    "제니": [
+      3085
+    ],
+    "케네스": [
+      3085,
+      1920
+    ],
+    "프리야": [
+      3085,
+      1920
+    ],
+    "헤이즈": [
+      3085,
+      2585
+    ],
+    "피올로": [
+      3030
+    ],
+    "샬럿": [
+      3014
+    ],
+    "윌리엄": [
+      3000,
+      2364,
+      1920
+    ],
+    "펠릭스": [
+      2916,
+      2885,
+      2364
+    ],
+    "실비아": [
+      2885,
+      1612
+    ],
+    "나타폰": [
+      2828,
+      1515
+    ],
+    "리 다이린": [
+      2828,
+      2585,
+      2364
+    ],
+    "버니스": [
+      2828,
+      2132,
+      1515
+    ],
+    "쇼우": [
+      2673
+    ],
+    "일레븐": [
+      2673,
+      1920
+    ],
+    "츠바메": [
+      2673
+    ],
+    "칼라": [
+      2673,
+      1727
+    ],
+    "아이작": [
+      2598,
+      2450
+    ],
+    "히스이": [
+      2450
+    ],
+    "니키": [
+      2364
+    ],
+    "바냐": [
+      2364
+    ],
+    "셀린": [
+      2364
+    ],
+    "아델라": [
+      2364
+    ],
+    "얀": [
+      2364,
+      1920,
+      1673,
+      1447
+    ],
+    "엘레나": [
+      2364
+    ],
+    "마커스": [
+      2237
+    ],
+    "하트": [
+      2132
+    ],
+    "쇼이치": [
+      2025
+    ],
+    "다르코": [
+      1983,
+      1967
+    ],
+    "아드리아나": [
+      1967
+    ],
+    "아이솔": [
+      1967,
+      1727
+    ],
+    "엠마": [
+      1942,
+      1812
+    ],
+    "매그너스": [
+      1920
+    ],
+    "재키": [
+      1920
+    ],
+    "카밀로": [
+      1920
+    ],
+    "카티야": [
+      1920
+    ],
+    "테오도르": [
+      1920
+    ],
+    "마르티나": [
+      1868
+    ],
+    "리오": [
+      1741,
+      1727
+    ],
+    "로지": [
+      1727
+    ],
+    "바바라": [
+      1727
+    ],
+    "아르다": [
+      1727
+    ],
+    "클로에": [
+      1727
+    ],
+    "타지아": [
+      1698
+    ],
+    "현우": [
+      1633
+    ],
+    "데비&마를렌": [
+      1515
+    ],
+    "혜진": [
+      1515
+    ],
+    "시셀라": [
+      1328
+    ]
+  },
+  "details": [
+    {
+      "patchId": 3127,
+      "patchTitle": "2025.10.30 - 9.2 패치노트",
+      "patchDate": "2025-10-29",
+      "characterName": "알렉스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3111,
+      "patchTitle": "2025.10.23 - 9.1 패치노트",
+      "patchDate": "2025-10-22",
+      "characterName": "유키",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "나딘",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "에이든",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "요한",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "이바",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "이안",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "제니",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "케네스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "프리야",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3085,
+      "patchTitle": "9.0 패치노트 Part.2 - 실험체 및 아이템 (2025.10.16)",
+      "patchDate": "2025-10-15",
+      "characterName": "헤이즈",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3030,
+      "patchTitle": "2025.09.18 - 8.6 패치노트",
+      "patchDate": "2025-09-17",
+      "characterName": "피올로",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3014,
+      "patchTitle": "8.5a 핫픽스",
+      "patchDate": "2025-09-04",
+      "characterName": "샬럿",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 3000,
+      "patchTitle": "2025.09.04 - 8.5 패치노트",
+      "patchDate": "2025-09-03",
+      "characterName": "윌리엄",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2916,
+      "patchTitle": "2025.08.07 - 8.3 패치노트",
+      "patchDate": "2025-08-06",
+      "characterName": "펠릭스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2885,
+      "patchTitle": "[수정] 2025.07.24 - 8.2 패치노트",
+      "patchDate": "2025-07-23",
+      "characterName": "실비아",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2885,
+      "patchTitle": "[수정] 2025.07.24 - 8.2 패치노트",
+      "patchDate": "2025-07-23",
+      "characterName": "펠릭스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2828,
+      "patchTitle": "8.0 패치노트 Part.2 - 실험체 및 아이템 (2025.07.10)",
+      "patchDate": "2025-07-09",
+      "characterName": "나타폰",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2828,
+      "patchTitle": "8.0 패치노트 Part.2 - 실험체 및 아이템 (2025.07.10)",
+      "patchDate": "2025-07-09",
+      "characterName": "리 다이린",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2828,
+      "patchTitle": "8.0 패치노트 Part.2 - 실험체 및 아이템 (2025.07.10)",
+      "patchDate": "2025-07-09",
+      "characterName": "버니스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2828,
+      "patchTitle": "8.0 패치노트 Part.2 - 실험체 및 아이템 (2025.07.10)",
+      "patchDate": "2025-07-09",
+      "characterName": "이바",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2673,
+      "patchTitle": "2025.04.30 - 1.46 패치노트",
+      "patchDate": "2025-04-29",
+      "characterName": "쇼우",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2673,
+      "patchTitle": "2025.04.30 - 1.46 패치노트",
+      "patchDate": "2025-04-29",
+      "characterName": "일레븐",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2673,
+      "patchTitle": "2025.04.30 - 1.46 패치노트",
+      "patchDate": "2025-04-29",
+      "characterName": "츠바메",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2673,
+      "patchTitle": "2025.04.30 - 1.46 패치노트",
+      "patchDate": "2025-04-29",
+      "characterName": "칼라",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2598,
+      "patchTitle": "2025.03.27 - 1.43.1 패치노트",
+      "patchDate": "2025-03-26",
+      "characterName": "아이작",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2585,
+      "patchTitle": "1.43 패치노트 Part.2 - 실험체 및 아이템 (2025.03.20)",
+      "patchDate": "2025-03-19",
+      "characterName": "리 다이린",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2585,
+      "patchTitle": "1.43 패치노트 Part.2 - 실험체 및 아이템 (2025.03.20)",
+      "patchDate": "2025-03-19",
+      "characterName": "알렉스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2585,
+      "patchTitle": "1.43 패치노트 Part.2 - 실험체 및 아이템 (2025.03.20)",
+      "patchDate": "2025-03-19",
+      "characterName": "헤이즈",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2450,
+      "patchTitle": "2025.01.16 - 1.39 패치노트",
+      "patchDate": "2025-01-15",
+      "characterName": "아이작",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2450,
+      "patchTitle": "2025.01.16 - 1.39 패치노트",
+      "patchDate": "2025-01-15",
+      "characterName": "히스이",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "니키",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "리 다이린",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "바냐",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "셀린",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "아델라",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "얀",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "엘레나",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "윌리엄",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2364,
+      "patchTitle": "1.36 패치노트 Part.2 - 실험체 및 아이템",
+      "patchDate": "2024-12-04",
+      "characterName": "펠릭스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2237,
+      "patchTitle": "2024.10.10 - 1.32 패치노트",
+      "patchDate": "2024-10-09",
+      "characterName": "마커스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2132,
+      "patchTitle": "2024.08.29 - 1.29 패치노트",
+      "patchDate": "2024-08-28",
+      "characterName": "버니스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2132,
+      "patchTitle": "2024.08.29 - 1.29 패치노트",
+      "patchDate": "2024-08-28",
+      "characterName": "이안",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2132,
+      "patchTitle": "2024.08.29 - 1.29 패치노트",
+      "patchDate": "2024-08-28",
+      "characterName": "하트",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 2025,
+      "patchTitle": "1.25b 핫픽스",
+      "patchDate": "2024-07-09",
+      "characterName": "쇼이치",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1983,
+      "patchTitle": "2024.06.20 - 1.24 패치노트",
+      "patchDate": "2024-06-19",
+      "characterName": "다르코",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1967,
+      "patchTitle": "1.23a 핫픽스",
+      "patchDate": "2024-06-06",
+      "characterName": "다르코",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1967,
+      "patchTitle": "1.23a 핫픽스",
+      "patchDate": "2024-06-06",
+      "characterName": "아드리아나",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1967,
+      "patchTitle": "1.23a 핫픽스",
+      "patchDate": "2024-06-06",
+      "characterName": "아이솔",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1942,
+      "patchTitle": "2024.05.30 - 1.22.1 패치노트",
+      "patchDate": "2024-05-29",
+      "characterName": "엠마",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "매그너스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "얀",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "에이든",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "요한",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "윌리엄",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "일레븐",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "재키",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "카밀로",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "카티야",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "케네스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "테오도르",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1920,
+      "patchTitle": "2024.05.23 - 1.22 패치노트",
+      "patchDate": "2024-05-22",
+      "characterName": "프리야",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1868,
+      "patchTitle": "2024.04.25 - 1.20 패치노트",
+      "patchDate": "2024-04-24",
+      "characterName": "마르티나",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1812,
+      "patchTitle": "2024.03.28 - 1.18 패치노트",
+      "patchDate": "2024-03-27",
+      "characterName": "엠마",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1741,
+      "patchTitle": "1.15b 핫픽스",
+      "patchDate": "2024-02-16",
+      "characterName": "리오",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "로지",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "리오",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "바바라",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "아르다",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "아이솔",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "칼라",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1727,
+      "patchTitle": "2024.02.15 - 1.15 패치노트 Part.1",
+      "patchDate": "2024-02-14",
+      "characterName": "클로에",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1698,
+      "patchTitle": "2024.02.01 - 1.14 패치노트",
+      "patchDate": "2024-01-31",
+      "characterName": "타지아",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1673,
+      "patchTitle": "[수정됨] 2024.01.18 - 1.13 패치노트",
+      "patchDate": "2024-01-17",
+      "characterName": "얀",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1633,
+      "patchTitle": "2023.12.21 - 1.11 패치노트",
+      "patchDate": "2023-12-20",
+      "characterName": "현우",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1612,
+      "patchTitle": "2023.12.07 - 1.10 패치노트",
+      "patchDate": "2023-12-06",
+      "characterName": "실비아",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1545,
+      "patchTitle": "2023.11.09 - 1.8 패치노트",
+      "patchDate": "2023-11-08",
+      "characterName": "이안",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1515,
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "characterName": "나타폰",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1515,
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "characterName": "데비&마를렌",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1515,
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "characterName": "버니스",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1515,
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "characterName": "이안",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1515,
+      "patchTitle": "[수정됨] 2023.10.26 - 1.7 패치노트",
+      "patchDate": "2023-10-25",
+      "characterName": "혜진",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1447,
+      "patchTitle": "[추가됨] 2023.09.26 - 1.5 패치노트",
+      "patchDate": "2023-09-25",
+      "characterName": "얀",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    },
+    {
+      "patchId": 1328,
+      "patchTitle": "2023.08.03 - 1.1 패치노트",
+      "patchDate": "2023-08-02",
+      "characterName": "시셀라",
+      "crawledFromWeb": true,
+      "existsInFirebase": false
+    }
+  ]
+}
