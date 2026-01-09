@@ -5,6 +5,7 @@ import type { PatchEntry } from '@/types/patch';
 import { isNumericChange } from '@/types/patch';
 import { PatchEditForm } from './PatchEditForm';
 import { getChangeTypeLabel, getChangeTypeBgColor, formatDate } from '@/lib/patch-utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 type ExtendedPatchEntry = PatchEntry;
 
@@ -14,6 +15,11 @@ type AdminPatchListProps = {
   patchLinks: Record<number, string>;
 };
 
+type RecalculateResult = {
+  success: boolean;
+  message: string;
+};
+
 export function AdminPatchList({
   characterName,
   patches,
@@ -21,6 +27,9 @@ export function AdminPatchList({
 }: AdminPatchListProps): React.JSX.Element {
   const [patchList, setPatchList] = useState<ExtendedPatchEntry[]>(patches);
   const [editingPatch, setEditingPatch] = useState<ExtendedPatchEntry | null>(null);
+  const [isRecalculating, setIsRecalculating] = useState(false);
+  const [recalculateResult, setRecalculateResult] = useState<RecalculateResult | null>(null);
+  const { getIdToken } = useAuth();
 
   const handleSave = (updatedPatch: ExtendedPatchEntry): void => {
     setPatchList((prev) =>
@@ -29,8 +38,72 @@ export function AdminPatchList({
     setEditingPatch(null);
   };
 
+  const handleRecalculateStreaks = async (): Promise<void> => {
+    if (isRecalculating) return;
+
+    setIsRecalculating(true);
+    setRecalculateResult(null);
+
+    try {
+      const token = await getIdToken();
+      if (!token) {
+        setRecalculateResult({ success: false, message: '인증이 필요합니다.' });
+        return;
+      }
+
+      const response = await fetch(
+        `/api/admin/characters/${encodeURIComponent(characterName)}/recalculate-streaks`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setRecalculateResult({
+          success: true,
+          message: data.message,
+        });
+        // 페이지 새로고침으로 업데이트된 데이터 반영
+        window.location.reload();
+      } else {
+        setRecalculateResult({
+          success: false,
+          message: data.error || '재계산 중 오류가 발생했습니다.',
+        });
+      }
+    } catch {
+      setRecalculateResult({
+        success: false,
+        message: '네트워크 오류가 발생했습니다.',
+      });
+    } finally {
+      setIsRecalculating(false);
+    }
+  };
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-gray-400">총 {patchList.length}개 패치</div>
+        <button
+          onClick={handleRecalculateStreaks}
+          disabled={isRecalculating}
+          className="px-4 py-2 bg-violet-600 hover:bg-violet-700 disabled:bg-violet-800 disabled:cursor-not-allowed text-white text-sm rounded-lg transition-colors"
+        >
+          {isRecalculating ? '재계산 중...' : '연속 재계산'}
+        </button>
+      </div>
+
+      {recalculateResult && !recalculateResult.success && (
+        <div className="p-3 rounded-lg bg-rose-900/50 border border-rose-500/50 text-rose-300 text-sm">
+          {recalculateResult.message}
+        </div>
+      )}
       {patchList.map((patch) => (
         <div
           key={patch.patchId}

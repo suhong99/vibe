@@ -17,14 +17,28 @@ npx tsx scripts/parse-balance-changes.ts
 
 ## 스크립트 목록
 
-| 스크립트 | 역할 |
-|----------|------|
-| `crawl-patch-notes.ts` | 공식 사이트에서 패치노트 크롤링 |
-| `validate-links.ts` | 패치노트 링크 검증, 캐릭터 데이터 유무 확인 |
-| `parse-balance-changes.ts` | 패치노트 HTML 파싱, 변경사항 추출 |
-| `fix-change-data.ts` | stat/before/after 구조 정리, changeCategory 추가 |
-| `fix-unknown-changes.ts` | unknown 카테고리 수동 수정 |
-| `upload-fixed-data.ts` | 로컬 JSON → Firestore 업로드 |
+### 크롤링/파싱
+
+| 스크립트                   | 역할                                        |
+| -------------------------- | ------------------------------------------- |
+| `crawl-patch-notes.ts`     | 공식 사이트에서 패치노트 크롤링             |
+| `validate-links.ts`        | 패치노트 링크 검증, 캐릭터 데이터 유무 확인 |
+| `parse-balance-changes.ts` | 패치노트 HTML 파싱, 변경사항 추출           |
+
+### 데이터 수정
+
+| 스크립트                    | 역할                                             |
+| --------------------------- | ------------------------------------------------ |
+| `fix-change-data.ts`        | stat/before/after 구조 정리, changeCategory 추가 |
+| `fix-unknown-changes.ts`    | unknown 카테고리 수동 수정                       |
+| `find-duplicate-patches.ts` | 중복된 patchId 검색 (검사용)                     |
+| `fix-duplicate-patches.ts`  | 중복된 patchId 제거                              |
+| `upload-fixed-data.ts`      | 로컬 JSON → Firestore 업로드                     |
+
+### 관리
+
+| 스크립트       | 역할               |
+| -------------- | ------------------ |
 | `add-admin.ts` | 관리자 이메일 등록 |
 
 ## 환경 설정
@@ -51,10 +65,31 @@ FIREBASE_SERVICE_ACCOUNT  # Secret에 JSON 문자열로 저장
 findFirstNumberIndexOutsideParens()
 ```
 
+## 중복 패치 검사/수정
+
+크롤링 오류로 인해 동일한 patchId가 중복 저장될 수 있음.
+
+```bash
+# 1. 중복 검사 (읽기 전용)
+npx tsx scripts/find-duplicate-patches.ts
+
+# 출력 예시:
+# [니키] 중복 발견:
+#   - patchId 1654: 2번 중복
+# 총 41개의 중복 엔트리 발견
+
+# 2. 중복 제거 (Firestore 직접 수정)
+npx tsx scripts/fix-duplicate-patches.ts
+
+# 출력 예시:
+# [니키] 1개 중복 제거
+# 총 41개의 중복 엔트리 제거 완료
+```
+
 ## 데이터 파일 (data/)
 
-| 파일 | 용도 |
-|------|------|
+| 파일                   | 용도                          |
+| ---------------------- | ----------------------------- |
 | `balance-changes.json` | 파싱된 캐릭터 데이터 (백업용) |
-| `fix-issues.json` | unknown 카테고리 항목 목록 |
-| `patch-notes.json` | 크롤링된 패치노트 (레거시) |
+| `fix-issues.json`      | unknown 카테고리 항목 목록    |
+| `patch-notes.json`     | 크롤링된 패치노트 (레거시)    |
